@@ -1,0 +1,132 @@
+---
+title: "Braun et al, 2021 analysis"
+author: "Alfons Edmar"
+date: "2023-02-15"
+output: html_document
+---
+# Packages
+```{r}
+library(tidyverse)
+library(readxl)
+library(here)
+```
+# Variable coding 
+
+This is the authors explaining the coding: 
+Explanatory Role: 
+1 = explanatory
+2 = non-explanatory
+
+Correction Condition 
+1 = no correct 
+2 = negation
+3 = negation + alternative 
+
+Misinformation
+0 = control 
+1 = misled
+
+
+# Experiment 2 
+```{r}
+data <- read_excel(
+    path = here("open_data_analyses/data/Braun_et_al_2021 .xlsx"), 
+    sheet = "Experiment 2")
+clean_data <- filter(data, data$`Participated in E1` != 1)
+clean_data <- rename(clean_data,
+                     c('tp_recall' = `TP Free Recall`
+                       ,'spider_recall' = `Spider Free Recall`
+                       ,'tp_correct' = `TP Corect`
+                       , 'spider_correct' = `Spider Correct`
+                       , 'ex_role' = `Explanatory Role`))
+#note. we have 2 more participants than reported in the paper. 
+```
+We want to look at the free recall proportions for the misinformed and non-misinformed individuals. I interpret a 0 in the free recall to mean that the did not recall. 
+```{r}
+misled <- clean_data %>%
+  filter(Misinformation == 1) %>%
+  select(spider_recall, tp_recall, ex_role, 
+         tp_correct, spider_correct)
+
+control <- clean_data %>%
+  filter(Misinformation == 0) %>%
+  select(spider_recall, tp_recall, ex_role, 
+         tp_correct, spider_correct )
+```
+
+
+# Mean proportions by treatment conditions as seen in fig.5
+
+Here is the mean and sd for the tp prank question for the misled 
+```{r}
+#explanatory no correction
+mean(misled$tp_recall[misled$tp_correct == 1 & misled$ex_role == 1])
+sd(misled$tp_recall[misled$tp_correct == 1 & misled$ex_role == 1])
+
+#explanatory negation
+mean(misled$tp_recall[misled$tp_correct == 1 & misled$ex_role == 2])
+sd(misled$tp_recall[misled$tp_correct == 1 & misled$ex_role == 2])
+
+#no explanatory and no correction
+mean(misled$tp_recall[misled$tp_correct == 2 & misled$ex_role == 1])
+sd(misled$tp_recall[misled$tp_correct == 2 & misled$ex_role == 1])
+
+#no explanatory with negation
+mean(misled$tp_recall[misled$tp_correct == 2 & misled$ex_role == 2])
+sd(misled$tp_recall[misled$tp_correct == 2 & misled$ex_role == 2])
+```
+Here is the mean and sd for the spider question for the misled
+```{r}
+#explanatory no correction
+mean(misled$spider_recall[misled$spider_correct == 1
+                          & misled$ex_role == 1])
+sd(misled$spider_recall[misled$spider_correct == 1 
+                        & misled$ex_role == 1])
+
+#explanatory negation
+mean(misled$spider_recall[misled$spider_correct == 1 
+                          & misled$ex_role == 2])
+sd(misled$spider_recall[misled$spider_correct == 1 
+                        & misled$ex_role == 2])
+
+#no explanatory and no correction
+mean(misled$spider_recall[misled$spider_correct == 2 
+                          & misled$ex_role == 1])
+sd(misled$spider_recall[misled$spider_correct == 2 
+                        & misled$ex_role == 1])
+
+#no explanatory with negation
+mean(misled$spider_recall[misled$spider_correct == 2 
+                          & misled$ex_role == 2])
+sd(misled$spider_recall[misled$spider_correct == 2 
+                        & misled$ex_role == 2])
+```
+Here is the mean and sd for the tp prank on the control group
+```{r}
+#explanatory 
+mean(control$tp_recall[control$ex_role == 1])
+sd(control$tp_recall[control$ex_role == 1])
+
+#non-explanatory
+mean(control$tp_recall[control$ex_role == 2])
+sd(control$tp_recall[control$ex_role == 2])
+
+#note. there is only one recall of TP 
+
+```
+Here is the mean and sd for the spider question on the control group
+```{r}
+#explanatory 
+mean(control$spider_recall[control$ex_role == 1])
+sd(control$spider_recall[control$ex_role == 1])
+
+#non-explanatory
+mean(control$spider_recall[control$ex_role == 2])
+sd(control$spider_recall[control$ex_role == 2])
+
+#note. there is only one recall of TP 
+```
+
+
+
+
