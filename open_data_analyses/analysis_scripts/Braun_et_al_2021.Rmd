@@ -9,6 +9,7 @@ output: html_document
 library(tidyverse)
 library(readxl)
 library(here)
+library(snakecase)
 ```
 # Variable coding 
 
@@ -27,29 +28,35 @@ Misinformation
 1 = misled
 
 
+# Experiment 1
+No analysis of experiment 1 is possible since no indicator for control items are present. 
+
 # Experiment 2 
 ```{r}
 data <- read_excel(
     path = here("open_data_analyses/data/Braun_et_al_2021 .xlsx"), 
     sheet = "Experiment 2")
+
 clean_data <- filter(data, data$`Participated in E1` != 1)
+
+names(clean_data) <- to_any_case(
+  string = names(data), case = 'snake')
 clean_data <- rename(clean_data,
-                     c('tp_recall' = `TP Free Recall`
-                       ,'spider_recall' = `Spider Free Recall`
-                       ,'tp_correct' = `TP Corect`
-                       , 'spider_correct' = `Spider Correct`
-                       , 'ex_role' = `Explanatory Role`))
+                     c('tp_recall' = tp_free_recall
+                       ,'spider_recall' = spider_free_recall
+                       , 'tp_correct' = tp_corect
+                       , 'ex_role' = explanatory_role))
 #note. we have 2 more participants than reported in the paper. 
 ```
 We want to look at the free recall proportions for the misinformed and non-misinformed individuals. I interpret a 0 in the free recall to mean that the did not recall. 
 ```{r}
 misled <- clean_data %>%
-  filter(Misinformation == 1) %>%
+  filter(misinformation == 1) %>%
   select(spider_recall, tp_recall, ex_role, 
          tp_correct, spider_correct)
 
 control <- clean_data %>%
-  filter(Misinformation == 0) %>%
+  filter(misinformation == 0) %>%
   select(spider_recall, tp_recall, ex_role, 
          tp_correct, spider_correct )
 ```
@@ -101,31 +108,82 @@ mean(misled$spider_recall[misled$spider_correct == 2
 sd(misled$spider_recall[misled$spider_correct == 2 
                         & misled$ex_role == 2])
 ```
-Here is the mean and sd for the tp prank on the control group
+Here is the mean and sd for the tp prank on the control group. Note that no individual in the control group were misled, therefore the explanatory role variable means nothing. They were however corrected.
 ```{r}
-#explanatory 
-mean(control$tp_recall[control$ex_role == 1])
-sd(control$tp_recall[control$ex_role == 1])
+#tp no correction
+mean(control$tp_recall[control$tp_correct == 1])
+sd(control$tp_recall[control$tp_correct == 1])
 
-#non-explanatory
-mean(control$tp_recall[control$ex_role == 2])
-sd(control$tp_recall[control$ex_role == 2])
+#tp correction
+mean(control$tp_recall[control$tp_correct == 2])
+sd(control$tp_recall[control$tp_correct == 2])
 
 #note. there is only one recall of TP 
 
 ```
 Here is the mean and sd for the spider question on the control group
 ```{r}
-#explanatory 
-mean(control$spider_recall[control$ex_role == 1])
-sd(control$spider_recall[control$ex_role == 1])
+#no spider correct
+mean(control$spider_recall[control$spider_correct == 1])
+sd(control$spider_recall[control$spider_correct == 1])
 
-#non-explanatory
-mean(control$spider_recall[control$ex_role == 2])
-sd(control$spider_recall[control$ex_role == 2])
+# spider correction
+mean(control$spider_recall[control$spider_correct == 2])
+sd(control$spider_recall[control$spider_correct == 2])
 
-#note. there is only one recall of TP 
 ```
+
+Extracting number of participants in the different groups. 
+
+TP:
+```{r}
+#explanatory no correction
+NROW(misled$tp_recall[misled$tp_correct == 1 & misled$ex_role == 1])
+
+#explanatory negation
+NROW(misled$tp_recall[misled$tp_correct == 1 & misled$ex_role == 2])
+
+#no explanatory and no correction
+NROW(misled$tp_recall[misled$tp_correct == 2 & misled$ex_role == 1])
+
+#no explanatory with negation
+NROW(misled$tp_recall[misled$tp_correct == 2 & misled$ex_role == 2])
+```
+Spider: 
+```{r}
+#explanatory no correction
+NROW(misled$spider_recall[misled$spider_correct == 1
+                          & misled$ex_role == 1])
+
+#explanatory negation
+NROW(misled$spider_recall[misled$spider_correct == 1 
+                          & misled$ex_role == 2])
+
+#no explanatory and no correction
+NROW(misled$spider_recall[misled$spider_correct == 2 
+                          & misled$ex_role == 1])
+
+#no explanatory with negation
+NROW(misled$spider_recall[misled$spider_correct == 2 
+                          & misled$ex_role == 2])
+```
+Control:
+```{r}
+# tp no correction
+NROW(control$tp_recall[control$tp_correct == 1])
+
+#tp correction
+NROW(control$tp_recall[control$tp_correct == 2])
+
+#spider no correction
+NROW(control$spider_recall[control$spider_correct == 1])
+
+# spider correction
+NROW(control$spider_recall[control$spider_correct == 2])
+```
+
+
+
 
 
 
