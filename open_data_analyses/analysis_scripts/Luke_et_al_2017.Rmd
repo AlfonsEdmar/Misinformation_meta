@@ -45,6 +45,7 @@ with(study_3, tapply(factor(gender), condition, summary))
 
 ```{r}
 with(study_3, tapply(neutralacc, condition, mean))
+#this is not all comparisons form table 3 - not sure how to do the divisions.
 ```
 
 
