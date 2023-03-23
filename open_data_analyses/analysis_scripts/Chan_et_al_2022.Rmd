@@ -1,0 +1,156 @@
+---
+title: "Analysis of Chan et al, (2022)"
+author: "Alfons Edmar"
+date: "2023-03-23"
+output: html_document
+---
+
+Packages:
+```{r}
+library(readr)
+library(here)
+library(tidyverse)
+library(snakecase)
+```
+
+
+# Study 1
+
+Data:
+```{r}
+study_1 <- read_csv(here(
+  "open_data_analyses/data/Chan_et_al_2022_study_1.csv"))
+```
+
+Variables:
+
+cond: Test condition (i.e., Tested or Nontested)
+warn: Warning condition (i.e., Warned or Unwarned)
+mi_c: final test accuracy for misled items, correct responses
+cong_c: final test accuracy for consistent items, correct responses
+
+Wrangling:
+```{r}
+# Changling variable names
+names(study_1) <- to_snake_case(names(study_1))
+# Extracting variables of interest
+study_1 <- study_1 %>% select(cond, warn, mi_c, cong_c)
+```
+
+
+Accuracy on misled and non-misled items across conditions:
+```{r}
+# mean for misled items
+round(tapply(
+  study_1$mi_c,list(study_1$cond, study_1$warn),mean), 3)
+
+# sd for misled items
+round(tapply(
+  study_1$mi_c,list(study_1$cond, study_1$warn),sd), 3)
+
+# consistent items
+round(tapply(
+  study_1$cong_c,list(study_1$cond, study_1$warn),mean), 3)
+
+# sd for consistent items
+round(tapply
+      (study_1$cong_c,list(study_1$cond, study_1$warn),sd), 3)
+```
+
+Sample size across conditions:
+```{r}
+tapply(study_1$mi_c,list(study_1$cond, study_1$warn),NROW)
+```
+# Study 2
+
+Data:
+```{r}
+study_2 <- read_csv(here(
+  "open_data_analyses/data/Chan_et_al_2022_study_2.csv"))
+```
+
+
+
+# Study 1
+
+Data:
+```{r}
+study_1 <- read_csv(here(
+  "open_data_analyses/data/Chan_et_al_2022_study_1.csv"))
+```
+
+
+Wrangling:
+```{r}
+# Changling variable names
+names(study_2) <- to_snake_case(names(study_2))
+# Extracting variables of interest
+study_2 <- study_2 %>% select(cond, warn, mi_c, cong_c)
+```
+
+
+Accuracy on misled and non-misled items across conditions:
+```{r}
+# mean for misled items
+round(tapply(
+  study_2$mi_c,list(study_2$cond, study_2$warn),mean), 3)
+
+# sd for misled items
+round(tapply(
+  study_2$mi_c,list(study_2$cond, study_2$warn),sd), 3)
+
+# consistent items
+round(tapply(
+  study_2$cong_c,list(study_2$cond, study_2$warn),mean), 3)
+
+# sd for consistent items
+round(tapply(
+  study_2$cong_c,list(study_2$cond, study_2$warn),sd), 3)
+```
+
+Sample size across conditions:
+```{r}
+tapply(study_2$mi_c,list(study_2$cond, study_2$warn),NROW)
+```
+
+# Study 3
+
+```{r}
+study_3 <- read_csv(here(
+  "open_data_analyses/data/Chan_et_al_2022_study_3.csv"))
+```
+
+
+Wrangling:
+```{r}
+# Changling variable names
+names(study_3) <- to_snake_case(names(study_3))
+# Extracting variables of interest
+study_3 <- study_3 %>% select(cond, warn, mi_c, cong_c)
+```
+
+
+Accuracy on misled and non-misled items across conditions:
+```{r}
+# mean for misled items
+round(tapply(
+  study_3$mi_c,list(study_3$cond, study_3$warn),mean), 3)
+
+# sd for misled items
+round(tapply(
+  study_3$mi_c,list(study_3$cond, study_3$warn),sd), 3)
+
+# consistent items
+round(tapply(
+  study_3$cong_c,list(study_3$cond, study_3$warn),mean), 3)
+
+# sd for consistent items
+round(tapply(
+  study_3$cong_c,list(study_3$cond, study_3$warn),sd), 3)
+```
+
+Sample size across conditions:
+```{r}
+tapply(study_3$mi_c,list(study_3$cond, study_3$warn),NROW)
+```
+
