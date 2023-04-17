@@ -9,7 +9,6 @@
 library(caret)
 library(tidyverse)
 
-
 # Load data --------------------------------------------------------------------
 data <- read_csv("data/misinformation_data_cleaned.csv")
 
@@ -31,9 +30,8 @@ train_sampling <- trainControl(  method = 'boot'
 
 # Predicting misled accuracy sd using xgboost-----------------------------------
 
-xg_fit_mi_sd <- train(  accuracy_mi_sd ~ accuracy_control_mean +
-                        accuracy_mi_mean + n_control + n_mi +
-                        items_misled  
+xg_fit_mi_sd <- train(  accuracy_control_sd ~ accuracy_control_mean + 
+                        accuracy_mi_mean + n_control + n_mi + items_misled  
                       , data      = train_data
                       , method    = 'xgbTree'
                       , trControl = train_sampling

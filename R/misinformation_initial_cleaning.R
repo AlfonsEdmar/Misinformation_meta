@@ -105,6 +105,7 @@ raw$accuracy_type[raw$accuracy_type == "constistent"] <- "consistent"
 raw$event_medium[raw$event_medium == "audivisual"] <- "audiovisual"
 raw$event_medium[raw$event_medium == "audio_visual"] <- "audiovisual"
 raw$event_medium[raw$event_medium == "various"] <- NA
+raw$event_medium[raw$event_medium == "NA"] <- NA
 raw$event_medium[raw$event_medium == "taste"] <- "live"
 
 raw$test_type[raw$test_type == "cued_recal"] <- "cued_recall"
