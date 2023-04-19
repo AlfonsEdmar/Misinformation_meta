@@ -114,4 +114,12 @@ raw$test_type[raw$test_type == "MMFI"] <- "MMFR"
 raw$test_type[raw$test_type == "prop-selection"] <- "recognition"
 raw$test_type[raw$test_type == "recogition"] <- "recognition"
 
+raw$event_materials[
+  raw$event_materials == "theft_narrative_mccloskey_zaragoza_1985a"] <- 
+  "theft_narrative_mccloskey_zaragoza_1985" 
+
+
+# Exporting cleaned data--------------------------------------------------------
+
+write.csv(raw, 'data/misinformation_data_cleaned.csv')
 

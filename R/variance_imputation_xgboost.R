@@ -14,35 +14,47 @@ library(tidyverse)
 data <- read_csv("data/misinformation_data_cleaned.csv")
 
 
-# Creating datasets for missing and present variances --------------------------
+# Creating data sets for missing and present variances -------------------------
 
 test_data <- data %>%
-  filter(is.na(total_accuracy_control_sd) & is.na(total_accuracy_control_prop) 
-         & !is.na(total_accuracy_control_mean))
+  filter(  is.na(total_accuracy_control_sd) 
+         & is.na(total_accuracy_control_prop) 
+         & !is.na(total_accuracy_control_mean) 
+         & total_accuracy_control_mean <=.99)
+test_data <- test_data[-c(91:97),]
 
 train_data <- data %>% 
-  filter(!is.na(total_accuracy_mi_sd))
+  filter(!is.na(total_accuracy_mi_sd) 
+         & total_accuracy_control_mean <= .99
+         & total_accuracy_control_mean >= .0001
+         & total_accuracy_mi_mean      <= .99
+         & total_accuracy_mi_mean      >= .0001)
+
+prop_data <- data %>%
+  filter(is.na(total_accuracy_control_mean))
+
+cbind(  summary(train_data$total_accuracy_control_mean)
+      , summary(train_data$total_accuracy_mi_mean))
 
 
 # Specifying the sampling procedure for the training data-----------------------
 
-xgb_tuning <- expand.grid( nrounds = 500
-                         , max_depth = 3:6
-                         , eta = c(.001, .01)
-                         , gamma = c(0, .1, 1)
+xgb_tuning <- expand.grid( nrounds          = 500
+                         , max_depth        = 1:3
+                         , eta              = c(.01, .1, 1)
+                         , gamma            = c(0, .01, .1)
                          , colsample_bytree = c(.5, .8, 1)
-                         , min_child_weight = c(1, 3, 5)
-                         , subsample = .7)
+                         , min_child_weight = c(1, 2, 3)
+                         , subsample        = .9)
 
-train_sampling <- trainControl(  method = 'boot'
-                               , number = 2)
-
+train_sampling <- trainControl(  method     = 'boot'
+                               , number     = 2)
 
 # Predicting misled accuracy sd using constrained xgboost-----------------------
 
 set.seed(676)
 xg_fit_mi_sd <- train(  total_accuracy_control_sd ~ total_accuracy_control_mean+ 
-                        total_accuracy_mi_mean + n_control + n_mi + items_misled  
+                        total_accuracy_mi_mean + n_control + n_mi    
                       , data        = train_data
                       , method      = 'xgbTree'
                       , trControl   = train_sampling
@@ -52,14 +64,14 @@ xg_fit_mi_sd <- train(  total_accuracy_control_sd ~ total_accuracy_control_mean+
 
 # Predicting missing misled accuracy sd-----------------------------------------
 
-xg_mi_sd_pred <- predict(xg_fit_mi_sd, test_data)
+xg_mi_sd_pred <- predict(xg_fit_mi_sd, newdata = test_data)
 summary(xg_mi_sd_pred)
 
 # Predicting control accuracy sd using xgboost-----------------------------------
 
 set.seed(6820)
 xg_fit_co_sd <- train( total_accuracy_control_sd ~ total_accuracy_control_mean + 
-                       total_accuracy_mi_mean + n_control + n_mi + items_misled 
+                       total_accuracy_mi_mean + n_control + n_mi 
                      , data      = train_data
                      , method    = 'xgbTree'
                      , trControl = train_sampling
@@ -96,3 +108,14 @@ ggplot()+
 # Exporting imputations---------------------------------------------------------
 imputed_variances <- data.frame(xg_co_sd_pred, xg_mi_sd_pred)
 write.csv(imputed_variances, 'data/imputed_variances.csv')
+
+# Creating a complete data set--------------------------------------------------
+
+test_data$total_accuracy_control_sd <- xg_co_sd_pred
+test_data$total_accuracy_mi_sd      <- xg_mi_sd_pred
+
+complete_data <- rbind(test_data, train_data, prop_data)
+data <- data[-c(138:145, 369:376),]
+
+write.csv(complete_data, 'data/complete_data_cleaned.csv')
+
