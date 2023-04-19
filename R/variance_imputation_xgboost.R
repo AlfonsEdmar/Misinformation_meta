@@ -19,16 +19,14 @@ data <- read_csv("data/misinformation_data_cleaned.csv")
 test_data <- data %>%
   filter(  is.na(total_accuracy_control_sd) 
          & is.na(total_accuracy_control_prop) 
-         & !is.na(total_accuracy_control_mean) 
-         & total_accuracy_control_mean <=.99)
-test_data <- test_data[-c(91:97),]
+         & !is.na(total_accuracy_control_mean)
+         & !is.na(total_accuracy_control_mean))
 
 train_data <- data %>% 
-  filter(!is.na(total_accuracy_mi_sd) 
-         & total_accuracy_control_mean <= .99
-         & total_accuracy_control_mean >= .0001
-         & total_accuracy_mi_mean      <= .99
-         & total_accuracy_mi_mean      >= .0001)
+  filter(!is.na(total_accuracy_mi_sd) & !is.na(total_accuracy_control_sd))
+
+summary(train_data$total_accuracy_mi_sd)
+summary(train_data$total_accuracy_control_sd)
 
 prop_data <- data %>%
   filter(is.na(total_accuracy_control_mean))
@@ -36,6 +34,11 @@ prop_data <- data %>%
 cbind(  summary(train_data$total_accuracy_control_mean)
       , summary(train_data$total_accuracy_mi_mean))
 
+cbind(  summary(test_data$total_accuracy_control_mean)
+        , summary(test_data$total_accuracy_mi_mean))
+
+#NOTE: Since we have a different number of missing obs across mi_sd and co_sd we 
+#      will need to impute zeros afterthe imputation
 
 # Specifying the sampling procedure for the training data-----------------------
 
@@ -107,15 +110,16 @@ ggplot()+
 
 # Exporting imputations---------------------------------------------------------
 imputed_variances <- data.frame(xg_co_sd_pred, xg_mi_sd_pred)
+imputed_variances$xg_co_sd_pred[135] <- 0
+imputed_variances$xg_co_sd_pred[139] <- 0
 write.csv(imputed_variances, 'data/imputed_variances.csv')
 
 # Creating a complete data set--------------------------------------------------
 
-test_data$total_accuracy_control_sd <- xg_co_sd_pred
-test_data$total_accuracy_mi_sd      <- xg_mi_sd_pred
+test_data$total_accuracy_control_sd <- imputed_variances$xg_co_sd_pred
+test_data$total_accuracy_mi_sd      <- imputed_variances$xg_mi_sd_pred
 
 complete_data <- rbind(test_data, train_data, prop_data)
-data <- data[-c(138:145, 369:376),]
 
 write.csv(complete_data, 'data/complete_data_cleaned.csv')
 

@@ -102,7 +102,7 @@ if (!file.exists('models/meta_primary_2.rds')) {
   meta_primary_2 <- rma.mv(yi     = yi, 
                            V      = vi,
                            random = list(~1|id_record/id_study/id_control, 
-                                         ~1|event_materials ),
+                                         ~1|event_materials),
                            data   = data_es,
                            method = 'REML'
   )
@@ -180,7 +180,8 @@ if (!file.exists('models/meta_pet.rds')) {
   meta_pet     <- rma.mv(yi       = yi, 
                          V        = vi,
                          mods     = ~ I(vi^2),
-                         random   = list(~1|id_record/id_study/id_control),
+                         random   = list(~1|id_record/id_study/id_control, 
+                                         ~1|event_materials),
                          data     = data_es,
                          method   = 'REML'
                          )
@@ -198,7 +199,8 @@ if (!file.exists('models/meta_peese.rds')) {
   meta_peese   <- rma.mv(yi       = yi, 
                          V        = vi,
                          mods     = ~ I(vi),
-                         random   = list(~1|id_record/id_study/id_control),
+                         random   = list(~1|id_record/id_study/id_control, 
+                                         ~1|event_materials),
                          data     = data_es,
                          method   = 'REML'
                          )
@@ -215,15 +217,25 @@ funnel(meta_primary, label = TRUE)
 
 ## Influence analysis ----------------------------------------------------------
 
-cores <- parallel::detectCores() - 1
-inf <- cooks.distance.rma.mv(test, progbar = TRUE,
-                             parallel      = 'snow',
-                             ncpus         = cores) 
+if (!file.exists('data/cooks_dist_data.csv')) {
+  
+  cores <- parallel::detectCores() - 1
+  inf   <- cooks.distance.rma.mv(meta_primary_2,
+                               progbar  = TRUE,
+                               parallel = 'snow',
+                               ncpus    = cores) 
+  
+  
+  data_es <- cbind(data_es, 'cooks_dist' = inf)
+  write.csv(data_es, 'data/cooks_dist_data.csv')
+  
+} else {
+  
+  data_es <- read.csv('data/cooks_dist_data.csv')
+  
+}
 
 n   <- NROW(inf)
-
-test_dat <- cbind(test_dat, 'cooks_dist' = inf)
-
 ggplot(test_dat, aes(y = cooks_dist, x = id_effect, label = id_effect))+
   geom_point() +
   geom_text(aes(
@@ -235,130 +247,271 @@ ggplot(test_dat, aes(y = cooks_dist, x = id_effect, label = id_effect))+
 
 # Test type
 
-meta_mod_test_type <-  rma.mv(
-                         yi     = yi, 
-                         V      = vi,
-                         random = list(~1|id_record/id_study/id_control),
-                         mods   = ~ as.factor(test_type) - 1,
-                         data   = data_es,
-                         method   = 'REML'
-                         )
+if (!file.exists('models/meta_mod_test_type.rds')) {
+  
+  meta_mod_test_type <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ as.factor(test_type) - 1,
+    data   = data_es,
+    method   = 'REML'
+  )
+  
+ 
+  
+  saveRDS(meta_mod_test_type,'models/meta_mod_test_type.rds')
+  
+} else {
+  
+  meta_mod_test_type <- readRDS('models/meta_mod_test_type.rds')
+  
+}
 
 # Number of post-event tests
-
-meta_mod_postev_test <-  rma.mv(
-                         yi     = yi, 
-                         V      = vi,
-                         random = list(~1|id_record/id_study/id_control),
-                         mods   = ~ postevent_recall,
-                         data   = data_es,
-                         method = 'REML'
-                         )
+if (!file.exists('models/meta_mod_postev_test.rds')) {
+  
+  meta_mod_postev_test <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ postevent_recall,
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postev_test,'models/meta_mod_postev_test.rds')
+  
+} else {
+  
+  meta_mod_postev_test <- readRDS('models/meta_mod_postev_test.rds')
+  
+}
 
 # Age
+if (!file.exists('models/meta_mod_age.rds')) {
+  
+  meta_mod_age <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ age_mean,
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_age,'models/meta_mod_age.rds')
+  
+} else {
+  
+  meta_mod_age <- readRDS('models/meta_mod_age.rds')
+  
+}
 
-meta_mod_age <-  rma.mv(
-                         yi     = yi, 
-                         V      = vi,
-                         random = list(~1|id_record/id_study/id_control),
-                         mods   = ~ age_mean,
-                         data   = data_es,
-                         method = 'REML'
-                         )
+if (!file.exists('models/meta_mod_age_quad.rds')) {
+  
+  meta_mod_age_quad <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ I(age_mean^2),
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_age_quad,'models/meta_mod_age_quad.rds')
+  
+} else {
+  
+  meta_mod_age_quad <- readRDS('models/meta_mod_age_quad.rds')
+  
+}
 
-meta_mod_age_quad <-  rma.mv(
-                         yi     = yi, 
-                         V      = vi,
-                         random = list(~1|id_record/id_study/id_control),
-                         mods   = ~ I(age_mean^2),
-                         data   = data_es,
-                         method = 'REML'
-                         )
 
 # Post-event retention interval
 
-meta_mod_postev_ret <-  rma.mv(
-                         yi     = yi, 
-                         V      = vi,
-                         random = list(~1|id_record/id_study/id_control),
-                         mods   = ~ postevent_retention_interval,
-                         data   = data_es,
-                         method = 'REML'
-                         )
+if (!file.exists('models/meta_mod_postev_ret.rds')) {
+  
+  meta_mod_postev_ret <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ postevent_retention_interval,
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postev_ret,'models/meta_mod_postev_ret.rds')
+  
+} else {
+  
+  meta_mod_postev_ret <- readRDS('models/meta_mod_postev_ret.rds')
+  
+}
 
 # Post-exposure retention interval
 
-meta_mod_postex_ret <-  rma.mv(
-                         yi     = yi, 
-                         V      = vi,
-                         random = list(~1|id_record/id_study/id_control),
-                         mods   = ~ postexposure_retention_interval,
-                         data   = data_es,
-                         method = 'REML'
-                         )
+if (!file.exists('models/meta_mod_postex_ret.rds')) {
+  
+  meta_mod_postex_ret <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ postexposure_retention_interval,
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postex_ret,'models/meta_mod_postex_ret.rds')
+  
+} else {
+  
+  meta_mod_postex_ret <- readRDS('models/meta_mod_postex_ret.rds')
+  
+}
 
 # Gender (proportion female)
 
-meta_mod_gender <-  rma.mv(
-                         yi     = yi, 
-                         V      = vi,
-                         random = list(~1|id_record/id_study/id_control),
-                         mods   = ~ gender_female_prop,
-                         data   = data_es,
-                         method = 'REML'
-                         )
+if (!file.exists('models/meta_mod_gender.rds')) {
+  
+  meta_mod_gender <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ gender_female_prop,
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_gender,'models/meta_mod_gender.rds')
+  
+} else {
+  
+  meta_mod_gender <- readRDS('models/meta_mod_gender.rds')
+  
+}
 
 # Post-exposure warnings
 
-meta_mod_postex_warn <- rma.mv(
-                         yi     = yi, 
-                         V      = vi,
-                         random = list(~1|id_record/id_study/id_control),
-                         mods   = ~ postexposure_warning,
-                         data   = data_es,
-                         method = 'REML'
-                         )
+if (!file.exists('models/meta_mod_postex_warn.rds')) {
+  
+  meta_mod_postex_warn <- rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ postexposure_warning,
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postex_warn,'models/meta_mod_postex_warn.rds')
+  
+} else {
+  
+  meta_mod_postex_warn <- readRDS('models/meta_mod_postex_warn.rds')
+  
+}
+
 
 # Publication year
 
-meta_mod_year <-  rma.mv(
-                         yi     = yi, 
-                         V      = vi,
-                         random = list(~1|id_record/id_study/id_control),
-                         mods   = ~ as.numeric(publication_year),
-                         data   = data_es,
-                         method = 'REML'
-                         )
+
+if (!file.exists('models/meta_mod_year.rds')) {
+  
+  meta_mod_year <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ as.numeric(publication_year),
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_year,'models/meta_mod_year.rds')
+  
+} else {
+  
+  meta_mod_year <- readRDS('models/meta_mod_year.rds')
+  
+}
+
 
 # Study modality
 
-meta_mod_modality <-  rma.mv(yi = yi, 
-                         V      = vi,
-                         random = list(~1|id_record/id_study/id_control),
-                         mods   = ~ as.factor(modality) - 1,
-                         data   = data_es,
-                         method = 'REML'
-                         )
+if (!file.exists('models/meta_mod_modality.rds')) {
+  
+  meta_mod_modality <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ as.factor(modality) - 1,
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_modality,'models/meta_mod_modality.rds')
+  
+} else {
+  
+  meta_mod_modality <- readRDS('models/meta_mod_modality.rds')
+  
+}
+
 
 # Control item accuracy (memory performance)
 
-meta_mod_control_acc <-  rma.mv(    
-                         yi     = yi, 
-                         V      = vi,
-                         random = list(~1|id_record/id_study/id_control),
-                         mods   = ~ total_accuracy_control_mean,
-                         data   = data_es,
-                         method = 'REML'
-                         )
+if (!file.exists('models/meta_mod_control_acc.rds')) {
+  
+  meta_mod_control_acc <-  rma.mv(    
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ total_accuracy_control_mean,
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_control_acc,'models/meta_mod_control_acc.rds')
+  
+} else {
+  
+  meta_mod_control_acc <- readRDS('models/meta_mod_control_acc.rds')
+  
+}
 
-meta_mod_control_acc_quad <-  rma.mv(
-                         yi     = yi, 
-                         V      = vi,
-                         random = list(~1|id_record/id_study/id_control),
-                         mods   = ~ I(total_accuracy_control_mean^2),
-                         data   = data_es,
-                         method = 'REML'
-                         )
+
+if (!file.exists('models/meta_mod_control_acc_quad.rds')) {
+  
+  meta_mod_control_acc_quad <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ I(total_accuracy_control_mean^2),
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_control_acc_quad,'models/meta_mod_control_acc_quad.rds')
+  
+} else {
+  
+  meta_mod_control_acc_quad <- readRDS('models/meta_mod_control_acc_quad.rds')
+  
+}
+
+
 
 
 
