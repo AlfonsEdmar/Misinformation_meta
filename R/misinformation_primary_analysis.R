@@ -169,6 +169,8 @@ anova(meta_primary,
 anova(meta_primary_2,
       meta_primary_3)
 
+#Note: meta_primary_2 is the best fitting model.
+
 ## Heterogeneity estimates
 
 I2_meta <- I2_mv(meta_primary_2, data_es)
@@ -235,13 +237,37 @@ if (!file.exists('data/cooks_dist_data.csv')) {
   
 }
 
-n   <- NROW(inf)
-ggplot(test_dat, aes(y = cooks_dist, x = id_effect, label = id_effect))+
-  geom_point() +
+n   <- NROW(data_es)
+ggplot(data_es, aes(y = cooks_dist, x = id_effect, label = id_effect))+
+  geom_jitter(alpha = .5) +
   geom_text(aes(
     label=ifelse(cooks_dist> 4/n ,
-                 as.character(id_effect), '')), hjust = 1.5, vjust = 0)
+                 as.character(id_effect), '')), hjust = -.2, vjust = 0)
+#Note. Effect 862 has a relativly large cooks distance.  
 
+round(summary((data_es$cooks_dist)), 7)
+
+# Extracting outliers at the arbitrary 4/n threshold. 
+outliers <- ifelse(data_es$cooks_dist <= 4/n, 0, 1)
+
+# Sensitivity analysis----------------------------------------------------------
+
+if (!file.exists('models/meta_primary_outlier.rds')) {
+  meta_primary_outlier <- rma.mv(
+                          yi       = yi,
+                          V        = vi,
+                          random   = list(~1|id_record/id_study/id_control, 
+                                          ~1|event_materials),
+                          data     = filter(data_es, outliers == 0),
+                          method   = 'REML'
+)
+
+saveRDS(meta_primary_outlier,'models/meta_primary_outlier.rds')
+} else {
+  
+  meta_primary_outlier <- readRDS('models/meta_primary_outlier.rds')
+  
+}
 
 # Moderator analysis -----------------------------------------------------------
 
@@ -298,7 +324,7 @@ if (!file.exists('models/meta_mod_age.rds')) {
     V      = vi,
     random = list(~1|id_record/id_study/id_control, 
                   ~1|event_materials),
-    mods   = ~ age_mean,
+    mods   = ~ as.numeric(age_mean),
     data   = data_es,
     method = 'REML'
   )
@@ -318,7 +344,7 @@ if (!file.exists('models/meta_mod_age_quad.rds')) {
     V      = vi,
     random = list(~1|id_record/id_study/id_control, 
                   ~1|event_materials),
-    mods   = ~ I(age_mean^2),
+    mods   = ~ I(as.numeric(age_mean^2)),
     data   = data_es,
     method = 'REML'
   )

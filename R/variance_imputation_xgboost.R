@@ -54,16 +54,25 @@ train_sampling <- trainControl(  method     = 'boot'
                                , number     = 2)
 
 # Predicting misled accuracy sd using constrained xgboost-----------------------
-
-set.seed(676)
-xg_fit_mi_sd <- train(  total_accuracy_control_sd ~ total_accuracy_control_mean+ 
-                        total_accuracy_mi_mean + n_control + n_mi    
-                      , data        = train_data
-                      , method      = 'xgbTree'
-                      , trControl   = train_sampling
-                      , verbosity   = 0
-                      , na.action   = na.pass
-                      , tuneGrid    = xgb_tuning)
+if (!file.exists('models/xg_fit_mi_sd.rds')) {
+  
+  set.seed(676)
+  xg_fit_mi_sd <- train(  total_accuracy_control_sd ~ total_accuracy_control_mean+ 
+                            total_accuracy_mi_mean + n_control + n_mi    
+                          , data        = train_data
+                          , method      = 'xgbTree'
+                          , trControl   = train_sampling
+                          , verbosity   = 0
+                          , na.action   = na.pass
+                          , tuneGrid    = xgb_tuning)
+  
+  saveRDS(xg_fit_mi_sd,'models/xg_fit_mi_sd.rds')
+  
+} else {
+  
+  xg_fit_mi_sd <- readRDS('models/xg_fit_mi_sd.rds')
+  
+}
 
 # Predicting missing misled accuracy sd-----------------------------------------
 
@@ -71,16 +80,26 @@ xg_mi_sd_pred <- predict(xg_fit_mi_sd, newdata = test_data)
 summary(xg_mi_sd_pred)
 
 # Predicting control accuracy sd using xgboost-----------------------------------
+if (!file.exists('models/xg_fit_co_sd.rds')) {
+  
+  set.seed(6820)
+  xg_fit_co_sd <- train( total_accuracy_control_sd ~ total_accuracy_control_mean + 
+                           total_accuracy_mi_mean + n_control + n_mi 
+                         , data      = train_data
+                         , method    = 'xgbTree'
+                         , trControl = train_sampling
+                         , verbosity = 0
+                         , na.action = na.pass
+                         , tuneGrid  = xgb_tuning)
+  
+  saveRDS(xg_fit_co_sd,'models/xg_fit_co_sd.rds')
+  
+} else {
+  
+  xg_fit_co_sd <- readRDS('models/xg_fit_co_sd.rds')
+  
+}
 
-set.seed(6820)
-xg_fit_co_sd <- train( total_accuracy_control_sd ~ total_accuracy_control_mean + 
-                       total_accuracy_mi_mean + n_control + n_mi 
-                     , data      = train_data
-                     , method    = 'xgbTree'
-                     , trControl = train_sampling
-                     , verbosity = 0
-                     , na.action = na.pass
-                     , tuneGrid  = xgb_tuning)
 
 # Predicting missing control accuracy sd----------------------------------------
 
