@@ -89,6 +89,17 @@ raw <- raw %>%
 
 unique_values <- apply(raw, 2, unique)
 
+raw$publication_year[raw$publication_year == "1993a"] <- "1993"
+raw$publication_year[raw$publication_year == "1999a"] <- "1999"
+raw$publication_year[raw$publication_year == "1999b"] <- "1999"
+raw$publication_year[raw$publication_year == "2003a"] <- "2003"
+raw$publication_year[raw$publication_year == "2003b"] <- "2003"
+raw$publication_year[raw$publication_year == "2006b"] <- "2006"
+raw$publication_year[raw$publication_year == "2011a"] <- "2011"
+raw$publication_year[raw$publication_year == "2015a"] <- "2015"
+raw$publication_year[raw$publication_year == "2015B"] <- "2015"
+raw$publication_year[raw$publication_year == "2021b"] <- "2021"
+
 raw$within_between[raw$within_between == "betwen"] <- "between"
 
 raw$incentives[raw$incentives == "course_credit_or_ money"] <- "course_credit_or_money"
@@ -105,6 +116,7 @@ raw$accuracy_type[raw$accuracy_type == "constistent"] <- "consistent"
 raw$event_medium[raw$event_medium == "audivisual"] <- "audiovisual"
 raw$event_medium[raw$event_medium == "audio_visual"] <- "audiovisual"
 raw$event_medium[raw$event_medium == "various"] <- NA
+raw$event_medium[raw$event_medium == "NA"] <- NA
 raw$event_medium[raw$event_medium == "taste"] <- "live"
 
 raw$test_type[raw$test_type == "cued_recal"] <- "cued_recall"
@@ -113,4 +125,43 @@ raw$test_type[raw$test_type == "MMFI"] <- "MMFR"
 raw$test_type[raw$test_type == "prop-selection"] <- "recognition"
 raw$test_type[raw$test_type == "recogition"] <- "recognition"
 
+raw$event_materials[
+  raw$event_materials == "theft_narrative_mccloskey_zaragoza_1985a"] <- 
+  "theft_narrative_mccloskey_zaragoza_1985" 
+
+raw$country[raw$country == "en"] <- "gb"
+
+# Setting variables classes-----------------------------------------------------
+
+raw$publication_year     <- as.numeric(raw$publication_year)
+
+raw$language_record      <- as.factor(raw$language_record)
+raw$language_materials   <- as.factor(raw$language_materials)
+raw$country              <- as.factor(raw$country)
+raw$population           <- as.factor(raw$population)
+raw$modality             <- as.factor(raw$modality)
+raw$incentives           <- as.factor(raw$incentives)
+
+raw$within_between       <- as.factor(raw$within_between)
+raw$accuracy_type        <- as.factor(raw$accuracy_type)
+raw$control_type         <- as.factor(raw$control_type)
+
+raw$age_mean             <- as.numeric(raw$age_mean)
+
+raw$preevent_valence     <- as.factor(raw$preevent_valence)
+
+raw$event_medium         <- as.factor(raw$event_medium)
+
+raw$exposure_medium      <- as.factor(raw$exposure_medium)
+raw$exposure_method      <- as.factor(raw$exposure_method)
+raw$exposure_valence     <- as.factor(raw$exposure_valence)
+
+raw$test_medium          <- as.factor(raw$test_medium)
+raw$test_type            <- as.factor(raw$test_type)
+raw$item_centrality      <- as.factor(raw$item_centrality)
+
+
+# Exporting cleaned data--------------------------------------------------------
+
+write.csv(raw, 'data/misinformation_data_cleaned.csv')
 

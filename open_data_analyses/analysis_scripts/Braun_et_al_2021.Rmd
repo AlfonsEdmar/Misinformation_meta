@@ -68,55 +68,41 @@ Here is the mean and sd for the tp prank question for the misled
 ```{r}
 #explanatory no correction
 mean(misled$tp_recall[misled$tp_correct == 1 & misled$ex_role == 1])
-sd(misled$tp_recall[misled$tp_correct == 1 & misled$ex_role == 1])
 
 #explanatory negation
 mean(misled$tp_recall[misled$tp_correct == 1 & misled$ex_role == 2])
-sd(misled$tp_recall[misled$tp_correct == 1 & misled$ex_role == 2])
 
 #no explanatory and no correction
 mean(misled$tp_recall[misled$tp_correct == 2 & misled$ex_role == 1])
-sd(misled$tp_recall[misled$tp_correct == 2 & misled$ex_role == 1])
 
 #no explanatory with negation
 mean(misled$tp_recall[misled$tp_correct == 2 & misled$ex_role == 2])
-sd(misled$tp_recall[misled$tp_correct == 2 & misled$ex_role == 2])
 ```
 Here is the mean and sd for the spider question for the misled
 ```{r}
 #explanatory no correction
 mean(misled$spider_recall[misled$spider_correct == 1
                           & misled$ex_role == 1])
-sd(misled$spider_recall[misled$spider_correct == 1 
-                        & misled$ex_role == 1])
 
 #explanatory negation
 mean(misled$spider_recall[misled$spider_correct == 1 
                           & misled$ex_role == 2])
-sd(misled$spider_recall[misled$spider_correct == 1 
-                        & misled$ex_role == 2])
 
 #no explanatory and no correction
 mean(misled$spider_recall[misled$spider_correct == 2 
                           & misled$ex_role == 1])
-sd(misled$spider_recall[misled$spider_correct == 2 
-                        & misled$ex_role == 1])
 
 #no explanatory with negation
 mean(misled$spider_recall[misled$spider_correct == 2 
                           & misled$ex_role == 2])
-sd(misled$spider_recall[misled$spider_correct == 2 
-                        & misled$ex_role == 2])
 ```
 Here is the mean and sd for the tp prank on the control group. Note that no individual in the control group were misled, therefore the explanatory role variable means nothing. They were however corrected.
 ```{r}
 #tp no correction
 mean(control$tp_recall[control$tp_correct == 1])
-sd(control$tp_recall[control$tp_correct == 1])
 
 #tp correction
 mean(control$tp_recall[control$tp_correct == 2])
-sd(control$tp_recall[control$tp_correct == 2])
 
 #note. there is only one recall of TP 
 
@@ -125,12 +111,9 @@ Here is the mean and sd for the spider question on the control group
 ```{r}
 #no spider correct
 mean(control$spider_recall[control$spider_correct == 1])
-sd(control$spider_recall[control$spider_correct == 1])
 
 # spider correction
 mean(control$spider_recall[control$spider_correct == 2])
-sd(control$spider_recall[control$spider_correct == 2])
-
 ```
 
 Extracting number of participants in the different groups. 
