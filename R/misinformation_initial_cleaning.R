@@ -132,6 +132,7 @@ raw$event_materials[
   "theft_narrative_mccloskey_zaragoza_1985" 
 
 raw$country[raw$country == "en"] <- "gb"
+raw$country[raw$country == "hi"] <- "in"
 
 # Setting variables classes-----------------------------------------------------
 

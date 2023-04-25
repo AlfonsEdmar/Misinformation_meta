@@ -94,6 +94,8 @@ if (!file.exists('models/meta_primary.rds')) {
   meta_primary <- readRDS('models/meta_primary.rds')
   
 }
+summary(meta_primary)
+I2_mv(meta_primary, data_es)
 
 # Adding event materials
 
@@ -114,6 +116,8 @@ if (!file.exists('models/meta_primary_2.rds')) {
   meta_primary_2 <- readRDS('models/meta_primary_2.rds')
   
 }
+summary(meta_primary_2)
+I2_mv(meta_primary_2, data_es)
 
 # Adding event materials and country
 
@@ -135,6 +139,8 @@ if (!file.exists('models/meta_primary_3.rds')) {
   meta_primary_3 <- readRDS('models/meta_primary_3.rds')
   
 }
+summary(meta_primary_3)
+I2_mv(meta_primary_3, data_es)
 
 # Adding country (without event materials)
 
@@ -154,6 +160,8 @@ if (!file.exists('models/meta_primary_3b.rds')) {
   meta_primary_3b <- readRDS('models/meta_primary_3b.rds')
   
 }
+summary(meta_primary_3b)
+I2_mv(meta_primary_3b, data_es)
 
 ## Model comparisons
 
@@ -168,6 +176,9 @@ anova(meta_primary,
 
 anova(meta_primary_2,
       meta_primary_3)
+
+anova(meta_primary_2,
+      meta_primary_3b)
 
 #Note: meta_primary_2 is the best fitting model.
 
@@ -195,6 +206,7 @@ if (!file.exists('models/meta_pet.rds')) {
   meta_pet <- readRDS('models/meta_pet.rds')
   
 }
+summary(meta_pet)
 
 if (!file.exists('models/meta_peese.rds')) {
   
@@ -214,6 +226,7 @@ if (!file.exists('models/meta_peese.rds')) {
   meta_peese <- readRDS('models/meta_peese.rds')
   
 }
+summary(meta_peese)
 
 funnel(meta_primary, label = TRUE)
 
@@ -268,6 +281,40 @@ saveRDS(meta_primary_outlier,'models/meta_primary_outlier.rds')
   meta_primary_outlier <- readRDS('models/meta_primary_outlier.rds')
   
 }
+summary(meta_primary_outlier)
+I2_mv(meta_primary_outlier, filter(data_es, outliers == 0))
+filter(data_es, outliers == 0)
+
+funnel(meta_primary_2, label = T)
+funnel(meta_primary_outlier, label = F)
+outlier_2 <- data_es %>% filter(yi > 5)
+
+outlier_2 <- ifelse(data_es$yi >= 5.3, 1, 0)
+
+es_data_outlier_2 <- data_es %>% 
+  filter(outlier_2 == 0 & outliers == 0)
+
+if (!file.exists('models/meta_primary_outlier_2.rds')) {
+  meta_primary_outlier_2 <- rma.mv(
+    yi       = yi,
+    V        = vi,
+    random   = list(~1|id_record/id_study/id_control, 
+                    ~1|event_materials),
+    data     = es_data_outlier_2,
+    method   = 'REML'
+  )
+  
+  saveRDS(meta_primary_outlier_2,'models/meta_primary_outlier_2.rds')
+} else {
+  
+  meta_primary_outlier_2 <- readRDS('models/meta_primary_outlier_2.rds')
+  
+}
+
+summary(meta_primary_outlier_2)
+I2_mv(meta_primary_outlier_2, es_data_outlier_2)
+
+funnel(meta_primary_outlier_2)
 
 # Moderator analysis -----------------------------------------------------------
 
@@ -294,8 +341,17 @@ if (!file.exists('models/meta_mod_test_type.rds')) {
   meta_mod_test_type <- readRDS('models/meta_mod_test_type.rds')
   
 }
+summary(meta_mod_test_type)
+I2_mv(meta_mod_test_type, data_es)
+
+effects_by_recall_type <- data_es %>% 
+  group_by(test_type) %>% 
+  summarise(n = n_distinct(id_effect))
+
+effects_by_recall_type
 
 # Number of post-event tests
+
 if (!file.exists('models/meta_mod_postev_test.rds')) {
   
   meta_mod_postev_test <-  rma.mv(
