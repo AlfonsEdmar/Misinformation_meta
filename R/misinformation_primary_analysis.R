@@ -177,6 +177,9 @@ anova(meta_primary,
 anova(meta_primary_2,
       meta_primary_3)
 
+anova(meta_primary_2,
+      meta_primary_3b)
+
 #Note: meta_primary_2 is the best fitting model.
 
 ## Heterogeneity estimates
