@@ -413,8 +413,8 @@ if (!file.exists('models/meta_mod_age_quad.rds')) {
   
 }
 
-
 # Post-event retention interval
+# Post-event retention interval----
 
 if (!file.exists('models/meta_mod_postev_ret.rds')) {
   
@@ -423,7 +423,7 @@ if (!file.exists('models/meta_mod_postev_ret.rds')) {
     V      = vi,
     random = list(~1|id_record/id_study/id_control, 
                   ~1|event_materials),
-    mods   = ~ postevent_retention_interval,
+    mods   = ~ I(postevent_retention_interval/24),
     data   = data_es,
     method = 'REML'
   )
@@ -435,8 +435,57 @@ if (!file.exists('models/meta_mod_postev_ret.rds')) {
   meta_mod_postev_ret <- readRDS('models/meta_mod_postev_ret.rds')
   
 }
+summary(meta_mod_postev_ret)
 
-# Post-exposure retention interval
+# Reducing the interval to exclude extreme values
+if (!file.exists('models/meta_mod_postev_ret_2.rds')) {
+  
+  meta_mod_postev_ret_2 <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ I(postevent_retention_interval/24),
+    data   = filter(data_es, 
+                    postevent_retention_interval < 2500 &
+                      postevent_retention_interval > 24),
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postev_ret_2,'models/meta_mod_postev_ret_2.rds')
+  
+} else {
+  
+  meta_mod_postev_ret_2 <- readRDS('models/meta_mod_postev_ret_2.rds')
+  
+}
+summary(meta_mod_postev_ret_2)
+
+
+# comparing the recall across one week. 
+if (!file.exists('models/meta_mod_postev_ret_3.rds')) {
+  
+  meta_mod_postev_ret_3 <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ I(postevent_retention_interval/24),
+    data   = filter(data_es, 
+                    postevent_retention_interval < 170),
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postev_ret_3,'models/meta_mod_postev_ret_3.rds')
+  
+} else {
+  
+  meta_mod_postev_ret_3 <- readRDS('models/meta_mod_postev_ret_3.rds')
+  
+}
+summary(meta_mod_postev_ret_3)
+
+# Post-exposure retention interval----
 
 if (!file.exists('models/meta_mod_postex_ret.rds')) {
   
@@ -445,7 +494,7 @@ if (!file.exists('models/meta_mod_postex_ret.rds')) {
     V      = vi,
     random = list(~1|id_record/id_study/id_control, 
                   ~1|event_materials),
-    mods   = ~ postexposure_retention_interval,
+    mods   = ~ I(postexposure_retention_interval/24),
     data   = data_es,
     method = 'REML'
   )
@@ -457,6 +506,57 @@ if (!file.exists('models/meta_mod_postex_ret.rds')) {
   meta_mod_postex_ret <- readRDS('models/meta_mod_postex_ret.rds')
   
 }
+
+summary(meta_mod_postex_ret)
+
+if (!file.exists('models/meta_mod_postex_ret_2.rds')) {
+  
+  meta_mod_postex_ret_2 <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ I(postexposure_retention_interval/24),
+    data   = filter(data_es, 
+                    postexposure_retention_interval < 2500 &
+                      postexposure_retention_interval > 24),
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postex_ret_2,'models/meta_mod_postex_ret_2.rds')
+  
+} else {
+  
+  meta_mod_postex_ret_2 <- readRDS('models/meta_mod_postex_ret_2.rds')
+  
+}
+
+summary(meta_mod_postex_ret_2)
+
+# Week intervals
+
+if (!file.exists('models/meta_mod_postex_ret_3.rds')) {
+  
+  meta_mod_postex_ret_3 <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ I(postexposure_retention_interval/24),
+    data   = filter(data_es, 
+                    postexposure_retention_interval < 170),
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postex_ret_3,'models/meta_mod_postex_ret_3.rds')
+  
+} else {
+  
+  meta_mod_postex_ret_3 <- readRDS('models/meta_mod_postex_ret_3.rds')
+  
+}
+
+summary(meta_mod_postex_ret_3)
 
 # Gender (proportion female)
 
