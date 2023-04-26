@@ -134,6 +134,14 @@ raw$event_materials[
 raw$country[raw$country == "en"] <- "gb"
 raw$country[raw$country == "hi"] <- "in"
 
+raw[425, "gender_female_prop"] = 0.714
+raw[575, "gender_female_prop"] = 0.788
+raw[576, "gender_female_prop"] = 0.788
+raw[577, "gender_female_prop"] = 0.788
+raw[578, "gender_female_prop"] = 0.788
+
+
+
 # Setting variables classes-----------------------------------------------------
 
 raw$publication_year     <- as.numeric(raw$publication_year)
