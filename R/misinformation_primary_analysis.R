@@ -73,6 +73,7 @@ es_mean <- escalc(data    = mean_data,
                   measure = 'SMD')
 
 data_es <- rbind(es_mean, es_prop)
+write_csv2(data_es, 'data/misinformation_data_es.csv')
 
 # Primary analysis--------------------------------------------------------------
 
@@ -246,7 +247,8 @@ if (!file.exists('data/cooks_dist_data.csv')) {
   
 } else {
   
-  data_es <- read.csv('data/cooks_dist_data.csv')
+  data_cooks <- read.csv('data/cooks_dist_data.csv')
+  data_es    <- data.frame(data_es, data_cooks$cooks_dist)
   
 }
 
@@ -413,8 +415,7 @@ if (!file.exists('models/meta_mod_age_quad.rds')) {
   
 }
 
-# Post-event retention interval
-# Post-event retention interval----
+## Post-event retention interval
 
 if (!file.exists('models/meta_mod_postev_ret.rds')) {
   
@@ -437,7 +438,7 @@ if (!file.exists('models/meta_mod_postev_ret.rds')) {
 }
 summary(meta_mod_postev_ret)
 
-# Reducing the interval to exclude extreme values
+## Reducing the interval to exclude extreme values
 if (!file.exists('models/meta_mod_postev_ret_2.rds')) {
   
   meta_mod_postev_ret_2 <-  rma.mv(
@@ -462,7 +463,7 @@ if (!file.exists('models/meta_mod_postev_ret_2.rds')) {
 summary(meta_mod_postev_ret_2)
 
 
-# comparing the recall across one week. 
+## comparing the recall across one week. 
 if (!file.exists('models/meta_mod_postev_ret_3.rds')) {
   
   meta_mod_postev_ret_3 <-  rma.mv(
@@ -485,7 +486,7 @@ if (!file.exists('models/meta_mod_postev_ret_3.rds')) {
 }
 summary(meta_mod_postev_ret_3)
 
-# Post-exposure retention interval----
+# Post-exposure retention interval
 
 if (!file.exists('models/meta_mod_postex_ret.rds')) {
   
@@ -652,6 +653,7 @@ if (!file.exists('models/meta_mod_modality.rds')) {
 
 # Control item accuracy (memory performance)
 
+
 if (!file.exists('models/meta_mod_control_acc.rds')) {
   
   meta_mod_control_acc <-  rma.mv(    
@@ -672,6 +674,32 @@ if (!file.exists('models/meta_mod_control_acc.rds')) {
   
 }
 
+summary(meta_mod_control_acc)
+
+
+
+if (!file.exists('models/meta_mod_control_acc_outlier.rds')) {
+  
+  meta_mod_control_acc_outlier <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = total_accuracy_control_mean,
+    data   = filter(data_es, yi < 5.3),
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_control_acc_outlier,
+          'models/meta_mod_control_acc_outlier.rds')
+  
+} else {
+  
+  meta_mod_control_acc_outlier <- readRDS('models/meta_mod_control_acc_outlier.rds')
+  
+}
+
+summary(meta_mod_control_acc_outlier)
 
 if (!file.exists('models/meta_mod_control_acc_quad.rds')) {
   
@@ -693,11 +721,117 @@ if (!file.exists('models/meta_mod_control_acc_quad.rds')) {
   
 }
 
+summary(meta_mod_control_acc_quad)
 
+if (!file.exists('models/meta_mod_control_acc_full.rds')) {
+  
+  meta_mod_control_acc_full <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ total_accuracy_control_mean +
+      I(total_accuracy_control_mean^2),
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_control_acc_full,'models/meta_mod_control_acc_full.rds')
+  
+} else {
+  
+  meta_mod_control_acc_full <- readRDS('models/meta_mod_control_acc_full.rds')
+  
+}
+summary(meta_mod_control_acc_full)
 
+if (!file.exists('models/meta_mod_control_acc_full_2.rds')) {
+  
+  meta_mod_control_acc_full_2 <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ total_accuracy_control_mean +
+      I(total_accuracy_control_mean^2),
+    data   = filter(data_es, yi < 5.3),
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_control_acc_full_2,'models/meta_mod_control_acc_full_2.rds')
+  
+} else {
+  
+  meta_mod_control_acc_full_2 <- readRDS('models/meta_mod_control_acc_full_2.rds')
+  
+}
+summary(meta_mod_control_acc_full_2)
 
+#Control item accuracy proportion (memory performance)
 
+if (!file.exists('models/meta_mod_control_prop.rds')) {
+  
+  meta_mod_control_prop <-  rma.mv(    
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ total_accuracy_control_prop,
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_control_prop,'models/meta_mod_control_prop.rds')
+  
+} else {
+  
+  meta_mod_control_prop <- readRDS('models/meta_mod_control_prop.rds')
+  
+}
 
+summary(meta_mod_control_prop)
 
+if (!file.exists('models/meta_mod_control_prop_quad.rds')) {
+  
+  meta_mod_control_prop_quad <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ I(total_accuracy_control_prop^2),
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_control_prop_quad,'models/meta_mod_control_prop_quad.rds')
+  
+} else {
+  
+  meta_mod_control_prop_quad <- readRDS('models/meta_mod_control_prop_quad.rds')
+  
+}
 
+summary(meta_mod_control_prop_quad)
+
+if (!file.exists('models/meta_mod_control_prop_full.rds')) {
+  
+  meta_mod_control_prop_full <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ total_accuracy_control_prop +
+      I(total_accuracy_control_prop^2),
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_control_prop_full,'models/meta_mod_control_prop_full.rds')
+  
+} else {
+  
+  meta_mod_control_prop_full <- readRDS('models/meta_mod_control_prop_full.rds')
+  
+}
+summary(meta_mod_control_prop_full)
 

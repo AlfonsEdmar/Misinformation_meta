@@ -113,19 +113,6 @@ cbind(c(summary(predict(xg_fit_mi_sd)))
 cbind(c(summary(train_data$total_accuracy_mi_sd))
       ,summary(train_data$total_accuracy_control_sd))
 
-# Density plots for imputed and observed standard deviations--------------------
-
-ggplot()+
-  geom_density(aes(xg_co_sd_pred), col = 'blue')+
-  geom_density(aes(train_data$accuracy_control_sd), col = 'red')+
-  xlim(0,1)+
-  theme_bw()
-
-ggplot()+
-  geom_density(aes(xg_mi_sd_pred), col = 'blue')+
-  geom_density(aes(train_data$accuracy_mi_sd), col = 'red')+
-  xlim(0,1)+
-  theme_bw()
 
 # Exporting imputations---------------------------------------------------------
 imputed_variances <- data.frame(xg_co_sd_pred, xg_mi_sd_pred)
