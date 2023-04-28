@@ -394,6 +394,7 @@ if (!file.exists('models/meta_mod_age.rds')) {
   meta_mod_age <- readRDS('models/meta_mod_age.rds')
   
 }
+summary(meta_mod_age)
 
 if (!file.exists('models/meta_mod_age_quad.rds')) {
   
@@ -414,6 +415,28 @@ if (!file.exists('models/meta_mod_age_quad.rds')) {
   meta_mod_age_quad <- readRDS('models/meta_mod_age_quad.rds')
   
 }
+summary(meta_mod_age_quad)
+
+if (!file.exists('models/meta_mod_age_full.rds')) {
+  
+  meta_mod_age_full <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ as.numeric(age_mean) + I(as.numeric(age_mean^2)),
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_age_full,'models/meta_mod_age_full.rds')
+  
+} else {
+  
+  meta_mod_age_full <- readRDS('models/meta_mod_age_full.rds')
+  
+}
+summary(meta_mod_age_full)
 
 ## Post-event retention interval
 
@@ -730,8 +753,7 @@ if (!file.exists('models/meta_mod_control_acc_full.rds')) {
     V      = vi,
     random = list(~1|id_record/id_study/id_control, 
                   ~1|event_materials),
-    mods   = ~ total_accuracy_control_mean +
-      I(total_accuracy_control_mean^2),
+    mods   = ~ total_accuracy_control_mean + I(total_accuracy_control_mean^2),
     data   = data_es,
     method = 'REML'
   )

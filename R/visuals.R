@@ -8,8 +8,9 @@
 
 library(tidyverse)
 library(igraph)
-theme_set(jtools::theme_apa())
+theme_set(jtools::theme_apa)
 hue <- 'tomato'
+
 
 # Load data --------------------------------------------------------------------
 
@@ -48,6 +49,24 @@ data <- data[-c(1,2)]
 # Visuals-----------------------------------------------------------------------
 
 
+## Test Type--------------------------------------------------------------------
+
+data %>% 
+  filter(test_type == 'recognition'   | test_type == 'cued_recall' |
+         test_type == 'modified_test' | test_type == 'free_recall' |
+         test_type == 'source_monitoring') %>% 
+  ggplot(aes(y = yi, x = test_type))+
+  geom_point(alpha = .4, width = .1)+
+  geom_boxplot(width = .2, outlier.shape = NA)+
+  geom_violin(alpha = .3)+
+  ylim(-5,10)+
+  scale_y_continuous(breaks = seq(-3,10,1),
+                     limits = c(-3,10), name = 'Hedge´s G')+
+  scale_x_discrete(labels = c('Cued Recall','Free Recall','Modified Test', 
+                              'Recognition', 'Source Monitoring'), 
+                   name = NULL)
+
+
 ##Publication year--------------------------------------------------------------
 
 # Number of studies published 
@@ -69,6 +88,7 @@ data %>%
   scale_y_continuous(breaks = seq(-3,5, .5), limits = c(-3,5))+
   ylab(label = 'Hedge´s G')+
   xlab(label = 'Publication Year')
+ggsave('visuals/pub_year_boxplot.png',dpi=300)
 
 ## Post-event recall------------------------------------------------------------
 
@@ -78,6 +98,7 @@ data %>% filter(!is.na(postevent_recall)) %>%
   geom_boxplot(alpha = .5, col = hue, outlier.shape = NA)+
   ylab(label = 'Hedge´s G')+
   xlab(label = 'Number of Post-event recall tests')
+ggsave('visuals/post_ev_recall.png',dpi=300)
 
 ## Age--------------------------------------------------------------------------
 
@@ -92,6 +113,7 @@ data%>%
                      name = 'Mean Age')+
   scale_y_continuous(breaks=(seq(-3, 10, 1)), limits = c(-3, 10))+
   ylab(label = 'Hedge´s G')
+ggsave('visuals/age_linear.png',dpi=300)
 
 data %>% 
   mutate(quad_age = age_mean^2) %>%
@@ -147,12 +169,14 @@ data %>%
                  x   = postexposure_retention_interval/24),
                  col = 'black')+
   geom_jitter(aes(y  = yi, 
-                 x   = postevent_retention_interval/24),
-                 col = hue)+
+                  x  = postevent_retention_interval/24),
+                 col = hue,
+               alpha = .2)+
   scale_x_continuous(name = 'Retention intervals in days',
                      breaks = seq(0, 375, 30))+
   ylab( label = 'Hedge`s G')+
   theme_classic()
+ggsave('visuals/retention_interval.png',dpi=300)
 
 # Retenton intervals
 data %>% 
@@ -267,7 +291,7 @@ data %>%
 data %>% 
   filter(yi < 5.3) %>% 
   ggplot(aes(x = total_accuracy_control_mean, y = yi))+
-  geom_point()+
+  geom_point(alpha = .5, shape = 1)+
   geom_smooth(method = "lm",
               se = F,
               col = hue) +
@@ -276,7 +300,9 @@ data %>%
               se = F,
               col = hue) +
   xlab(label = 'Control Accuracy')+
-  ylab('Hedges´g')
+  scale_y_continuous(breaks=(seq(-3, 5, 1)), limits = c(-3, 5),
+                     name = 'Hedge´s G')
+ggsave('visuals/control_accuracy.png',dpi=300)
 
 # Control accuracy proportion
 data %>% 
@@ -349,6 +375,7 @@ fp <- ggplot(aes(x  = se, y = yi), data = se_vec) +
   xlab('Standard Error') + ylab('Hedge´s G')
 
 fp
+ggsave('visuals/funnel_large.png', dpi = 300)
 
 
 # Adding pet-peese lines
@@ -378,6 +405,7 @@ fp_2 <- ggplot(aes(x  = se, y = yi), data = filter(se_vec, yi < 5.3)) +
   xlab('Standard Error') + ylab('Hedge´s G')
 
 fp_2
+ggsave('visuals/funnel_small.png', dpi = 300)
 
 # Adding pet-peese lines
 fp_2 + geom_smooth(method = "lm",
