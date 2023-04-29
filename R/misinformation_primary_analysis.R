@@ -1003,8 +1003,6 @@ summary(meta_mod_control_prop_full)
 
 # Post-event warnings
 
-
-
 if (!file.exists('models/meta_mod_postev_warn.rds')) {
   
   meta_mod_postev_warn <- rma.mv(
