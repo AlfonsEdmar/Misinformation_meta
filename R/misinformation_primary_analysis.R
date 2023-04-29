@@ -248,7 +248,7 @@ if (!file.exists('data/cooks_dist_data.csv')) {
 } else {
   
   data_cooks <- read.csv('data/cooks_dist_data.csv')
-  data_es    <- data.frame(data_es, data_cooks$cooks_dist)
+  data_es    <- data.frame(data_es, cooks_dist = data_cooks$cooks_dist)
   
 }
 
@@ -289,8 +289,7 @@ filter(data_es, outliers == 0)
 
 funnel(meta_primary_2, label = T)
 funnel(meta_primary_outlier, label = F)
-outlier_2 <- data_es %>% filter(yi > 5)
-
+extreme_cases <- data_es %>% filter(yi > 5)
 outlier_2 <- ifelse(data_es$yi >= 5.3, 1, 0)
 
 es_data_outlier_2 <- data_es %>% 
@@ -318,6 +317,65 @@ I2_mv(meta_primary_outlier_2, es_data_outlier_2)
 
 funnel(meta_primary_outlier_2)
 
+# Fitting the model on the data without imputed variances. 
+
+raw_data <- read_csv("data/misinformation_data_cleaned.csv")
+
+prop_data_raw <- raw_data %>%
+  filter(is.na(total_accuracy_control_mean))
+
+mean_data_raw <- raw_data %>%
+  filter(is.na(total_accuracy_control_prop))
+
+
+# Calculating log odds ratio
+
+es_prop_raw <- escalc(data    = prop_data_raw,
+                      ci      = total_accuracy_mi_prop * n_mi,
+                      di      = (1 - total_accuracy_mi_prop) * n_mi,
+                      ai      = total_accuracy_control_prop * n_control,
+                      bi      = (1 - total_accuracy_control_prop) * n_control,
+                      measure = 'OR')
+
+# Transforming log odds to standardized mean difference
+
+es_prop_raw <- es_prop_raw %>% 
+  mutate(yi = yi * (sqrt(3)/pi),
+         vi = vi * (3/(pi^2)))
+
+# Calculating Hedges's g (standardized mean difference)
+
+es_mean_raw <- escalc(data    = mean_data_raw,
+                      m1i     = total_accuracy_control_mean,
+                      m2i     = total_accuracy_mi_mean,
+                      sd1i    = total_accuracy_control_sd,
+                      sd2i    = total_accuracy_mi_sd,
+                      n1i     = n_control,
+                      n2i     = n_mi,
+                      measure = 'SMD')
+
+data_es_raw <- rbind(es_mean_raw, es_prop_raw)
+
+if (!file.exists('models/meta_primary_raw.rds')) {
+  meta_primary_raw <- rma.mv(
+    yi       = yi,
+    V        = vi,
+    random   = list(~1|id_record/id_study/id_control, 
+                    ~1|event_materials),
+    data     = data_es_raw,
+    method   = 'REML'
+  )
+  
+  saveRDS(meta_primary_raw,'models/meta_primary_raw.rds')
+} else {
+  
+  meta_primary_raw <- readRDS('models/meta_primary_raw.rds')
+  
+}
+summary(meta_primary_raw)
+funnel(meta_primary_raw)
+#Note. the two very large effects come from have very small imputed variances
+
 # Moderator analysis -----------------------------------------------------------
 
 # Test type
@@ -331,7 +389,7 @@ if (!file.exists('models/meta_mod_test_type.rds')) {
                   ~1|event_materials),
     mods   = ~ as.factor(test_type) - 1,
     data   = data_es,
-    method   = 'REML'
+    method = 'REML'
   )
   
  
@@ -373,6 +431,55 @@ if (!file.exists('models/meta_mod_postev_test.rds')) {
   meta_mod_postev_test <- readRDS('models/meta_mod_postev_test.rds')
   
 }
+
+# Limiting the scope to testing studies
+
+postev_test_studies <- data_es %>% 
+  filter(postevent_recall > 0) %>% 
+  select(id_record)
+postev_test_studies <- as.vector(postev_test_studies$id_record)
+postev_test_studies <- unique(postev_test_studies)
+noquote(paste(postev_test_studies, collapse = '| id_record == '))
+postev_test_studies <- data_es %>% 
+  filter(id_record == 006| id_record == 011| id_record == 022| id_record == 026|
+           id_record == 068| id_record == 085| id_record == 119| id_record == 137|
+           id_record == 021| id_record == 023| id_record == 034| id_record == 035| 
+           id_record == 036| id_record == 037| id_record == 042| id_record == 053|
+           id_record == 054| id_record == 055| id_record == 056| id_record == 057| 
+           id_record == 069| id_record == 091| id_record == 096| id_record == 102| 
+           id_record == 118| id_record == 121| id_record == 123| id_record == 131| 
+           id_record == 132| id_record == 133| id_record == 136| id_record == 144| 
+           id_record == 151| id_record == 174| id_record == 181| id_record == 190| 
+           id_record == 195| id_record == 203| id_record == 204| id_record == 205| 
+           id_record == 206| id_record == 207| id_record == 208| id_record == 209| 
+           id_record == 212| id_record == 213| id_record == 218| id_record == 223| 
+           id_record == 224| id_record == 238| id_record == 241| id_record == 247| 
+           id_record == 253| id_record == 262| id_record == 263| id_record == 264| 
+           id_record == 261)
+
+
+if (!file.exists('models/meta_mod_postev_test_2.rds')) {
+  
+  meta_mod_postev_test_2 <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ postevent_recall,
+    data   = postev_test_studies,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postev_test_2,'models/meta_mod_postev_test_2.rds')
+  
+} else {
+  
+  meta_mod_postev_test_2 <- readRDS('models/meta_mod_postev_test_2.rds')
+  
+}
+
+summary(meta_mod_postev_test_2)
+
 
 # Age
 if (!file.exists('models/meta_mod_age.rds')) {
@@ -604,6 +711,8 @@ if (!file.exists('models/meta_mod_gender.rds')) {
   
 }
 
+summary(meta_mod_gender)
+
 # Post-exposure warnings
 
 if (!file.exists('models/meta_mod_postex_warn.rds')) {
@@ -625,6 +734,41 @@ if (!file.exists('models/meta_mod_postex_warn.rds')) {
   meta_mod_postex_warn <- readRDS('models/meta_mod_postex_warn.rds')
   
 }
+
+# Limiting scope to only warning studies
+
+postex_warn_studies <- data_es %>% 
+  filter(postexposure_warning > 0 & !duplicated(id_record)) %>% 
+  select(id_record)
+postex_warn_studies <- postex_warn_studies$id_record
+noquote(paste(postex_warn_studies, collapse = '| id_record == '))
+postex_warn_studies <- data_es %>%
+  filter(id_record == 001| id_record == 019| id_record == 089| id_record == 119| 
+           id_record == 148| id_record == 012| id_record == 066| id_record == 067|
+           id_record == 093| id_record == 098| id_record == 107| id_record == 121|
+           id_record == 127| id_record == 173| id_record == 196)
+
+if (!file.exists('models/meta_mod_postex_warn_2.rds')) {
+  
+  meta_mod_postex_warn_2 <- rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ postexposure_warning,
+    data   = postex_warn_studies,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postex_warn_2,'models/meta_mod_postex_warn_2.rds')
+  
+} else {
+  
+  meta_mod_postex_warn_2 <- readRDS('models/meta_mod_postex_warn_2.rds')
+  
+}
+
+summary(meta_mod_postex_warn_2)
 
 
 # Publication year
@@ -856,4 +1000,65 @@ if (!file.exists('models/meta_mod_control_prop_full.rds')) {
   
 }
 summary(meta_mod_control_prop_full)
+
+# Post-event warnings
+
+
+
+if (!file.exists('models/meta_mod_postev_warn.rds')) {
+  
+  meta_mod_postev_warn <- rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ postevent_warning,
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postev_warn,'models/meta_mod_postev_warn.rds')
+  
+} else {
+  
+  meta_mod_postev_warn <- readRDS('models/meta_mod_postev_warn.rds')
+  
+}
+summary(meta_mod_postev_warn)
+
+# Limiting scope to only warning studies
+
+postev_warn_studies <- data_es %>% 
+  filter(postevent_warning > 0) %>% 
+  select(id_record)
+postev_warn_studies <- as.vector(postev_warn_studies$id_record)
+postev_warn_studies <- unique(postev_warn_studies)
+noquote(paste(postev_warn_studies, collapse = '| id_record == '))
+postev_warn_studies <- data_es %>% 
+  filter(id_record == 074| id_record == 172| id_record == 069| id_record == 157|
+           id_record == 160| id_record == 264| id_record == 232)
+
+
+if (!file.exists('models/meta_mod_postev_warn_2.rds')) {
+  
+  meta_mod_postev_warn_2 <- rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ postevent_warning,
+    data   = postev_warn_studies,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postev_warn_2,'models/meta_mod_postev_warn_2.rds')
+  
+} else {
+  
+  meta_mod_postev_warn_2 <- readRDS('models/meta_mod_postev_warn_2.rds')
+  
+}
+
+summary(meta_mod_postev_warn_2)
+
 
