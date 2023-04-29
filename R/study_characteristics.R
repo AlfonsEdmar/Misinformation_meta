@@ -200,6 +200,6 @@ open_material <- df %>%
   group_by(open_materials) %>%
   summarise(n_number = n_distinct(id_study))
 open_material
-18/401
+
 
 

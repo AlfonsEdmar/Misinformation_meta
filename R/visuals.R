@@ -8,8 +8,10 @@
 
 library(tidyverse)
 library(igraph)
-theme_set(jtools::theme_apa)
-hue <- 'tomato'
+theme_set(theme_classic())
+hue   <- 'tomato'
+hue_2 <- 'deepskyblue'
+
 
 
 # Load data --------------------------------------------------------------------
@@ -61,7 +63,7 @@ data %>%
   geom_violin(alpha = .3)+
   ylim(-5,10)+
   scale_y_continuous(breaks = seq(-3,10,1),
-                     limits = c(-3,10), name = 'Hedge´s G')+
+                     limits = c(-3,10), name = 'Hedges g')+
   scale_x_discrete(labels = c('Cued Recall','Free Recall','Modified Test', 
                               'Recognition', 'Source Monitoring'), 
                    name = NULL)
@@ -85,8 +87,8 @@ data %>%
   ggplot()+
   geom_boxplot(aes(y = yi, x = as.factor(publication_year)))+
   scale_x_discrete(breaks = seq(1975, 2022, 5))+
-  scale_y_continuous(breaks = seq(-3,5, .5), limits = c(-3,5))+
-  ylab(label = 'Hedge´s G')+
+  scale_y_continuous(breaks = seq(-3,5, 1), limits = c(-3,5))+
+  ylab(label = 'Hedges g')+
   xlab(label = 'Publication Year')
 ggsave('visuals/pub_year_boxplot.png',dpi=300)
 
@@ -94,25 +96,28 @@ ggsave('visuals/pub_year_boxplot.png',dpi=300)
 
 data %>% filter(!is.na(postevent_recall)) %>% 
   ggplot(aes(y = yi, x = as.factor(postevent_recall)))+
-  geom_jitter(alpha = .5, width = .2)+
+  geom_jitter(alpha = .5, width = .2, size = .5)+
   geom_boxplot(alpha = .5, col = hue, outlier.shape = NA)+
-  ylab(label = 'Hedge´s G')+
-  xlab(label = 'Number of Post-event recall tests')
+  scale_y_continuous(breaks = seq(-3,10,2), name = 'Hedges g',
+                     limits = c(-3,10))+
+  xlab(label = 'Number of Post-event recall tests')+
+  geom_hline(yintercept = 0, linetype = 1, size = .5,
+             col = 'black', alpha = .5)
 ggsave('visuals/post_ev_recall.png',dpi=300)
 
 ## Age--------------------------------------------------------------------------
 
 data%>% 
   ggplot(aes(x = as.numeric(age_mean), y = yi))+
-  geom_point(alpha = .5)+
+  geom_point(alpha = .5, size = .5)+
   geom_smooth(col = hue)+
   theme_classic()+
   scale_x_continuous(breaks = seq(from = 0, 
                                   to   = 80,
                                   by   = 10),
                      name = 'Mean Age')+
-  scale_y_continuous(breaks=(seq(-3, 10, 1)), limits = c(-3, 10))+
-  ylab(label = 'Hedge´s G')
+  scale_y_continuous(breaks=(seq(-3, 10, 2)), limits = c(-3, 10))+
+  ylab(label = 'Hedges g')
 ggsave('visuals/age_linear.png',dpi=300)
 
 data %>% 
@@ -126,7 +131,7 @@ data %>%
                                   to   = 10,
                                   by   = 1))+
   ylim(-5, 10)+
-  ylab(label = 'Hedge´s G')
+  ylab(label = 'Hedges g')
 
 # Control accuracy and age
 data%>% 
@@ -154,9 +159,52 @@ data%>%
 ## Retention interval-----------------------------------------------------------
 
 data %>%
-  ggplot(aes(y = yi, x = postevent_retention_interval))+
-  geom_point()+
-  geom_smooth()
+  ggplot(aes(y = yi, x = postevent_retention_interval/24))+
+  geom_point(alpha = .5, size = .5)+
+  geom_smooth(method = "lm",
+              se = F,
+              col = hue) +
+  geom_smooth(method = "lm",
+              formula = y ~ poly(x, 2), 
+              se = F,
+              col = hue_2) +
+  scale_y_continuous(limits = c(-3,10), name = 'Hedges g', 
+                     breaks = seq(-3,10,1))+
+  scale_x_continuous(breaks = seq(0,385, 28), name = NULL)+
+  geom_hline(yintercept = 0, linetype = 1, size = .5,
+             col = 'black', alpha = .5)
+ggsave('visuals/ev_retention_interval.png',dpi=300)
+
+data %>%
+  ggplot(aes(y = yi, x = postexposure_retention_interval/24))+
+  geom_point(alpha = .5, size = .5)+
+  geom_smooth(method = "lm",
+              se = F,
+              col = hue) +
+  geom_smooth(method = "lm",
+              formula = y ~ poly(x, 2), 
+              se = F,
+              col = hue_2) +
+  scale_y_continuous(limits = c(-3,10), name = 'Hedges g', 
+                     breaks = seq(-3,10,1))+
+  scale_x_continuous(breaks = seq(0,385, 28), name = NULL)+
+  geom_hline(yintercept = 0, linetype = 1, size = .5,
+             col = 'black', alpha = .5)
+ggsave('visuals/ex_retention_interval.png',dpi=300)
+
+data %>%
+  ggplot(aes(y = yi, x = postexposure_retention_interval))+
+  geom_point(alpha = .5)+
+  geom_smooth(method = "lm",
+              se = F,
+              col = hue) +
+  geom_smooth(method = "lm",
+              formula = y ~ poly(x, 2), 
+              se = F,
+              col = hue_2) +
+  scale_y_continuous(limits = c(-3,10), name = 'Hedges g', 
+                     breaks = seq(-3,10,1))
+
 
 data %>%
   ggplot(aes(y = yi, x = postexposure_retention_interval))+
@@ -174,7 +222,7 @@ data %>%
                alpha = .2)+
   scale_x_continuous(name = 'Retention intervals in days',
                      breaks = seq(0, 375, 30))+
-  ylab( label = 'Hedge`s G')+
+  ylab( label = 'Hedges g')+
   theme_classic()
 ggsave('visuals/retention_interval.png',dpi=300)
 
@@ -192,7 +240,7 @@ data %>%
               size = 2)+
   scale_x_continuous(name = 'Retention intervals in days',
                      breaks = seq(0, 375, 30))+
-  ylab( label = 'Hedge`s G')
+  ylab( label = 'Hedges g')
 
 
 data %>%
@@ -285,24 +333,26 @@ data %>%
   geom_point(aes(x = total_accuracy_control_mean, y = yi)
              , alpha = .2)+
   xlab(label = 'Control Accuracy')+
-  ylab('Hedges´g')
+  ylab('Hedges g')
 
 # Control accuracy mean
 data %>% 
-  filter(yi < 5.3) %>% 
   ggplot(aes(x = total_accuracy_control_mean, y = yi))+
-  geom_point(alpha = .5, shape = 1)+
+  geom_point(alpha = .5, shape = 1, size = .5)+
   geom_smooth(method = "lm",
               se = F,
               col = hue) +
   geom_smooth(method = "lm",
               formula = y ~ poly(x, 2), 
               se = F,
-              col = hue) +
+              col = hue_2) +
   xlab(label = 'Control Accuracy')+
   scale_y_continuous(breaks=(seq(-3, 5, 1)), limits = c(-3, 5),
-                     name = 'Hedge´s G')
+                     name = 'Hedges g')+
+  geom_hline(yintercept = 0, linetype = 1, size = 1,
+             col = 'black', alpha = .5)
 ggsave('visuals/control_accuracy.png',dpi=300)
+
 
 # Control accuracy proportion
 data %>% 
@@ -372,7 +422,7 @@ fp <- ggplot(aes(x  = se, y = yi), data = se_vec) +
   scale_x_reverse()+
   scale_y_continuous(breaks=seq(-3, 20, 1))+
   coord_flip()+
-  xlab('Standard Error') + ylab('Hedge´s G')
+  xlab('Standard Error') + ylab('Hedges g')
 
 fp
 ggsave('visuals/funnel_large.png', dpi = 300)
@@ -387,7 +437,7 @@ fp + geom_smooth(method = "lm",
                  se = F,
                  col = hue) 
 
-#Scaling the graph for easy of view
+# Truncating the graph for easy of view
 fp_2 <- ggplot(aes(x  = se, y = yi), data = filter(se_vec, yi < 5.3)) +
   geom_point(alpha = .2, size  = 2) +
   geom_line(aes(x  = se.seq, y = ll95), linetype = 'dotted', data = df_ci) +
@@ -402,10 +452,12 @@ fp_2 <- ggplot(aes(x  = se, y = yi), data = filter(se_vec, yi < 5.3)) +
   scale_x_reverse()+
   scale_y_continuous(breaks=seq(-3, 5, 1))+
   coord_flip()+
-  xlab('Standard Error') + ylab('Hedge´s G')
+  xlab('Standard Error') + ylab('Hedges g')
 
 fp_2
 ggsave('visuals/funnel_small.png', dpi = 300)
+
+
 
 # Adding pet-peese lines
 fp_2 + geom_smooth(method = "lm",
@@ -449,6 +501,8 @@ collab_matrix <- collab_counts %>%
   pivot_wider(names_from = author2, values_from = count, values_fill = 0) %>%
   column_to_rownames("author1") %>%
   as.matrix()
+
+collab_matrix
 
 collab_graph <- graph.adjacency(collab_matrix, weighted = TRUE, mode = "undirected")
 
