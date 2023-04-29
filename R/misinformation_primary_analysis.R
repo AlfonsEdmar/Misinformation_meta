@@ -431,6 +431,7 @@ if (!file.exists('models/meta_mod_postev_test.rds')) {
   meta_mod_postev_test <- readRDS('models/meta_mod_postev_test.rds')
   
 }
+summary(meta_mod_postev_test)
 
 # Limiting the scope to testing studies
 
@@ -479,6 +480,30 @@ if (!file.exists('models/meta_mod_postev_test_2.rds')) {
 }
 
 summary(meta_mod_postev_test_2)
+
+if (!file.exists('models/meta_mod_postev_test_3.rds')) {
+  
+  meta_mod_postev_test_3 <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ postevent_recall,
+    data   = filter(postev_test_studies, postevent_recall <=1),
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postev_test_3,'models/meta_mod_postev_test_3.rds')
+  
+} else {
+  
+  meta_mod_postev_test_3 <- readRDS('models/meta_mod_postev_test_3.rds')
+  
+}
+
+summary(meta_mod_postev_test_3)
+
+
 
 
 # Age
@@ -734,6 +759,7 @@ if (!file.exists('models/meta_mod_postex_warn.rds')) {
   meta_mod_postex_warn <- readRDS('models/meta_mod_postex_warn.rds')
   
 }
+summary(meta_mod_postex_warn)
 
 # Limiting scope to only warning studies
 
@@ -769,7 +795,6 @@ if (!file.exists('models/meta_mod_postex_warn_2.rds')) {
 }
 
 summary(meta_mod_postex_warn_2)
-
 
 # Publication year
 
@@ -1002,8 +1027,6 @@ if (!file.exists('models/meta_mod_control_prop_full.rds')) {
 summary(meta_mod_control_prop_full)
 
 # Post-event warnings
-
-
 
 if (!file.exists('models/meta_mod_postev_warn.rds')) {
   

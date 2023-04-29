@@ -177,13 +177,29 @@ materials
 bet <- data %>% filter(within_between == 'between')
 wit <- data %>% filter(within_between == 'within')
 
-494 + 891
+# Open-science practices--------------------------------------------------------
 
-891/1385
+open_data <- df %>% 
+  group_by(open_data) %>%
+  summarise(n_number = n_distinct(id_study))
+open_data
+
+open_data_c <- df %>% 
+  group_by(open_data_claimed) %>%
+  summarise(n_number = n_distinct(id_study))
+open_data_c
 
 
+pre_reg <- df %>% 
+  group_by(preregistered) %>%
+  summarise(n_number = n_distinct(id_study))
+pre_reg
 
 
-
+open_material <- df %>% 
+  group_by(open_materials) %>%
+  summarise(n_number = n_distinct(id_study))
+open_material
+18/401
 
 
