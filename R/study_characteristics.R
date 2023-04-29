@@ -1,57 +1,35 @@
-library(tidyverse)
-library(flextable)
+################################################################################
 
+# Misinformation Meta-analysis - visuals
+
+################################################################################
+
+# Load packages ----------------------------------------------------------------
+
+library(tidyverse)
+
+
+# Load data --------------------------------------------------------------------
 
 df <- read_csv("data/complete_data_cleaned.csv")
 
-# Population and age table 
-summary_population<- df %>%
-  select(n_total, population, age_mean) %>% 
-  group_by(as.factor(population)) %>%
-  summarise(total_sample = sum(n_total),
-            mean_sample = mean(n_total),
-            sd_sample = sd(n_total)) 
 
-summary_age <- df %>%
-  select(age_mean, population) %>% 
-  group_by(as.factor(population)) %>% 
-  filter(complete.cases(age_mean) == T)%>% 
-  summarise(mean_age = (mean(age_mean)),
-            sd_age = sd(age_mean))
+# Country and number of studies------------------------------------------------- 
 
-summary_population <- cbind(summary_age, summary_population)[-c(4)]
-summary_population[,2:6] <- round(summary_population[,2:6], 3)
-ft_pop <- flextable(summary_population)
-
-# Add formatting to the table
-ft_pop <- ft_pop %>%
-  width(j = 1:4, width = 1.3) %>%
-  height(height = 0.5, part = "header") %>%
-  bold(part = "header") %>%
-  align(align = "center", part = "all")
-
-print(ft_pop)
-
-# country and number of studies 
-
-summary_country <- chr %>% 
+summary_country <- df %>% 
   select(n_total, country, id_record) %>% 
   group_by(country) %>%
   summarise(number_of_studies = n_distinct(id_record)) %>% 
   arrange(number_of_studies)
 
-ft_country <- flextable(summary_country)
-print(ft_country)
-
-
-#Items total 
+#Items total--------------------------------------------------------------------
 total_items <- df %>% 
   summarise(mean      = mean(items_total, na.rm = T),
             median    = median(items_total, na.rm = T),
             sd        = sd(items_total, na.rm = T),
             n_number  = n_distinct(items_total, na.rm = T))
 
-#Postevent retention intervall 
+#Postevent retention interval---------------------------------------------------
 postev_ret <- df %>% 
   filter(postevent_retention_interval >= 1) %>% 
   summarise(mean      = mean(postevent_retention_interval, na.rm = T),
@@ -63,7 +41,7 @@ postev_ret <- df %>%
 postev_ret
 
 
-#Postexposure retention interval 
+#Postexposure retention interval------------------------------------------------
 postex_ret <- df %>% 
   filter(postexposure_retention_interval >= 1) %>% 
   summarise(mean      = mean(postexposure_retention_interval, na.rm = T),
@@ -75,14 +53,14 @@ postex_ret <- df %>%
 postex_ret
 
 
-# female prop
+# female prop-------------------------------------------------------------------
 gender_prop <- df %>% 
   summarise(mean      = mean(gender_female_prop, na.rm = T),
             median    = median(items_control, na.rm = T),
             sd_co     = sd(items_control, na.rm = T),
             n_number  = n_distinct(items_control, na.rm = T))
 
-# Age Categories 
+# Age Categories----------------------------------------------------------------
 age_cat_preschool <- df %>% 
   filter(age_mean <= 5) %>% 
   summarise(mean      = mean(age_mean, na.rm = T),
@@ -123,32 +101,32 @@ age_cat_aged <- df %>%
             n_number  = n_distinct(id_study))
 age_cat_aged
 
-# total number of experiments 
+# total number of experiments---------------------------------------------------
 n_experiments <- df %>% 
   summarise(n = n_distinct(id_study))
 n_experiments
 
-# total number of studies
+# total number of studies-------------------------------------------------------
 n_records <- df %>% 
   summarise(n = n_distinct(id_record))
 n_records
 
-# total number of effects
+# total number of effects-------------------------------------------------------
 n_effects <- NROW(df)
 
-# Control Item type
+# Control Item type-------------------------------------------------------------
 control_type <- df %>% 
   group_by(control_type) %>%
   summarise(n_number = n_distinct(id_record))
 control_type
 
-# n number of proportion designs 
+# n number of proportion designs------------------------------------------------
 df %>% 
   filter(!is.na(accuracy_control_prop)) %>% 
   NROW()
 
 
-#Items control 
+#Items control------------------------------------------------------------------
 control_items <- df %>% 
   filter(is.na(accuracy_control_prop)) %>% 
   summarise(mean_co   = mean(items_control, na.rm = T),
@@ -157,7 +135,7 @@ control_items <- df %>%
             n_number  = n_distinct(items_control, na.rm = T))
 control_items
 
-#Items misled 
+#Items misled-------------------------------------------------------------------
 misled_items <- df %>% 
   filter(is.na(accuracy_control_prop)) %>% 
   summarise(mean      = mean(items_misled, na.rm = T),
@@ -166,7 +144,7 @@ misled_items <- df %>%
             n_number  = n_distinct(items_misled, na.rm = T))
 misled_items
 
-#number of initial test studies  
+#number of initial test studies------------------------------------------------- 
 RES_design <- df %>% 
   filter(postevent_recall >= 1) %>% 
   summarise(n_number  = n_distinct(id_study, na.rm = T),
@@ -176,7 +154,7 @@ RES_design <- df %>%
             max       = max(postevent_recall))
 RES_design  
 
-#number of post-exposure test studies  
+#number of post-exposure test studies------------------------------------------- 
 postex_test <- df %>% 
   filter(postexposure_recall >= 1) %>% 
   summarise(n_number  = n_distinct(id_study, na.rm = T),
@@ -186,10 +164,22 @@ postex_test <- df %>%
             max       = max(postexposure_recall))
 postex_test
 
+# Materials---------------------------------------------------------------------
+materials <- df %>% 
+  group_by(event_materials) %>%
+  summarise(n_number = n_distinct(id_study))
+materials
 
 
 
+# Within/between----------------------------------------------------------------
 
+bet <- data %>% filter(within_between == 'between')
+wit <- data %>% filter(within_between == 'within')
+
+494 + 891
+
+891/1385
 
 
 
