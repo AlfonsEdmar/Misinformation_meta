@@ -368,7 +368,25 @@ data %>%
               col = hue) +
   xlab(label = 'Control Accuracy')+
   ylab('Hedges´g')
-  
+
+
+# Control type
+data_es %>% 
+  ggplot(aes(x = control_type, y = yi))+
+  geom_jitter()+
+  geom_violin(alpha = .5)+
+  geom_boxplot(width = .2, outlier.shape = NA)+
+  scale_y_continuous(limits = c(-3,5))+
+  xlab(label = 'Control Accuracy')+
+  ylab('Hedges´g')
+
+
+data_es %>% 
+  ggplot(aes(y = vi, x = yi))+
+  geom_jitter(aes(col = control_type))+
+  scale_y_continuous(limits = c(0, 1.5))+
+  scale_x_continuous(limits = c(0,5))+
+  xlab('Hedges´g')
 
 
  # Funnel plots------------------------------------------------------------------

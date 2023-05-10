@@ -17,10 +17,10 @@ df <- read_csv("data/complete_data_cleaned.csv")
 # Country and number of studies------------------------------------------------- 
 
 summary_country <- df %>% 
-  select(n_total, country, id_record) %>% 
   group_by(country) %>%
-  summarise(number_of_studies = n_distinct(id_record)) %>% 
-  arrange(number_of_studies)
+  summarise(number_of_studies = n_distinct(id_study)) %>% 
+  arrange(desc(number_of_studies))
+summary_country
 
 #Items total--------------------------------------------------------------------
 total_items <- df %>% 
@@ -117,8 +117,10 @@ n_effects <- NROW(df)
 # Control Item type-------------------------------------------------------------
 control_type <- df %>% 
   group_by(control_type) %>%
-  summarise(n_number = n_distinct(id_record))
+  summarise(n_number = n_distinct(id_study))
 control_type
+
+
 
 # n number of proportion designs------------------------------------------------
 df %>% 
@@ -168,10 +170,34 @@ postex_test
 materials <- df %>% 
   group_by(event_materials) %>%
   summarise(n_number = n_distinct(id_study))
-materials
+
+materials %>% 
+  filter(n_number < 8) %>% 
+  summarise(n = sum(n_number))
+
+# Event Medium------------------------------------------------------------------
+event_medium <- df %>% 
+  group_by(event_medium) %>%
+  summarise(n_number = n_distinct(id_study))
+
+sum(event_medium$n_number)
+
+# Post event imformation--------------------------------------------------------
+
+PEI <- df %>% 
+  group_by(exposure_method) %>%
+  summarise(n_number = n_distinct(id_study))
+PEI
+
+# Post event information--------------------------------------------------------
+
+test_type <- df %>% 
+  group_by(test_type) %>%
+  summarise(n_number = n_distinct(id_study))
+test_type
 
 
-
+  
 # Within/between----------------------------------------------------------------
 
 bet <- data %>% filter(within_between == 'between')
