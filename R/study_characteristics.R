@@ -117,7 +117,8 @@ n_effects <- NROW(df)
 # Control Item type-------------------------------------------------------------
 control_type <- df %>% 
   group_by(control_type) %>%
-  summarise(n_number = n_distinct(id_study))
+  summarise(n_number = n_distinct(id_study),
+            k        = NROW(control_type))
 control_type
 
 
@@ -188,6 +189,12 @@ PEI <- df %>%
   group_by(exposure_method) %>%
   summarise(n_number = n_distinct(id_study))
 PEI
+
+pei <- PEI %>% 
+  group_by(exposure_method) %>% 
+  filter(n_number < 4) 
+sum(pei$n)
+  
 
 # Post event information--------------------------------------------------------
 

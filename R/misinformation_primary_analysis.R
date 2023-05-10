@@ -752,6 +752,48 @@ if (!file.exists('models/meta_mod_postex_ret.rds')) {
 
 summary(meta_mod_postex_ret)
 
+
+# Quadradic transformation
+
+if (!file.exists('models/meta_mod_postex_ret_quad.rds')) {
+  
+  meta_mod_postex_ret_quad <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ I((postexposure_retention_interval/24)^2),
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_postex_ret_quad,'models/meta_mod_postex_ret_quad.rds')
+  
+} else {
+  
+  meta_mod_postex_ret_quad <- readRDS('models/meta_mod_postex_ret_quad.rds')
+  
+}
+
+summary(meta_mod_postex_ret_quad)
+
+
+# Comparing quadradic and linear
+meta_mod_postex_ret_quad_2 <-  rma.mv(
+  yi     = yi, 
+  V      = vi,
+  random = list(~1|id_record/id_study/id_control, 
+                ~1|event_materials),
+  mods   = ~ I((postexposure_retention_interval/24)^2) + 
+    I( postexposure_retention_interval/24),
+  data   = data_es,
+  method = 'REML'
+)
+
+summary(meta_mod_postex_ret_quad_2)
+
+# Constraining the interval
+
 if (!file.exists('models/meta_mod_postex_ret_2.rds')) {
   
   meta_mod_postex_ret_2 <-  rma.mv(
@@ -1186,13 +1228,62 @@ summary(meta_mod_control_type_2)
 # P-value analysis--------------------------------------------------------------
 
 data_es$p_val <- 2*pt(-abs(data_es$yi/sqrt(data_es$vi)), df = Inf)
+median(data_es$p_val)
+mean(data_es$p_val)
 
 data_es %>% 
   ggplot()+
-  geom_histogram(aes(p_val))+
-  xlim(0,.1)
+  geom_histogram(aes(p_val), col = 'white', bins = 80)+
+  xlim(0,1)+
+  xlab(label = 'P-values')+
+  ylim(0,100)+
+  ylab(label = 'Count')+
+  geom_vline(xintercept = .05, linetype = 'dashed')
+ggsave('visuals/p_hist.png', dpi = 300)
 
-df <- data.frame(TE = data_es$yi, seTE = sqrt(data_es$vi),
-                 studlab = data_es$author)
-pcurve <- dmetar::pcurve(df)
+data_es %>% 
+  filter(p_val <= .1) %>% 
+  ggplot()+
+  geom_histogram(aes(p_val), col = 'white', bins = 80)+
+  xlim(0,.1)+
+  xlab(label = 'P-values')+
+  ylim(0,80)+
+  ylab(label = 'Count')+
+  geom_vline(xintercept = .05, linetype = 'dashed')
+ggsave('visuals/p_hist_trunc.png', dpi = 300)
+
+# Number of significant effects
+data_es %>% 
+  filter(p_val <= .05) %>% 
+  summarise(n = NROW(p_val))
+
+
+sim <- data.frame("studlab" = data_es$authors,
+                 "TE" = data_es$yi,
+                 "seTE" = sqrt(data_es$vi))
+
+
+if (!file.exists('models/meta_mod_co_type.rds')) {
+  
+  sim <- data.frame("studlab" = data_es$authors,
+                    "TE" = data_es$yi,
+                    "seTE" = sqrt(data_es$vi))
+  p_curve <- dmetar::pcurve(sim)
+  
+  saveRDS(p_curve,'models/p_curve.rds')
+  
+} else {
+  
+  p_curve <- readRDS('models/p_curve.rds')
+  
+}
+
+p_curve
+
+d <- (rexp(n = 1385, rate = 11))
+ggplot()+
+  geom_density(aes(d), col = 'red')+
+  geom_density(aes(data_es$p_val))
+
+
 
