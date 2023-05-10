@@ -73,7 +73,6 @@ es_mean <- escalc(data    = mean_data,
                   measure = 'SMD')
 
 data_es <- rbind(es_mean, es_prop)
-write_csv2(data_es, 'data/misinformation_data_es.csv')
 
 # Primary analysis--------------------------------------------------------------
 
@@ -387,14 +386,32 @@ if (!file.exists('models/meta_mod_test_type.rds')) {
   meta_mod_test_type <- readRDS('models/meta_mod_test_type.rds')
   
 }
-summary(meta_mod_test_type)
+summary(meta_mod_test_type) 
 I2_mv(meta_mod_test_type, data_es)
 
-effects_by_recall_type <- data_es %>% 
-  group_by(test_type) %>% 
-  summarise(n = n_distinct(id_effect))
-
-effects_by_recall_type
+## Fitting again including the intercept
+if (!file.exists('models/meta_mod_test_type_2.rds')) {
+  
+  meta_mod_test_type_2 <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ as.factor(test_type),
+    data   = data_es,
+    method   = 'REML'
+  )
+  
+  
+  
+  saveRDS(meta_mod_test_type_2,'models/meta_mod_test_type_2.rds')
+  
+} else {
+  
+  meta_mod_test_type_2 <- readRDS('models/meta_mod_test_type_2.rds')
+  
+}
+summary(meta_mod_test_type_2)
 
 # Number of post-event tests
 
@@ -805,6 +822,7 @@ if (!file.exists('models/meta_mod_gender.rds')) {
   meta_mod_gender <- readRDS('models/meta_mod_gender.rds')
   
 }
+summary(meta_mod_gender)
 
 # Post-event warnings
 
@@ -966,7 +984,7 @@ if (!file.exists('models/meta_mod_control_acc_outlier.rds')) {
     random = list(~1|id_record/id_study/id_control, 
                   ~1|event_materials),
     mods   = total_accuracy_control_mean,
-    data   = filter(data_es, yi < 5.3),
+    data   = filter(data_es, yi < 5),
     method = 'REML'
   )
   
@@ -1033,7 +1051,7 @@ if (!file.exists('models/meta_mod_control_acc_full_2.rds')) {
                   ~1|event_materials),
     mods   = ~ total_accuracy_control_mean +
       I(total_accuracy_control_mean^2),
-    data   = filter(data_es, yi < 5.3),
+    data   = filter(data_es, yi < 5),
     method = 'REML'
   )
   
@@ -1113,6 +1131,57 @@ if (!file.exists('models/meta_mod_control_prop_full.rds')) {
   
 }
 summary(meta_mod_control_prop_full)
+
+
+# Comparing control type
+
+if (!file.exists('models/meta_mod_co_type.rds')) {
+  
+  meta_mod_control_type <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ control_type,
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_control_type,'models/meta_mod_co_type_type.rds')
+  
+} else {
+  
+  meta_mod_control_type <- readRDS('models/meta_mod_co_type.rds')
+  
+}
+summary(meta_mod_control_type)
+
+# removing intercept
+
+if (!file.exists('models/meta_mod_co_type_2.rds')) {
+  
+  meta_mod_control_type_2 <-  rma.mv(
+    yi     = yi, 
+    V      = vi,
+    random = list(~1|id_record/id_study/id_control, 
+                  ~1|event_materials),
+    mods   = ~ as.factor(control_type) -1,
+    data   = data_es,
+    method = 'REML'
+  )
+  
+  saveRDS(meta_mod_control_type_2,'models/meta_mod_co_type_2.rds')
+  
+} else {
+  
+  meta_mod_control_type_2 <- readRDS('models/meta_mod_co_type_2.rds')
+  
+}
+
+summary(meta_mod_control_type_2)
+
+
+
 
 # P-value analysis--------------------------------------------------------------
 

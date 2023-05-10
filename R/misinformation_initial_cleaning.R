@@ -134,6 +134,10 @@ raw$event_materials[
 raw$country[raw$country == "en"] <- "gb"
 raw$country[raw$country == "hi"] <- "in"
 
+raw$control_type[raw$control_type == 'constistent'] <- 'consistent'
+raw$control_type[raw$control_type == 'no misinformation'] <- 'no_misinformation'
+
+
 raw[425, "gender_female_prop"] = 0.714
 raw[575, "gender_female_prop"] = 0.788
 raw[576, "gender_female_prop"] = 0.788
@@ -225,6 +229,7 @@ raw <- raw %>%
   )
 
 raw$author <- map_chr(raw_cite$author, function(x) {paste(unlist(x), sep = " ", collapse = "; ")})
+
 
 # Exporting cleaned data--------------------------------------------------------
 
