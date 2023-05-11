@@ -2,6 +2,21 @@
 
 In this meta-analysis, we provide a detailed synthesis of the misinformation effect along with the assessment of several moderators. The combined results of 401 studies with 1,385 effects sizes across 47,700 participants are reported.
 
+Table of Contents:
+- Data analysis
+    Data cleaning
+    Variance imputation
+    Primary analysis
+    Moderator analyses
+- Results
+    Visuals
+    Tables
+- Data
+    Raw data
+    Cleaned data
+    Open data analyses
+    
+
 Installation: 
 - In order to replicate the analysis a working copy of R and Rstudio are required. The vast majority of code are formed based of functions from the tidyverse and metafor. For ease of use, downloading the entire repository is probably the best course of action due to model contingencies.  
 
@@ -19,3 +34,4 @@ License: The data is free for everyone to reproduce as long as proper citation i
 Ultimately, this project is a product of standing on the shoulders of giants - synthesising a scientific literature starting in the 1970s. So while we are proud of putting this data set together, the bulk of the credit goes to the hundreds of researchers all doing their part to further our knowledge.  
 
 Contact Information: alfons.edmar@gmail.com
+
