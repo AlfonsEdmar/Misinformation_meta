@@ -520,19 +520,64 @@ collab_matrix <- collab_counts %>%
   column_to_rownames("author1") %>%
   as.matrix()
 
-collab_matrix
+row_names <- col_names <- rownames(collab_matrix)
+square_matrix <- matrix(NA, nrow = length(row_names), ncol = length(col_names),
+                        dimnames = list(row_names, col_names))
 
-collab_graph <- graph.adjacency(collab_matrix, weighted = TRUE, mode = "undirected")
+for (i in row_names) {
+  for (j in col_names) {
+    square_matrix[i, j] <- collab_matrix[i, j]
+  }
+}
 
-V(collab_graph)$name <- rownames(collab_matrix)
 
-E(collab_graph)$weight <- collab_graph %>% get.edge.attribute("weight")
+# making the matrix smaller 
+sorted_data <- collab_counts[order(-collab_counts$count), ]
+sorted_data <- sorted_data %>%
+  mutate(author1 = pmin(author1, author2),
+         author2 = pmax(author1, author2)) %>%
+  distinct(author1, author2, .keep_all = TRUE) %>% 
+  filter(author1 !=author2)
 
-plot(collab_graph, vertex.label.color = "black", vertex.label.cex = 1,
-     vertex.size = 10, edge.width = E(collab_graph)$weight/10)
 
-plot(collab_graph, vertex.label = NA, vertex.label.cex = 1,
-     vertex.size = 5, edge.width = E(collab_graph)$weight/20,
-     edge.arrow.size = 0.01)
+# Select the top n rows
+n <- 20  
+top_n_data <- sorted_data[1:n, ]
 
+small_collab_matrix <- top_n_data %>%
+  pivot_wider(names_from = author2, values_from = count, values_fill = 0) %>%
+  column_to_rownames("author1") %>%
+  as.matrix()
+
+
+row_names <- col_names <- rownames(small_collab_matrix)
+square_matrix_2 <- matrix(NA, nrow = length(row_names), ncol = length(col_names),
+                        dimnames = list(row_names, col_names))
+
+for (i in row_names) {
+  for (j in col_names) {
+    square_matrix_2[i, j] <- small_collab_matrix[i, j]
+  }
+}
+
+# Arc Diagram-------------------------------------------------------------------
+
+# Select the top n rows
+n <- 20  
+top_n_data <- sorted_data[1:n, ]
+arcplot(edgelist = as.matrix(top_n_data[-c(3)]),
+        sorted = F,
+        col.arcs = top_n_data$count)
+#ring---------------------------------------------------------------------------
+
+g <- graph(as.matrix(top_n_data[-c(3)]))
+counts <- top_n_data$count
+
+E(g)$count <- counts
+
+layout <- layout.circle(g)
+
+plot(g, layout = layout, edge.width = E(g)$count/10,
+     edge.color = E(g)$count,
+     vertex.size = 10, edge.arrow.size = 0)
 
