@@ -8,6 +8,8 @@
 
 library(tidyverse)
 library(igraph)
+library(arcdiagram)
+library(plotrix)
 theme_set(theme_classic())
 hue   <- 'tomato'
 hue_2 <- 'deepskyblue'
@@ -66,8 +68,10 @@ data %>%
                      limits = c(-3,10), name = 'Hedges g')+
   scale_x_discrete(labels = c('Cued Recall','Free Recall','Modified Test', 
                               'Recognition', 'Source Monitoring'), 
-                   name = NULL)
-
+                   name = NULL)+
+  geom_hline(yintercept = 0, col = 'tomato')+
+  coord_flip()
+ggsave('visuals/test_type.png', dpi = 300)
 
 ##Publication year--------------------------------------------------------------
 
@@ -117,8 +121,10 @@ data%>%
                                   by   = 10),
                      name = 'Mean Age')+
   scale_y_continuous(breaks=(seq(-3, 10, 2)), limits = c(-3, 10))+
-  ylab(label = 'Hedges g')
+  ylab(label = 'Hedges g')+
+  geom_hline(yintercept = 0, col = 'grey')
 ggsave('visuals/age_linear.png',dpi=300)
+
 
 data %>% 
   mutate(quad_age = age_mean^2) %>%
@@ -156,6 +162,26 @@ data%>%
   xlab(label = 'Mean Age of Sample')
 
 
+# Age Categories
+age_breaks <- c(0, 5, 17, 40, Inf)
+
+age_factor <- cut(data$age_mean, breaks = age_breaks, 
+                  labels = c("< 5",
+                             "< 17",
+                             "< 40",
+                             "> 40"))
+
+
+data %>% 
+  ggplot(aes(y = yi, x = age_factor))+
+  geom_boxplot(width = .1, outlier.shape = NA)+
+  ggdist::stat_dots(justification = -.1, side = 'right')+
+  scale_y_continuous(limits = c(-3, 5), breaks = seq(-3,5,1),
+                     name = 'Hedges G')+
+  xlab(label = 'Age Categories')+
+  theme_classic() +
+  coord_flip()
+ggsave(ggsave('visuals/age_dist.png',dpi=300))
 ## Retention interval-----------------------------------------------------------
 
 data %>%
@@ -424,10 +450,9 @@ meanul95 = estimate+(1.96*se)
 
 df_ci = data.frame(ll95, ul95, ll99, ul99, se.seq, estimate, meanll95, meanul95)
 
-#Now we can actually make the funnel plot.
-#Using your original data-frame, map standard error to your x-axis (for now) and Zr to your y-axis
+#Now we can make the funnel plot.
 fp <- ggplot(aes(x  = se, y = yi), data = se_vec) +
-  geom_point(alpha = .2, size  = 2) +
+  geom_point(alpha = .2, size  = 1) +
   geom_line(aes(x  = se.seq, y = ll95), linetype = 'dotted', data = df_ci) +
   geom_line(aes(x  = se.seq, y = ul95), linetype = 'dotted', data = df_ci) +
   geom_line(aes(x  = se.seq, y = ll99), linetype = 'dashed', data = df_ci) +
@@ -438,7 +463,7 @@ fp <- ggplot(aes(x  = se, y = yi), data = se_vec) +
   geom_segment(aes(x = min(se.seq), y = meanul95, xend = max(se.seq),
                    yend = meanul95), linetype='dotted', data = df_ci) +
   scale_x_reverse()+
-  scale_y_continuous(breaks=seq(-3, 20, 1))+
+  scale_y_continuous(breaks=seq(-3, 20, 2))+
   coord_flip()+
   xlab('Standard Error') + ylab('Hedges g')
 
@@ -456,19 +481,20 @@ fp + geom_smooth(method = "lm",
                  col = hue) 
 
 # Truncating the graph for easy of view
-fp_2 <- ggplot(aes(x  = se, y = yi), data = filter(se_vec, yi < 5.3)) +
-  geom_point(alpha = .2, size  = 2) +
+fp_2 <- ggplot(aes(x  = se, y = yi), data = filter(se_vec, yi < 5)) +
+  geom_point(alpha = .2, size  = .5) +
   geom_line(aes(x  = se.seq, y = ll95), linetype = 'dotted', data = df_ci) +
   geom_line(aes(x  = se.seq, y = ul95), linetype = 'dotted', data = df_ci) +
   geom_line(aes(x  = se.seq, y = ll99), linetype = 'dashed', data = df_ci) +
   geom_line(aes(x  = se.seq, y = ul99), linetype = 'dashed', data = df_ci) +
-  geom_segment(aes(x    = min(se.seq), y    = meanll95, 
-                   xend = max(se.seq), yend = meanll95),
+  geom_segment(aes(x    = 0, y    = meanll95, 
+                   xend = .42, yend = meanll95),
                linetype ='dotted', data = df_ci) +
-  geom_segment(aes(x = min(se.seq), y = meanul95, xend = max(se.seq),
-                   yend = meanul95), linetype='dotted', data = df_ci) +
-  scale_x_reverse()+
-  scale_y_continuous(breaks=seq(-3, 5, 1))+
+  geom_segment(aes(x    = 0, y = meanul95,
+                   xend = .42, yend = meanul95), 
+               linetype='dotted', data = df_ci) +
+  scale_x_reverse(limits = c(.42,0, .05))+
+  scale_y_continuous(breaks=seq(-3, 7, 1), limits = c(-3.5,7))+
   coord_flip()+
   xlab('Standard Error') + ylab('Hedges g')
 
@@ -476,7 +502,7 @@ fp_2
 ggsave('visuals/funnel_small.png', dpi = 300)
 
 
-
+?scale_x_reverse
 # Adding pet-peese lines
 fp_2 + geom_smooth(method = "lm",
                  se = F,
@@ -488,12 +514,20 @@ fp_2 + geom_smooth(method = "lm",
 
 # Network-----------------------------------------------------------------------
 
+library(readxl)
+references <- read_excel("data/references.xlsx")
+dois <- regmatches(references, regexpr("https?://doi\\.org/\\S+", references))
+
 
 # Create a dataframe with sample paper titles and author names
-papers <- data %>% 
-  filter(duplicated(id_record) == F) %>% 
-  select(author, title) %>% 
-  na.omit()
+
+author_names <- gsub("\\(.*", "", references$reference)
+author_names <- gsub("\\d+", "", author_names)
+author_names <- gsub("&", ",", author_names)
+author_names <- gsub(",$", "", author_names)
+authors = data.frame(author = author_names)
+authors_split <- separate(authors, col = author,
+                          into = paste0("author_", 1:13), sep = "; ")
 
 # Split the author names into separate columns
 authors_split <- separate(papers, col = author, into = paste0("author_", 1:13), sep = "; ")
@@ -531,7 +565,7 @@ for (i in row_names) {
 }
 
 
-# making the matrix smaller 
+# Making the matrix smaller 
 sorted_data <- collab_counts[order(-collab_counts$count), ]
 sorted_data <- sorted_data %>%
   mutate(author1 = pmin(author1, author2),
@@ -563,21 +597,29 @@ for (i in row_names) {
 # Arc Diagram-------------------------------------------------------------------
 
 # Select the top n rows
-n <- 20  
+n <- 100
 top_n_data <- sorted_data[1:n, ]
+
+
+# Define the minimum and maximum values 
+min_value <- min(top_n_data$count)
+max_value <- max(top_n_data$count)
+
+# Generate a continuous color palette 
+color_palette <- colorRampPalette(brewer.pal(5, "Blues"))(length(top_n_data$count))
+# Scale the color palette 
+scaled_palette <- color_palette[as.integer(cut(top_n_data$count,
+                                               length(color_palette)))]
+
+alpha_adjusted_palette <- adjustcolor(scaled_palette, alpha.f = .7)
+
+par(bg = "lightgray")
 arcplot(edgelist = as.matrix(top_n_data[-c(3)]),
         sorted = F,
-        col.arcs = top_n_data$count)
-#ring---------------------------------------------------------------------------
+        col.arcs = alpha_adjusted_palette,
+        lwd.arcs = 4,
+        lty.arcs = 1,
+        col.labels = 'black',
+        adj = 0.7)
 
-g <- graph(as.matrix(top_n_data[-c(3)]))
-counts <- top_n_data$count
-
-E(g)$count <- counts
-
-layout <- layout.circle(g)
-
-plot(g, layout = layout, edge.width = E(g)$count/10,
-     edge.color = E(g)$count,
-     vertex.size = 10, edge.arrow.size = 0)
 

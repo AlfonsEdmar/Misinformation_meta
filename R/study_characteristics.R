@@ -111,6 +111,9 @@ n_records <- df %>%
   summarise(n = n_distinct(id_record))
 n_records
 
+records <- df %>% filter(!duplicated(id_record))
+
+
 # total number of effects-------------------------------------------------------
 n_effects <- NROW(df)
 
@@ -234,5 +237,12 @@ open_material <- df %>%
   summarise(n_number = n_distinct(id_study))
 open_material
 
+# Publication Year--------------------------------------------------------------
 
+pub_year <- df %>% 
+  group_by(publication_year) %>% 
+  summarise(median = median(yi),
+            mean   = mean(yi))
+# Grand median
+median(pub_year$median)
 

@@ -295,15 +295,6 @@ if (!file.exists('models/meta_mod_age_cat.rds')) {
 }
 summary(meta_mod_age_cat)
 
-data_es %>% 
-  ggplot(aes(y = yi, x = age_factor))+
-  geom_boxplot(width = .1, outlier.shape = NA)+
-  ggdist::stat_dots(justification = -.1, side = 'right')+
-  scale_y_continuous(limits = c(-3, 5), breaks = seq(-3,5,1),
-                     name = 'Hedges G')+
-  xlab(label = 'Age Categories')+
-  theme_classic()+
-  coord_flip()
 
 # Replicating Wylie et al (2014)
 
@@ -612,7 +603,7 @@ if (!file.exists('models/meta_mod_postev_warn_2.rds')) {
 
 summary(meta_mod_postev_warn_2)
 
-# Post-exposure warnings
+# Post-exposure warnings--------------------------------------------------------
 
 if (!file.exists('models/meta_mod_postex_warn.rds')) {
   
@@ -633,7 +624,10 @@ if (!file.exists('models/meta_mod_postex_warn.rds')) {
   meta_mod_postex_warn <- readRDS('models/meta_mod_postex_warn.rds')
   
 }
+summary(meta_mod_postex_warn)
 
+meta_mod_postex_warn_2 <- readRDS('models/meta_mod_postex_warn_2.rds')
+summary(meta_mod_postex_warn_2)
 
 # Publication year--------------------------------------------------------------
 
@@ -659,6 +653,9 @@ if (!file.exists('models/meta_mod_year.rds')) {
 }
 
 summary(meta_mod_year)
+
+data_es %>% filter(yi < 5) %>% 
+  summarise(n = NROW(yi))
 
 # Study modality----------------------------------------------------------------
 
