@@ -187,7 +187,22 @@ anova(meta_primary_2,
 I2_meta <- I2_mv(meta_primary_2, data_es)
 
 # Bias correction -------------------------------------------------------------- 
+## Funnel Plot
+data_subset <- data_es %>% filter(!is.na(yi) & !is.na(vi))
 
+data_subset <- data_subset %>%
+  mutate(precision = 1/vi)
+
+ggplot(data_subset, aes(x = yi, y = precision)) +
+  geom_point(shape = 16, color = "black") +
+  geom_line() +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  xlab("Effect Size") +
+  ylab("Precision") +
+  theme_minimal()
+
+
+## PET TEST
 if (!file.exists('models/meta_pet.rds')) {
   
   meta_pet     <- rma.mv(yi       = yi, 
@@ -208,6 +223,7 @@ if (!file.exists('models/meta_pet.rds')) {
 }
 summary(meta_pet)
 
+## PET-PEESE TEST
 if (!file.exists('models/meta_peese.rds')) {
   
   meta_peese   <- rma.mv(yi       = yi, 
