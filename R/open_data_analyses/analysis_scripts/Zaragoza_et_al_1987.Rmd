@@ -1,0 +1,48 @@
+---
+title: "Zaragoza 1987 standard deviation extraction"
+author: "Alfons Edmar"
+date: "2023-03-09"
+output: html_document
+---
+
+The goal here is to extract standard deviations from a reported standard error on the mean difference of misled vs non-misled items. All comparisons ar within groups.  
+
+```{r}
+# Standard errors
+SE1 = .1
+SE2 = .06
+SE3 = .12
+SE4 = .07
+
+# Sample sizes
+n1 = 48
+n2 = 174
+n3 = 54
+n4 = 228
+
+# Infering standard deviations
+SD1 = (SE1 * sqrt( n1 * n1) ) / sqrt(n1 + n1)
+SD2 = (SE2 * sqrt( n2 * n2) ) / sqrt(n2 + n2)
+SD3 = (SE3 * sqrt( n3 * n3) ) / sqrt(n3 + n3)
+SD4 = (SE4 * sqrt( n4 * n4) ) / sqrt(n4 + n4)
+
+# validating the t-statistics with reported statistics(obs)
+t1_obs <- 2.66
+t2_obs <- '<1'
+t3_obs <- 3.64
+t4_obs <- '<1'
+
+t1 <- (.75 - .48) / (sqrt( (SD1^2/n1) + (SD1^2/n1) ))
+t2 <- (.33 - .33) / (sqrt( (SD2^2/n2) + (SD2^2/n2) ))
+t3 <- (.82 - .61) / (sqrt( (SD3^2/n3) + (SD3^2/n3) ))
+t4 <- (.58 - .60) / (sqrt( (SD4^2/n4) + (SD4^2/n4) ))
+
+(.75 - .48) / SE1
+(.33 - .33) / SE2
+(.82 - .61) / SE3
+(.58 - .60) / SE4
+
+# Something is not correct. The third effect is off. Calculating the t from the standard error does not change it. Either it is misreported or I have made bad calculations.  
+
+```
+

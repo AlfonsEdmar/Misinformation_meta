@@ -1,0 +1,95 @@
+---
+title: "Luke et al, 2017 analysis"
+author: "Alfons Edmar"
+date: "2023-02-27"
+output: html_document
+---
+
+# Packages
+```{r}
+library(tidyverse)
+library(readxl)
+library(here)
+library(snakecase)
+```
+
+The goal here is to extract the number of participants in each group and the accuracy on consistent and misled items. 
+
+# Experiment 3
+
+Loading data and wrangling
+```{r}
+study_3 <- read_excel(here(
+  "open_data_analyses/data/Luke_et_al_2017_study_3.xlsx"))
+
+names(study_3) <- to_any_case(string = names(study_3))
+
+study_3$condition <- factor(study_3$condition)
+```
+
+Extracting demographics  
+
+```{r}
+#n by condition control
+with(study_3, tapply(misled_acc, condition, NROW))
+
+#age across conditions
+with(study_3, tapply(age, condition, summary))
+
+#age SD 
+round(with(study_3, tapply(age, condition, sd)),3)
+
+#gender by condition(female = 2)
+round(with(study_3, tapply(gender, condition, mean)),3)
+
+```
+
+Extracting misled and neutral accuracy
+
+```{r}
+round(with(study_3, tapply(neutral_acc, condition, mean)),3)
+round(with(study_3, tapply(misled_acc, condition, mean)),3)
+
+round(with(study_3, tapply(neutral_acc, condition, sd)),3)
+round(with(study_3, tapply(misled_acc, condition, sd)),3)
+
+```
+# Experiment 4 
+
+Loading data and wrangling 
+```{r}
+study_4 <- read_excel(here("open_data_analyses/data/Luke_et_al_2017_study_4.xlsx"))
+
+names(study_4) <- to_any_case(string = names(study_4))
+
+study_4$condition <- factor(study_4$condition)
+```
+
+Extracting demographics  
+
+```{r}
+#n by condition control
+with(study_4, tapply(misled_acc, condition, NROW))
+
+#age across conditions
+with(study_4, tapply(age, condition, summary))
+
+#age SD 
+round(with(study_4, tapply(age, condition, sd)),3)
+
+
+#gender by condition(female = 2)
+round(with(study_4, tapply(gender, condition, mean)), 3)
+
+```
+
+Extracting misled and neutral accuracy
+
+```{r}
+with(study_4, tapply(neutral_acc, condition, mean))
+with(study_4, tapply(misled_acc, condition, mean))
+
+with(study_4, tapply(neutral_acc, condition, sd))
+with(study_4, tapply(misled_acc, condition, sd))
+
+```
