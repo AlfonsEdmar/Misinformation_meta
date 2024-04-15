@@ -8,6 +8,7 @@
 
 library(tidyverse)
 library(metafor)
+library(cowplot)
 
 # Load data --------------------------------------------------------------------
 
@@ -135,6 +136,12 @@ saveRDS(meta_peese, "output/misinformation_meta_peese.rds")
 data_es <- data_es %>%
   mutate(precision = 1/vi)
 
+prec_seq <- seq(.5, ceiling(max(data_es$precision)), length.out = 100)
+se_seq   <- seq(.5, ceiling(max(sqrt(data_es$vi))), length.out = 100)
+
+ub95 <- meta_primary$beta[[1]] + 1/(se_seq*qnorm(.975))
+lb95 <- meta_primary$beta[[1]] - 1/(se_seq*qnorm(.975))
+
 funnel_plot <- 
 ggplot(data_es, 
        aes(
@@ -144,17 +151,35 @@ ggplot(data_es,
   geom_point(
     shape = 1, 
     color = "black",
-    alpha = .20
+    alpha = .15
     ) +
+  geom_line(
+    data = data.frame(prec_seq, se_seq, lb95, ub95),
+    aes(
+      y = prec_seq,
+      x = lb95
+    ),
+    linetype = "dashed",
+    alpha    = .50
+  ) +
+  geom_line(
+    data = data.frame(prec_seq, se_seq, lb95, ub95),
+    aes(
+      y = prec_seq,
+      x = ub95
+    ),
+    linetype = "dashed",
+    alpha    = .50
+  ) +
   geom_vline(
     xintercept = 0, 
-    alpha      = .25,
-    linetype   = "dashed"
+    alpha      = .50,
+    linetype   = "dotted"
     ) +
   geom_vline(
     xintercept = meta_primary$beta[[1]], 
     alpha      = .50,
-    linetype   = "dotted"
+    linetype   = "dashed"
     ) +
   scale_x_continuous(
     breaks = seq(-8, 8, .5)
@@ -162,6 +187,9 @@ ggplot(data_es,
   xlab("Effect Size") +
   ylab("Precision") +
   theme_classic()
+
+save_plot("figures/misinformation_funnel-plot.png", funnel_plot,
+          base_height = 4.5, base_width = 10)
 
 # Influence analysis ----------------------------------------------------------
 
