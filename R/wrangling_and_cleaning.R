@@ -102,8 +102,8 @@ raw$incentives[raw$incentives == "other"] <- "goods"
 raw$accuracy_type[raw$accuracy_type == "propotion"] <- "proportion"
 
 raw$control_type[raw$control_type == "nautral"] <- "neutral"
-raw$accuracy_type[raw$accuracy_type == "no misinformation"] <- "no_misinformation"
-raw$accuracy_type[raw$accuracy_type == "constistent"] <- "consistent"
+raw$control_type[raw$control_type == "no misinformation"] <- "no_misinformation"
+raw$control_type[raw$control_type == "constistent"] <- "consistent"
 
 raw$event_medium[raw$event_medium == "audivisual"] <- "audiovisual"
 raw$event_medium[raw$event_medium == "audio_visual"] <- "audiovisual"
@@ -256,6 +256,9 @@ raw$total_accuracy_control_prop <- as.numeric(raw$total_accuracy_control_prop)
 raw$total_accuracy_mi_prop      <- as.numeric(raw$total_accuracy_mi_prop)
 
 # Imputing missing variances ---------------------------------------------------
+
+set.seed(12343)
+
 # Dividing sample proportion and mean accuracy output data
 prop_data <- raw %>%
   filter(!is.na(total_accuracy_control_prop))
@@ -324,14 +327,21 @@ es_mean <- escalc(data    = mean_data,
                   measure = 'SMD')
 
 data_es <- rbind(es_mean, es_prop)
+
 # There are some missing values
-miss <- data_es %>% filter(is.na(yi))
-clean_data <- data_es %>% filter(!is.na(yi))
+
+miss <- data_es %>% 
+  filter(is.na(yi))
+
+data_es <- data_es %>%
+  filter(!is.na(yi)) %>%
+  # Whaley (1988) has one effect that is misreported. The mean accuracy exceeds
+  # the reported total number of items on the test. This caused a large effect
+  # to be estimated, which we are removing here.
+  filter(yi > -7)
 
 # Exporting cleaned data--------------------------------------------------------
 
 # Write a csv file
 
-write.csv(clean_data, 'data/clean_data.csv')
-
-
+write.csv(data_es, 'data/misinformation_clean_data.csv')
