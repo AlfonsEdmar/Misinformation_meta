@@ -208,6 +208,9 @@ raw$country[raw$country == "en"] <- "gb"
 raw$country[raw$country == "UK"] <- "gb"
 raw$country[raw$country == "US"] <- "us"
 
+raw$control_type[raw$control_type == "constistent"] <- "consistent"
+raw$control_type[raw$control_type == "no misinformation"] <- "no_misinformation"
+
 
 # Setting variables classes-----------------------------------------------------
 
