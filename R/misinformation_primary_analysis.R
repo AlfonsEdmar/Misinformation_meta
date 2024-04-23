@@ -542,43 +542,121 @@ save_plot("figures/misinformation_control-accuracy-peese-plot.png",
 
 # Influence analysis -----------------------------------------------------------
 
-# Cook's Distance
+# Leverage
 
-cores      <- parallel::detectCores() - 1
+meta_hat <- hatvalues(meta_primary)
 
-cooks_dist <- cooks.distance.rma.mv(meta_primary,
-                                    progbar  = TRUE,
-                                    parallel = 'snow',
-                                    ncpus    = cores) 
+leverages <- data.frame(
+  id_effect = str_pad(names(meta_hat), 4, "left", "0"),
+  leverage  = meta_hat
+)
 
+data_es <- data_es %>% 
+  left_join(leverages, by = "id_effect")
 
-data_es <- cbind(data_es, cooks_dist)
+## Arbitrary conventional cutoff for leverages
 
-n   <- nrow(data_es)
+leverage_cut <- mean(data_es$leverage, na.rm = TRUE) * 3
 
-ggplot(data_es, 
-       aes(y = cooks_dist, 
-           x = id_effect,
-           label = id_effect)
-       )+
-  geom_jitter(alpha = .5) +
-  geom_text(
-    aes(
-    label = ifelse(cooks_dist > 4/n , as.character(id_effect), '')
-    ), 
-    hjust = -.2, 
-    vjust = 0)
+# Standardized residuals
 
-round(summary((data_es$cooks_dist)), 7)
+meta_res <- as.data.frame(rstandard(meta_primary))
 
-# Extracting outliers at the arbitrary 4/n threshold.
+meta_res$id_effect <- row.names(meta_res)
+meta_res$id_effect <- str_pad(meta_res$id_effect, 4, "left", "0")
 
-outliers <- ifelse(data_es$cooks_dist <= 4/n, 0, 1)
+data_es <- data_es %>% 
+  left_join(meta_res, by = "id_effect")
 
 # Sensitivity analysis----------------------------------------------------------
 
+# Excluding all cases above leverage cutoff
 
+if (!file.exists("output/misinformation_meta_leverage.rds")) {
+  
+  meta_leverage  <- rma.mv(yi      = yi, 
+                           V       = vi,
+                           random  = list(~1|id_record/id_study/id_control, 
+                                          ~1|event_materials,
+                                          ~1|country,
+                                          ~1|control_type,
+                                          ~1|modality,
+                                          ~1|population,
+                                          ~1|test_type,
+                                          ~1|test_medium,
+                                          ~1|exposure_medium),
+                           mods    = ~ postevent_retention_interval
+                           + postexposure_retention_interval
+                           + preevent_warning
+                           + postevent_warning
+                           + postexposure_warning
+                           + control_acc
+                           + postevent_recall
+                           + postexposure_recall
+                           + publication_year
+                           + preregistered,
+                           data    = data_es %>% 
+                             filter(leverage < leverage_cut),
+                           method  = "REML", 
+                           control = list(
+                             iter.max  = 1000,
+                             rel.tol   = 1e-8
+                           ),
+                           verbose = TRUE)
+  
+  saveRDS(meta_leverage, "output/misinformation_meta_leverage.rds")
+  
+} else {
+  
+  meta_leverage <- readRDS("output/misinformation_meta_leverage.rds")
+  
+}
 
+meta_leverage_ranef <- ranef(meta_leverage)
+
+# Excluding all cases with standardized residuals greater than |1.96|
+
+if (!file.exists("output/misinformation_meta_resid.rds")) {
+  
+  meta_resid     <- rma.mv(yi      = yi, 
+                           V       = vi,
+                           random  = list(~1|id_record/id_study/id_control, 
+                                          ~1|event_materials,
+                                          ~1|country,
+                                          ~1|control_type,
+                                          ~1|modality,
+                                          ~1|population,
+                                          ~1|test_type,
+                                          ~1|test_medium,
+                                          ~1|exposure_medium),
+                           mods    = ~ postevent_retention_interval
+                           + postexposure_retention_interval
+                           + preevent_warning
+                           + postevent_warning
+                           + postexposure_warning
+                           + control_acc
+                           + postevent_recall
+                           + postexposure_recall
+                           + publication_year
+                           + preregistered,
+                           data    = data_es %>% 
+                             filter(abs(resid) < qnorm(.975)),
+                           method  = "REML", 
+                           control = list(
+                             iter.max  = 1000,
+                             rel.tol   = 1e-8
+                           ),
+                           verbose = TRUE)
+  
+  saveRDS(meta_resid, "output/misinformation_meta_resid.rds")
+  
+} else {
+  
+  meta_resid <- readRDS("output/misinformation_meta_resid.rds")
+  
+}
+
+meta_resid_ranef <- ranef(meta_resid)
 
 
 
