@@ -1,0 +1,718 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[many]{tcolorbox}}
+\makeatother
+\makeatletter
+\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
+\makeatother
+\makeatletter
+\makeatother
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Subgroup analyses},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Subgroup analyses}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, interior hidden, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, enhanced, breakable, sharp corners]}{\end{tcolorbox}}\fi
+
+\hypertarget{age-subgroup-analysis.}{%
+\subsection{Age-subgroup analysis.}\label{age-subgroup-analysis.}}
+
+\hypertarget{full-moderation-model}{%
+\subsubsection{Full moderation model}\label{full-moderation-model}}
+
+This is the subgroup analysis on the mean age on our full moderator
+model
+
+\begin{verbatim}
+
+Multivariate Meta-Analysis Model (k = 1109; method: REML)
+
+    logLik    Deviance         AIC         BIC        AICc   
+-1045.5556   2091.1111   2135.1111   2245.1385   2136.0525   
+
+Variance Components:
+
+             estim    sqrt  nlvls  fixed                         factor 
+sigma^2.1   0.3185  0.5643    176     no                      id_record 
+sigma^2.2   0.0000  0.0000    246     no             id_record/id_study 
+sigma^2.3   0.1226  0.3502    685     no  id_record/id_study/id_control 
+sigma^2.4   0.0000  0.0001    150     no                event_materials 
+sigma^2.5   0.0000  0.0000     20     no                        country 
+sigma^2.6   0.0318  0.1783      4     no                   control_type 
+sigma^2.7   0.0298  0.1727      4     no                       modality 
+sigma^2.8   0.0000  0.0000      4     no                     population 
+sigma^2.9   0.0592  0.2434     10     no                      test_type 
+sigma^2.10  0.0127  0.1128      5     no                    test_medium 
+sigma^2.11  0.0000  0.0000      6     no                exposure_medium 
+
+Test for Residual Heterogeneity:
+QE(df = 1098) = 6536.5615, p-val < .0001
+
+Test of Moderators (coefficients 2:11):
+QM(df = 10) = 456.0776, p-val < .0001
+
+Model Results:
+
+                                 estimate      se     zval    pval    ci.lb 
+intrcpt                            0.6968  0.1886   3.6954  0.0002   0.3272 
+postevent_retention_interval       0.0000  0.0000   0.9883  0.3230  -0.0000 
+age_mean                           0.0026  0.0016   1.6743  0.0941  -0.0004 
+postexposure_retention_interval   -0.0002  0.0000  -8.2738  <.0001  -0.0002 
+preevent_warning                   0.4816  0.2440   1.9737  0.0484   0.0033 
+postevent_warning                 -0.1486  0.1430  -1.0396  0.2985  -0.4288 
+postexposure_warning              -0.2946  0.0629  -4.6822  <.0001  -0.4179 
+control_acc                        1.9947  0.1184  16.8408  <.0001   1.7626 
+postevent_recall                  -0.1076  0.0548  -1.9614  0.0498  -0.2151 
+postexposure_recall               -0.0465  0.0346  -1.3450  0.1786  -0.1143 
+publication_year                   0.0032  0.0060   0.5222  0.6016  -0.0087 
+                                   ci.ub      
+intrcpt                           1.0664  *** 
+postevent_retention_interval      0.0000      
+age_mean                          0.0057    . 
+postexposure_retention_interval  -0.0001  *** 
+preevent_warning                  0.9599    * 
+postevent_warning                 0.1316      
+postexposure_warning             -0.1713  *** 
+control_acc                       2.2269  *** 
+postevent_recall                 -0.0001    * 
+postexposure_recall               0.0213      
+publication_year                  0.0150      
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+The average adjusted true effect is .7 with a standard error of .19.
+Post exposure retention intervals has a small but negative effect with
+the ME decreasing by .0002 for each hour after exposure(poor scaling
+maybe). Post-event warnings reduce the effect by .3 for each warning
+made. Control accuracy increases the effect by 2 for each deviation from
+the average control accuracy. Age does not have an impact on the effect.
+
+Next we can look at the random effects. For the control type, consistent
+information produces the largest effects, even when adjusting for the
+control accuracy which is interesting. Providing no information in the
+control seems to provide the most clinical non-nuisance inducing
+misinformation effect.
+
+\begin{verbatim}
+                      intrcpt        se        pi.lb      pi.ub
+consistent         0.20047641 0.1049636 -0.005248496 0.40620132
+missing           -0.04314795 0.1730287 -0.382277877 0.29598199
+neutral           -0.14527438 0.1080249 -0.356999378 0.06645061
+no_misinformation -0.01205408 0.1061943 -0.220191016 0.19608285
+\end{verbatim}
+
+For the modal modality, field experiments produces the largest effects,
+but this effect is small and given the low sample size of field studies
+might not be an entirely reliable effect.
+
+\begin{verbatim}
+             intrcpt        se       pi.lb     pi.ub
+field    0.164735786 0.1241612 -0.07861571 0.4080873
+lab     -0.009706901 0.1118899 -0.22900711 0.2095933
+missing  0.006805961 0.1371281 -0.26196022 0.2755721
+online  -0.161834846 0.1382462 -0.43279249 0.1091228
+\end{verbatim}
+
+The test type does not seem to have an overly large impact on the
+effect, but it is clear that using the modified test heavily reduces the
+misinformation effect.
+
+\begin{verbatim}
+                        intrcpt         se       pi.lb       pi.ub
+cued_recall          0.01207033 0.10590468 -0.19549902  0.21963968
+free_recall         -0.04533301 0.12936242 -0.29887869  0.20821268
+interpolated_recall  0.38147299 0.15006037  0.08736007  0.67558591
+line_up              0.09694735 0.20855260 -0.31180823  0.50570293
+missing             -0.18239845 0.21515805 -0.60410047  0.23930357
+MMFR                -0.10132330 0.16581637 -0.42631742  0.22367081
+modified_test       -0.28788104 0.10893273 -0.50138527 -0.07437680
+recognition         -0.12044080 0.09953477 -0.31552536  0.07464376
+source_monitoring    0.21598456 0.12238912 -0.02389370  0.45586282
+total_recall         0.03090137 0.20526002 -0.37140088  0.43320361
+\end{verbatim}
+
+The test medium also don't seem to have much of an impact on the effect
+size, which is good and quite reasonable to me.
+
+\begin{verbatim}
+            intrcpt         se       pi.lb     pi.ub
+audio   -0.01913920 0.11117149 -0.23703131 0.1987529
+live     0.05089209 0.08914670 -0.12383224 0.2256164
+missing -0.03825193 0.10589871 -0.24580958 0.1693057
+text     0.07268595 0.08735239 -0.09852159 0.2438935
+visual  -0.06618691 0.10189199 -0.26589154 0.1335177
+\end{verbatim}
+
+The exposure medium does not carry any meaningful impact.
+
+\begin{verbatim}
+            intrcpt      se  pi.lb pi.ub
+audio             0 3.6e-07 -7e-07 7e-07
+audiovisual       0 3.6e-07 -7e-07 7e-07
+live              0 3.6e-07 -7e-07 7e-07
+missing           0 3.6e-07 -7e-07 7e-07
+text              0 3.6e-07 -7e-07 7e-07
+visual            0 3.6e-07 -7e-07 7e-07
+\end{verbatim}
+
+The population category also do not indicate any meaningful differences
+across groups.
+
+\begin{verbatim}
+          intrcpt      se    pi.lb   pi.ub
+community       0 1.7e-07 -3.4e-07 3.4e-07
+mturk           0 1.7e-07 -3.4e-07 3.4e-07
+prolific        0 1.7e-07 -3.4e-07 3.4e-07
+students        0 1.7e-07 -3.4e-07 3.4e-07
+\end{verbatim}
+
+\hypertarget{removing-the-control-accuracy-from-the-model}{%
+\subsubsection{Removing the control accuracy from the
+model}\label{removing-the-control-accuracy-from-the-model}}
+
+This is the results without the control accuracy.
+
+\begin{verbatim}
+
+Multivariate Meta-Analysis Model (k = 1109; method: REML)
+
+    logLik    Deviance         AIC         BIC        AICc   
+-1183.9940   2367.9880   2409.9880   2515.0333   2410.8459   
+
+Variance Components:
+
+             estim    sqrt  nlvls  fixed                         factor 
+sigma^2.1   0.3565  0.5971    176     no                      id_record 
+sigma^2.2   0.0000  0.0001    246     no             id_record/id_study 
+sigma^2.3   0.1505  0.3880    685     no  id_record/id_study/id_control 
+sigma^2.4   0.0061  0.0781    150     no                event_materials 
+sigma^2.5   0.0000  0.0000     20     no                        country 
+sigma^2.6   0.0991  0.3147      4     no                   control_type 
+sigma^2.7   0.0226  0.1504      4     no                       modality 
+sigma^2.8   0.0000  0.0000      4     no                     population 
+sigma^2.9   0.0711  0.2667     10     no                      test_type 
+sigma^2.10  0.0000  0.0014      5     no                    test_medium 
+sigma^2.11  0.0040  0.0635      6     no                exposure_medium 
+
+Test for Residual Heterogeneity:
+QE(df = 1099) = 7408.4822, p-val < .0001
+
+Test of Moderators (coefficients 2:10):
+QM(df = 9) = 172.2808, p-val < .0001
+
+Model Results:
+
+                                 estimate      se     zval    pval    ci.lb 
+intrcpt                            0.6704  0.2318   2.8920  0.0038   0.2161 
+postevent_retention_interval       0.0000  0.0000   0.5576  0.5771  -0.0000 
+age_mean                           0.0013  0.0016   0.8034  0.4218  -0.0019 
+postexposure_retention_interval   -0.0002  0.0000  -9.4846  <.0001  -0.0002 
+preevent_warning                   0.5465  0.2508   2.1786  0.0294   0.0548 
+postevent_warning                 -0.1545  0.1525  -1.0128  0.3112  -0.4534 
+postexposure_warning              -0.3320  0.0656  -5.0578  <.0001  -0.4606 
+postevent_recall                  -0.1099  0.0577  -1.9047  0.0568  -0.2231 
+postexposure_recall               -0.0594  0.0354  -1.6774  0.0935  -0.1288 
+publication_year                  -0.0011  0.0063  -0.1725  0.8630  -0.0134 
+                                   ci.ub      
+intrcpt                           1.1248   ** 
+postevent_retention_interval      0.0000      
+age_mean                          0.0045      
+postexposure_retention_interval  -0.0002  *** 
+preevent_warning                  1.0381    * 
+postevent_warning                 0.1445      
+postexposure_warning             -0.2033  *** 
+postevent_recall                  0.0032    . 
+postexposure_recall               0.0100    . 
+publication_year                  0.0112      
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+There are no large differences across the models, but the variance in
+true effects from the test medium disappears when we remove control
+accuracy from the model. This could be due to test medium having a large
+impact on the control accuracy. Notably, the event materials also do
+introduce variation in effects beyond what would be expected from random
+sampling.
+
+\hypertarget{quadratic-transformation-on-age}{%
+\subsubsection{Quadratic transformation on
+age}\label{quadratic-transformation-on-age}}
+
+This is the quadratic transformed age variable model. It does not make
+an impact on how we view the model results.
+
+\begin{verbatim}
+
+Multivariate Meta-Analysis Model (k = 1109; method: REML)
+
+    logLik    Deviance         AIC         BIC        AICc   
+-1045.3427   2090.6853   2134.6853   2244.7127   2135.6267   
+
+Variance Components:
+
+             estim    sqrt  nlvls  fixed                         factor 
+sigma^2.1   0.3182  0.5641    176     no                      id_record 
+sigma^2.2   0.0000  0.0002    246     no             id_record/id_study 
+sigma^2.3   0.1223  0.3497    685     no  id_record/id_study/id_control 
+sigma^2.4   0.0000  0.0006    150     no                event_materials 
+sigma^2.5   0.0000  0.0000     20     no                        country 
+sigma^2.6   0.0318  0.1783      4     no                   control_type 
+sigma^2.7   0.0247  0.1570      4     no                       modality 
+sigma^2.8   0.0000  0.0000      4     no                     population 
+sigma^2.9   0.0594  0.2437     10     no                      test_type 
+sigma^2.10  0.0144  0.1201      5     no                    test_medium 
+sigma^2.11  0.0000  0.0000      6     no                exposure_medium 
+
+Test for Residual Heterogeneity:
+QE(df = 1098) = 6534.6106, p-val < .0001
+
+Test of Moderators (coefficients 2:11):
+QM(df = 10) = 456.7165, p-val < .0001
+
+Model Results:
+
+                                 estimate      se     zval    pval    ci.lb 
+intrcpt                            0.7250  0.1844   3.9307  <.0001   0.3635 
+postevent_retention_interval       0.0000  0.0000   0.9760  0.3291  -0.0000 
+I(age_mean^2)                      0.0000  0.0000   1.8376  0.0661  -0.0000 
+postexposure_retention_interval   -0.0002  0.0000  -8.2725  <.0001  -0.0002 
+preevent_warning                   0.4818  0.2440   1.9751  0.0483   0.0037 
+postevent_warning                 -0.1490  0.1429  -1.0432  0.2969  -0.4290 
+postexposure_warning              -0.2943  0.0629  -4.6799  <.0001  -0.4176 
+control_acc                        1.9986  0.1185  16.8659  <.0001   1.7664 
+postevent_recall                  -0.1076  0.0548  -1.9627  0.0497  -0.2150 
+postexposure_recall               -0.0464  0.0346  -1.3430  0.1793  -0.1142 
+publication_year                   0.0034  0.0060   0.5578  0.5770  -0.0084 
+                                   ci.ub      
+intrcpt                           1.0865  *** 
+postevent_retention_interval      0.0000      
+I(age_mean^2)                     0.0001    . 
+postexposure_retention_interval  -0.0001  *** 
+preevent_warning                  0.9600    * 
+postevent_warning                 0.1310      
+postexposure_warning             -0.1711  *** 
+control_acc                       2.2309  *** 
+postevent_recall                 -0.0002    * 
+postexposure_recall               0.0213      
+publication_year                  0.0152      
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\hypertarget{age-as-a-category-variable}{%
+\subsubsection{Age as a category
+variable}\label{age-as-a-category-variable}}
+
+Lastly, we have a a model where we treat age as a category variable on 4
+levels with 1 being children ages 0-5, 2 being ages 5-17, 3 being 18-40,
+and 4 being 40+. The reference category were the youngest children ages
+0-5.
+
+\begin{verbatim}
+
+Multivariate Meta-Analysis Model (k = 1109; method: REML)
+
+    logLik    Deviance         AIC         BIC        AICc   
+-1183.9940   2367.9880   2409.9880   2515.0333   2410.8459   
+
+Variance Components:
+
+             estim    sqrt  nlvls  fixed                         factor 
+sigma^2.1   0.3565  0.5971    176     no                      id_record 
+sigma^2.2   0.0000  0.0001    246     no             id_record/id_study 
+sigma^2.3   0.1505  0.3880    685     no  id_record/id_study/id_control 
+sigma^2.4   0.0061  0.0781    150     no                event_materials 
+sigma^2.5   0.0000  0.0000     20     no                        country 
+sigma^2.6   0.0991  0.3147      4     no                   control_type 
+sigma^2.7   0.0226  0.1504      4     no                       modality 
+sigma^2.8   0.0000  0.0000      4     no                     population 
+sigma^2.9   0.0711  0.2667     10     no                      test_type 
+sigma^2.10  0.0000  0.0014      5     no                    test_medium 
+sigma^2.11  0.0040  0.0635      6     no                exposure_medium 
+
+Test for Residual Heterogeneity:
+QE(df = 1099) = 7408.4822, p-val < .0001
+
+Test of Moderators (coefficients 2:10):
+QM(df = 9) = 172.2808, p-val < .0001
+
+Model Results:
+
+                                 estimate      se     zval    pval    ci.lb 
+intrcpt                            0.6704  0.2318   2.8920  0.0038   0.2161 
+postevent_retention_interval       0.0000  0.0000   0.5576  0.5771  -0.0000 
+age_mean                           0.0013  0.0016   0.8034  0.4218  -0.0019 
+postexposure_retention_interval   -0.0002  0.0000  -9.4846  <.0001  -0.0002 
+preevent_warning                   0.5465  0.2508   2.1786  0.0294   0.0548 
+postevent_warning                 -0.1545  0.1525  -1.0128  0.3112  -0.4534 
+postexposure_warning              -0.3320  0.0656  -5.0578  <.0001  -0.4606 
+postevent_recall                  -0.1099  0.0577  -1.9047  0.0568  -0.2231 
+postexposure_recall               -0.0594  0.0354  -1.6774  0.0935  -0.1288 
+publication_year                  -0.0011  0.0063  -0.1725  0.8630  -0.0134 
+                                   ci.ub      
+intrcpt                           1.1248   ** 
+postevent_retention_interval      0.0000      
+age_mean                          0.0045      
+postexposure_retention_interval  -0.0002  *** 
+preevent_warning                  1.0381    * 
+postevent_warning                 0.1445      
+postexposure_warning             -0.2033  *** 
+postevent_recall                  0.0032    . 
+postexposure_recall               0.0100    . 
+publication_year                  0.0112      
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+By treating the ages as categories we find no differences in ages
+compared to the children(who would presumably perform the worst) except
+for children between 6 and 17 who had a slightly larger misinformation
+effects at .21.
+
+\hypertarget{subgroup-analysis-across-incentives}{%
+\subsection{Subgroup analysis across
+incentives}\label{subgroup-analysis-across-incentives}}
+
+Here we examine whether the incentive structure makes differences in the
+misinformation effect. The incentive variable is a factor with the
+reference group being given no incentive. It does not seem like
+incentive carries any strong implications for the ME. However, it could
+be the case that course credit as compared to no incentives increases
+the effect by .21, indicating that motivation to participate
+\emph{might} increase the effect. It should be noted that course\_credit
+was by far the most common incentive.
+
+\begin{verbatim}
+
+Multivariate Meta-Analysis Model (k = 1041; method: REML)
+
+   logLik   Deviance        AIC        BIC       AICc   
+-981.9759  1963.9519  2019.9519  2158.0331  2021.5841   
+
+Variance Components:
+
+             estim    sqrt  nlvls  fixed                         factor 
+sigma^2.1   0.1528  0.3908    179     no                      id_record 
+sigma^2.2   0.0133  0.1155    269     no             id_record/id_study 
+sigma^2.3   0.1321  0.3635    664     no  id_record/id_study/id_control 
+sigma^2.4   0.1101  0.3318    140     no                event_materials 
+sigma^2.5   0.0073  0.0856     15     no                        country 
+sigma^2.6   0.0564  0.2374      4     no                   control_type 
+sigma^2.7   0.0000  0.0026      4     no                       modality 
+sigma^2.8   0.0186  0.1366      4     no                     population 
+sigma^2.9   0.0804  0.2835     10     no                      test_type 
+sigma^2.10  0.0166  0.1288      7     no                    test_medium 
+sigma^2.11  0.0000  0.0005      6     no                exposure_medium 
+
+Test for Residual Heterogeneity:
+QE(df = 1024) = 6296.6403, p-val < .0001
+
+Test of Moderators (coefficients 2:17):
+QM(df = 16) = 294.1475, p-val < .0001
+
+Model Results:
+
+                                  estimate      se     zval    pval    ci.lb 
+intrcpt                             0.4785  0.2361   2.0263  0.0427   0.0157 
+postevent_retention_interval        0.0005  0.0004   1.2779  0.2013  -0.0003 
+incentivescourse_credit             0.2109  0.1266   1.6654  0.0958  -0.0373 
+incentivescourse_credit_or_money    0.1550  0.1769   0.8767  0.3807  -0.1916 
+incentivescourse_requirement        0.2624  0.3402   0.7713  0.4405  -0.4044 
+incentivesgoods                     0.4616  0.2951   1.5639  0.1178  -0.1169 
+incentivesmoney                     0.1726  0.1487   1.1611  0.2456  -0.1187 
+incentivesraffle                   -0.1591  0.4025  -0.3952  0.6927  -0.9479 
+incentivesrequired                 -0.0633  0.1983  -0.3192  0.7496  -0.4519 
+postexposure_retention_interval    -0.0005  0.0003  -1.7964  0.0724  -0.0009 
+preevent_warning                    0.4462  0.2337   1.9092  0.0562  -0.0119 
+postevent_warning                  -0.1955  0.1700  -1.1504  0.2500  -0.5286 
+postexposure_warning               -0.2303  0.0537  -4.2903  <.0001  -0.3355 
+control_acc                         1.7791  0.1176  15.1250  <.0001   1.5485 
+postevent_recall                    0.0418  0.0373   1.1214  0.2621  -0.0312 
+postexposure_recall                -0.0640  0.0571  -1.1212  0.2622  -0.1760 
+publication_year                   -0.0078  0.0044  -1.7571  0.0789  -0.0164 
+                                    ci.ub      
+intrcpt                            0.9413    * 
+postevent_retention_interval       0.0013      
+incentivescourse_credit            0.4591    . 
+incentivescourse_credit_or_money   0.5017      
+incentivescourse_requirement       0.9293      
+incentivesgoods                    1.0400      
+incentivesmoney                    0.4640      
+incentivesraffle                   0.6298      
+incentivesrequired                 0.3253      
+postexposure_retention_interval    0.0000    . 
+preevent_warning                   0.9043    . 
+postevent_warning                  0.1376      
+postexposure_warning              -0.1251  *** 
+control_acc                        2.0096  *** 
+postevent_recall                   0.1148      
+postexposure_recall                0.0479      
+publication_year                   0.0009    . 
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\hypertarget{subgroup-analysis-of-item-centrality}{%
+\subsection{Subgroup analysis of
+item-centrality}\label{subgroup-analysis-of-item-centrality}}
+
+Here we look at the 17 studies that manipulated the centrality of the
+items. It does not seem like any variables in this model significantly
+impact the misinformation effect outside of the post exposure retention
+interval with a small negative effect.
+
+\begin{verbatim}
+
+Multivariate Meta-Analysis Model (k = 118; method: REML)
+
+   logLik   Deviance        AIC        BIC       AICc   
+-141.1339   282.2679   320.2679   371.5770   328.7123   
+
+Variance Components:
+
+             estim    sqrt  nlvls  fixed                         factor 
+sigma^2.1   0.0000  0.0005     17     no                      id_record 
+sigma^2.2   0.1116  0.3341     18     no             id_record/id_study 
+sigma^2.3   0.1665  0.4080     56     no  id_record/id_study/id_control 
+sigma^2.4   0.0000  0.0005     16     no                event_materials 
+sigma^2.5   0.0000  0.0000     11     no                        country 
+sigma^2.6   0.0768  0.2771      3     no                   control_type 
+sigma^2.7   0.0000  0.0000      3     no                       modality 
+sigma^2.8   0.0000  0.0003      2     no                     population 
+sigma^2.9   0.1363  0.3692      5     no                      test_type 
+sigma^2.10  0.0000  0.0003      3     no                    test_medium 
+sigma^2.11  0.5170  0.7190      3     no                exposure_medium 
+
+Test for Residual Heterogeneity:
+QE(df = 110) = 573.6024, p-val < .0001
+
+Test of Moderators (coefficients 2:8):
+QM(df = 7) = 147.8012, p-val < .0001
+
+Model Results:
+
+                                 estimate      se     zval    pval    ci.lb 
+intrcpt                            0.9116  0.5323   1.7127  0.0868  -0.1316 
+postevent_retention_interval      -0.0001  0.0001  -0.8449  0.3981  -0.0003 
+item_centralityperipheral          0.0049  0.0612   0.0794  0.9367  -0.1151 
+postexposure_retention_interval   -0.0002  0.0001  -3.2575  0.0011  -0.0004 
+control_acc                        0.4931  0.2659   1.8543  0.0637  -0.0281 
+postevent_recall                   0.1224  0.2980   0.4107  0.6813  -0.4617 
+postexposure_recall               -0.1552  0.4997  -0.3106  0.7561  -1.1346 
+publication_year                   0.0152  0.0119   1.2835  0.1993  -0.0080 
+                                   ci.ub     
+intrcpt                           1.9549   . 
+postevent_retention_interval      0.0001     
+item_centralityperipheral         0.1248     
+postexposure_retention_interval  -0.0001  ** 
+control_acc                       1.0143   . 
+postevent_recall                  0.7064     
+postexposure_recall               0.8242     
+publication_year                  0.0385     
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+If we remove the control accuracy variable, the results does not change
+in any meaningful way.
+
+\begin{verbatim}
+
+Multivariate Meta-Analysis Model (k = 118; method: REML)
+
+   logLik   Deviance        AIC        BIC       AICc   
+-141.1339   282.2679   320.2679   371.5770   328.7123   
+
+Variance Components:
+
+             estim    sqrt  nlvls  fixed                         factor 
+sigma^2.1   0.0000  0.0005     17     no                      id_record 
+sigma^2.2   0.1116  0.3341     18     no             id_record/id_study 
+sigma^2.3   0.1665  0.4080     56     no  id_record/id_study/id_control 
+sigma^2.4   0.0000  0.0005     16     no                event_materials 
+sigma^2.5   0.0000  0.0000     11     no                        country 
+sigma^2.6   0.0768  0.2771      3     no                   control_type 
+sigma^2.7   0.0000  0.0000      3     no                       modality 
+sigma^2.8   0.0000  0.0003      2     no                     population 
+sigma^2.9   0.1363  0.3692      5     no                      test_type 
+sigma^2.10  0.0000  0.0003      3     no                    test_medium 
+sigma^2.11  0.5170  0.7190      3     no                exposure_medium 
+
+Test for Residual Heterogeneity:
+QE(df = 110) = 573.6024, p-val < .0001
+
+Test of Moderators (coefficients 2:8):
+QM(df = 7) = 147.8012, p-val < .0001
+
+Model Results:
+
+                                 estimate      se     zval    pval    ci.lb 
+intrcpt                            0.9116  0.5323   1.7127  0.0868  -0.1316 
+postevent_retention_interval      -0.0001  0.0001  -0.8449  0.3981  -0.0003 
+item_centralityperipheral          0.0049  0.0612   0.0794  0.9367  -0.1151 
+postexposure_retention_interval   -0.0002  0.0001  -3.2575  0.0011  -0.0004 
+control_acc                        0.4931  0.2659   1.8543  0.0637  -0.0281 
+postevent_recall                   0.1224  0.2980   0.4107  0.6813  -0.4617 
+postexposure_recall               -0.1552  0.4997  -0.3106  0.7561  -1.1346 
+publication_year                   0.0152  0.0119   1.2835  0.1993  -0.0080 
+                                   ci.ub     
+intrcpt                           1.9549   . 
+postevent_retention_interval      0.0001     
+item_centralityperipheral         0.1248     
+postexposure_retention_interval  -0.0001  ** 
+control_acc                       1.0143   . 
+postevent_recall                  0.7064     
+postexposure_recall               0.8242     
+publication_year                  0.0385     
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+
+
+\end{document}
