@@ -810,7 +810,7 @@ meta_age_no_acc  <- rma.mv(yi      = yi,
 saveRDS(meta_age_no_acc, 'output/misinformation_meta_age_no_accuracy.rds')
 
 
-#Categorical age
+# Categorical age
 
 breaks <- c(0, 5, 18, 40, max(age_data$age_mean))
 
@@ -857,7 +857,7 @@ saveRDS(meta_age_no_acc, 'output/misinformation_meta_age_cat.rds')
 incent_data <- data_es %>% filter(!is.na(data_es$incentives))
 incent_data$incentives <- as.factor(incent_data$incentives)
 
-# # Setting the reference to be no incentive
+## Setting the reference to be no incentive
 
 incent_data <- within(incent_data, incentives <- relevel(incentives, 6))
 
