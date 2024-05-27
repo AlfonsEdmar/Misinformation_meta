@@ -49,8 +49,9 @@ chr %>%
   clean_record_id <- data.frame(
     distinct(id_record))
   
-
 #Modality
+
+#Population
 
 #Incentives
 
