@@ -7,15 +7,19 @@
 # Load packages ----------------------------------------------------------------
 
 library(tidyverse)
+library(dplyr)
 
 # Load data --------------------------------------------------------------------
 
-chr <- read_csv("./data/misinformation_data_raw.csv")
+chr <- read_csv("./data/misinformation_clean_data.csv")
 
 # Population characteristics ----------------------------------------------------------------
 
 # Study-level total N
+unique_study_n <- chr %>% distinct(id_study, .keep_all = TRUE)
 
+study_total_n <- sum(unique_study_n$n_total, na.rm = TRUE)
+print(study_total_n)
 
 # Age
 summary(chr$age_mean)
@@ -29,12 +33,6 @@ mean(chr$age_mean, na.rm = TRUE)
 
 
 # Gender distribution (prop. female)
-
-chr[575, "gender_female_prop"] = 0.788
-chr[576, "gender_female_prop"] = 0.788
-chr[577, "gender_female_prop"] = 0.788
-chr[578, "gender_female_prop"] = 0.788
-chr[425, "gender_female_prop"] = 0.714
 
 mean(chr$gender_female_prop, na.rm = TRUE) 
 sd(chr$gender_female_prop, na.rm = TRUE) 
