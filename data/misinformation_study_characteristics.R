@@ -51,7 +51,26 @@ chr %>%
   
 #Modality
 
-#Population
+unique_studies <- chr %>%
+  distinct(id_study, .keep_all = TRUE)
+
+modality_study <- unique_studies %>%
+  group_by(modality) %>%
+  summarize(count = n(), .groups = 'drop')
+
+total_studies <- unique_studies %>%
+  summarize(total_count = n())
+print(modality_study)
+
+#Population recruitment
+
+unique_studies <- chr %>%
+  distinct(id_study, .keep_all = TRUE)
+
+population_summary <- unique_studies %>%
+  group_by(population) %>%
+  summarize(total_n = sum(n_total, na.rm = TRUE), count = n(), .groups = 'drop')
+print(population_summary)
 
 #Incentives
 
