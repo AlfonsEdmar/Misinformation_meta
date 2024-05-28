@@ -38,19 +38,31 @@ mean(chr$gender_female_prop, na.rm = TRUE)
 sd(chr$gender_female_prop, na.rm = TRUE) 
 median(chr$gender_female_prop, na.rm = TRUE)
 
-#Countries
-
-id_record <- as.numeric(chr$id_record)
-
-clean_record_id <-data.frame(unique(chr$id_record))
-table(clean_record_id$country)
-
+# Countries
 chr %>%
-  clean_record_id <- data.frame(
-    distinct(id_record))
-  
-#Modality
+  distinct(id_study, .keep_all = TRUE) %>%
+  group_by(country) %>%
+  summarize(total_n = sum(n_total, na.rm = TRUE), count = n(), .groups = 'drop')
+print()
 
+# Preregistration, open data & open materials
+
+#Preregistration
+chr%>%
+  filter(preregistered == 1) %>%
+  distinct(id_record, .keep_all = TRUE)
+
+#Open data
+chr %>%
+  filter(open_data == 1) %>%
+  distinct(id_study, .keep_all = TRUE)
+
+#Open materials
+chr %>%
+  filter(open_materials == 1) %>%
+  distinct(id_study, .keep_all = TRUE)
+
+# Modality
 unique_studies <- chr %>%
   distinct(id_study, .keep_all = TRUE)
 
@@ -63,7 +75,6 @@ total_studies <- unique_studies %>%
 print(modality_study)
 
 #Population recruitment
-
 unique_studies <- chr %>%
   distinct(id_study, .keep_all = TRUE)
 
@@ -75,8 +86,6 @@ print(population_summary)
 #Incentives
 
 #Retention interval 
-
-
 
 
 
