@@ -549,3 +549,33 @@ meta_centrality <- rma.mv(yi      = yi,
                      verbose = F)
 
 saveRDS(meta_centrality, "output/misinformation_meta_centrality.rds")
+
+meta_centrality_no_acc <- rma.mv(yi      = yi, 
+                                 V       = vi,
+                                 random  = list(~1|id_record/id_study/id_control, 
+                                         ~1|event_materials,
+                                         ~1|country,
+                                         ~1|control_type,
+                                         ~1|modality,
+                                         ~1|population,
+                                         ~1|test_type,
+                                         ~1|test_medium,
+                                         ~1|exposure_medium),
+                          mods    = ~ postevent_retention_interval
+                          + item_centrality
+                          + postexposure_retention_interval
+                          + preevent_warning
+                          + postevent_warning
+                          + postexposure_warning
+                          + postevent_recall
+                          + postexposure_recall
+                          + publication_year,
+                          data    = cent_data,
+                          method  = "REML", 
+                          control = list(
+                            iter.max  = 1000,
+                            rel.tol   = 1e-8
+                          ),
+                          verbose = F)
+
+saveRDS(meta_centrality, "output/misinformation_meta_centrality_no_acc.rds")

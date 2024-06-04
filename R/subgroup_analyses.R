@@ -3,6 +3,20 @@
 # Misinformation Meta-analysis - Subgroup analysis  
 
 ################################################################################
+# Loading data
+data_es <- read_csv('data/misinformation_clean_data.csv')
+# Center moderator variables
+data_es <- data_es %>% 
+  mutate(
+    gender_female_prop          = gender_female_prop - .50,
+    publication_year            = publication_year - mean(publication_year, na.rm = TRUE),
+    control_acc                 = case_when(
+      !is.na(total_accuracy_control_mean) ~ total_accuracy_control_mean,
+      is.na(total_accuracy_control_mean) ~ total_accuracy_control_prop
+    ),
+    control_acc = control_acc - mean(control_acc, na.rm = TRUE),
+  )
+
 ## Age analysis----------------------------------------------------------------- 
 age_data <- data_es %>% filter(!is.na(data_es$age_mean))
 
