@@ -1,6 +1,6 @@
 ---
 title: "Subgroup analyses"
-format: pdf
+format: html
 editor: visual
 ---
 
@@ -19,7 +19,6 @@ library(metafor)
 library(here)
 library(tidyverse)
 ```
-
 
 ```{r, echo=FALSE}
 meta_age <- read_rds(here('output/misinformation_meta_age.rds'))
