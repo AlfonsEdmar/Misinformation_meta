@@ -24,14 +24,7 @@ print(study_total_n)
 
 # Age
 
-summary(chr$age_mean)
-summary(na.omit(chr$age_mean))
-clean_age_mean <- na.omit(chr$age_mean)
-na.omit(chr$age_mean)
-as.numeric(chr$age_mean)
-summary(chr$age_mean)
-summary(is.na(chr$age_mean))
-mean(chr$age_mean, na.rm = TRUE) 
+summary(chr$age_mean, na.rm = TRUE) 
 
 
 # Gender distribution (prop. female)
@@ -116,6 +109,5 @@ total_studies <- unique_modality %>%
 print(modality_study)
 
 #Retention interval 
-
 
 
