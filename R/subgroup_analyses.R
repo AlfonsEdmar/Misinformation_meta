@@ -5,7 +5,10 @@
 ################################################################################
 # Loading data
 data_es <- read_csv('data/misinformation_clean_data.csv')
+# Data transformations ---------------------------------------------------------
+
 # Center moderator variables
+
 data_es <- data_es %>% 
   mutate(
     gender_female_prop          = gender_female_prop - .50,
@@ -16,6 +19,17 @@ data_es <- data_es %>%
     ),
     control_acc = control_acc - mean(control_acc, na.rm = TRUE),
   )
+
+# Random effect missingness
+
+data_es$event_materials[is.na(data_es$event_materials)] <- "missing"
+data_es$country[is.na(data_es$country)]                 <- "missing"
+data_es$control_type[is.na(data_es$control_type)]       <- "missing"
+data_es$modality[is.na(data_es$modality)]               <- "missing"
+data_es$population[is.na(data_es$population)]           <- "missing"
+data_es$test_type[is.na(data_es$test_type)]             <- "missing"
+data_es$test_medium[is.na(data_es$test_medium)]         <- "missing"
+data_es$exposure_medium[is.na(data_es$exposure_medium)] <- "missing"
 
 ## Age analysis----------------------------------------------------------------- 
 age_data <- data_es %>% filter(!is.na(data_es$age_mean))
@@ -114,6 +128,7 @@ saveRDS(meta_age_no_acc, 'output/misinformation_meta_age_no_accuracy.rds')
 breaks <- c(0, 5, 18, 40, max(age_data$age_mean))
 labels <- c("0-5", "6-17", "17-40", "41+")
 age_data$age_cat <- cut(age_data$age_mean, breaks = breaks, labels = labels, include.lowest = TRUE)
+age_data$age_cat <- relevel(age_data$age_cat, '17-40')
 
 meta_age_cat   <- rma.mv(yi      = yi, 
                          V       = vi,
@@ -143,7 +158,7 @@ meta_age_cat   <- rma.mv(yi      = yi,
                            rel.tol   = 1e-8
                          ),
                          verbose = F)
-saveRDS(meta_age_no_acc, 'output/misinformation_meta_age_cat.rds')
+saveRDS(meta_age_cat, 'output/misinformation_meta_age_cat.rds')
 
 ## Incentives ------------------------------------------------------------------
 incent_data <- data_es %>% filter(!is.na(data_es$incentives))

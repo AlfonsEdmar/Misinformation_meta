@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>characteristics report</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="characteristics_report_files/libs/clipboard/clipboard.min.js"></script>
+<script src="characteristics_report_files/libs/quarto-html/quarto.js"></script>
+<script src="characteristics_report_files/libs/quarto-html/popper.min.js"></script>
+<script src="characteristics_report_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="characteristics_report_files/libs/quarto-html/anchor.min.js"></script>
+<link href="characteristics_report_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="characteristics_report_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="characteristics_report_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="characteristics_report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="characteristics_report_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">characteristics report</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Loading the data</p>
+<div class="cell" data-print="false">
+
+</div>
+<section id="studiessamplescontrol-by-country" class="level2">
+<h2 class="anchored" data-anchor-id="studiessamplescontrol-by-country">Studies+samples+control by country</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 24 × 5
+   country number_of_samples number_of_studies number_of_control_groups
+   &lt;chr&gt;               &lt;int&gt;             &lt;int&gt;                    &lt;int&gt;
+ 1 us                    161               256                      626
+ 2 gb                     42                52                      142
+ 3 au                     23                32                      102
+ 4 ca                     14                20                       55
+ 5 de                     12                16                       54
+ 6 nz                     10                11                       19
+ 7 pl                      5                 8                       34
+ 8 it                      3                 6                       15
+ 9 il                      4                 5                        8
+10 &lt;NA&gt;                    2                 5                        8
+# ℹ 14 more rows
+# ℹ 1 more variable: number_of_effects &lt;int&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="total-items" class="level2">
+<h2 class="anchored" data-anchor-id="total-items">Total items</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 12
+   mean median    sd n_number mean_control median_control sd_control
+  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;      &lt;dbl&gt;
+1  21.5     20  14.8      111         7.21              6       7.25
+# ℹ 5 more variables: n_number_control &lt;dbl&gt;, mean_misled &lt;dbl&gt;,
+#   median_misled &lt;dbl&gt;, sd_misled &lt;dbl&gt;, n_number_misled &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Note that n_number is the number of distinct item levels across studies. I.e, we across studies, we have 111 different collection of items in terms of how many were used in the recognition test. ## Post event retention(in hours)</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+   mean median    sd   min   max n_number
+  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;
+1  744.    144 3645.     1 52224      107</code></pre>
+</div>
+</div>
+</section>
+<section id="post-exposure-retention" class="level2">
+<h2 class="anchored" data-anchor-id="post-exposure-retention">Post exposure retention</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+   mean median    sd   min   max n_number
+  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;
+1  445.    168 1437.     1  8736      114</code></pre>
+</div>
+</div>
+<p>Gender</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+   mean median sd_co n_number
+  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;
+1 0.610      6  7.25       29</code></pre>
+</div>
+</div>
+<p>Age</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+   mean median    sd n_number
+  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;
+1  4.38    4.5 0.448       35</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+   mean median    sd n_number
+  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;
+1  7.14   6.08  1.86       36</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+   mean median    sd n_number
+  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;
+1  16.6   16.8 0.248        3</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+   mean median    sd n_number
+  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;
+1  22.0   20.4  4.12      177</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+   mean median    sd n_number
+  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;
+1  69.0   72.3  10.1       30</code></pre>
+</div>
+</div>
+</section>
+<section id="proportional-designs" class="level2">
+<h2 class="anchored" data-anchor-id="proportional-designs">Proportional designs</h2>
+<p>This is how many experiemnts used the proportion of the sample of the accuracy rather than mean recognition/recollection.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 162</code></pre>
+</div>
+</div>
+</section>
+<section id="res-design" class="level2">
+<h2 class="anchored" data-anchor-id="res-design">RES design</h2>
+<p>The number of studies that used RES(multiple recall before exposure) design and how many tests they used.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 5
+  n_number  mean median   min   max
+     &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1       93  1.36      1     1     6</code></pre>
+</div>
+</div>
+</section>
+<section id="post-exposure-designs" class="level2">
+<h2 class="anchored" data-anchor-id="post-exposure-designs">Post exposure designs</h2>
+<p>The number of tests that had multiple post exposure recalls.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 5
+  n_number  mean median   min   max
+     &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1       84  1.19      1     1     3</code></pre>
+</div>
+</div>
+</section>
+<section id="event-materials" class="level2">
+<h2 class="anchored" data-anchor-id="event-materials">Event materials</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+      n
+  &lt;int&gt;
+1   324</code></pre>
+</div>
+</div>
+</section>
+<section id="event-medium" class="level2">
+<h2 class="anchored" data-anchor-id="event-medium">Event medium</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 436</code></pre>
+</div>
+</div>
+</section>
+<section id="exposure-metod" class="level2">
+<h2 class="anchored" data-anchor-id="exposure-metod">Exposure metod</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 31 × 2
+   exposure_method    n_number
+   &lt;chr&gt;                 &lt;int&gt;
+ 1 Zaragoza_Lane_1994        2
+ 2 advertisment              2
+ 3 childrens_story           3
+ 4 composite                 4
+ 5 cowitness                23
+ 6 cowittness                1
+ 7 description               2
+ 8 eyewitness                1
+ 9 imagination               1
+10 initial_test             12
+# ℹ 21 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="test-type" class="level2">
+<h2 class="anchored" data-anchor-id="test-type">Test type</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 11 × 2
+   test_type           n_number
+   &lt;chr&gt;                  &lt;int&gt;
+ 1 MMFR                       5
+ 2 color_recognition          1
+ 3 cued_recall              117
+ 4 free_recall               19
+ 5 interpolated_recall        1
+ 6 line_up                    5
+ 7 modified_test             33
+ 8 recognition              271
+ 9 source_monitoring         27
+10 total_recall               4
+11 &lt;NA&gt;                       2</code></pre>
+</div>
+</div>
+</section>
+<section id="open-science-practices" class="level2">
+<h2 class="anchored" data-anchor-id="open-science-practices">Open science practices</h2>
+<p>Note that these are grouped by study, not record, so these are not the numeber of uniquly authord studies in are sample.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  open_data n_number
+      &lt;dbl&gt;    &lt;int&gt;
+1         0      406
+2         1       27</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  open_data_claimed n_number
+              &lt;dbl&gt;    &lt;int&gt;
+1                 0      406
+2                 1       27</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  preregistered n_number
+          &lt;dbl&gt;    &lt;int&gt;
+1             0      426
+2             1        7</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  open_materials n_number
+           &lt;dbl&gt;    &lt;int&gt;
+1              0      415
+2              1       18</code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

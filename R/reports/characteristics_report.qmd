@@ -1,0 +1,220 @@
+---
+title: "characteristics report"
+format: html
+editor: visual
+execute: 
+  echo: false
+---
+
+Loading the data
+```{r message=FALSE, warning=FALSE, print = FALSE}
+library(tidyverse)
+setwd("C:/Users/Edmar001/OneDrive - Universiteit Utrecht/Documents/R/projects/Misinformation_meta")
+df <- read_csv('data/misinformation_clean_data.csv')
+```
+
+## Studies+samples+control by country
+```{r}
+summary_country <- df %>% 
+  group_by(country) %>%
+  summarise(
+    number_of_samples = n_distinct(id_record),
+    number_of_studies = n_distinct(id_study),
+    number_of_control_groups  = n_distinct(id_control),
+    number_of_effects  = n_distinct(id_effect)) %>% 
+  arrange(desc(number_of_studies))
+summary_country
+```
+## Total items
+```{r}
+total_items <- df %>% 
+  summarise(mean      = mean(items_total, na.rm = T),
+            median    = median(items_total, na.rm = T),
+            sd        = sd(items_total, na.rm = T),
+            n_number  = max(items_total, na.rm = T),
+            mean_control      = mean(items_control, na.rm = T),
+            median_control    = median(items_control, na.rm = T),
+            sd_control        = sd(items_control, na.rm = T),
+            n_number_control  = max(items_control, na.rm = T),
+            mean_misled      = mean(items_misled, na.rm = T),
+            median_misled    = median(items_misled, na.rm = T),
+            sd_misled        = sd(items_misled, na.rm = T),
+            n_number_misled  = max(items_misled, na.rm = T))
+print(total_items)
+```
+Note that n_number is the number of distinct item levels across studies. I.e, we across studies, we have 111 different collection of items in terms of how many were used in the recognition test. 
+## Post event retention(in hours)
+```{r}
+postev_ret <- df %>% 
+  filter(postevent_retention_interval >= 1) %>% 
+  summarise(mean      = mean(postevent_retention_interval, na.rm = T),
+            median    = median(postevent_retention_interval, na.rm = T),
+            sd        = sd(postevent_retention_interval, na.rm = T),
+            min       = min(postevent_retention_interval, na.rm = T),
+            max       = max(postevent_retention_interval, na.rm = T),
+            n_number  = n_distinct(id_study, na.rm = T))
+print(postev_ret)
+```
+## Post exposure retention
+```{r}
+postex_ret <- df %>% 
+  filter(postexposure_retention_interval >= 1) %>% 
+  summarise(mean      = mean(postexposure_retention_interval, na.rm = T),
+            median    = median(postexposure_retention_interval, na.rm = T),
+            sd        = sd(postexposure_retention_interval, na.rm = T),
+            min       = min(postexposure_retention_interval, na.rm = T),
+            max       = max(postexposure_retention_interval, na.rm = T),
+            n_number  = n_distinct(id_study, na.rm = T))
+print(postex_ret)
+
+```
+Gender
+```{r}
+gender_prop <- df %>% 
+  summarise(mean      = mean(gender_female_prop, na.rm = T),
+            median    = median(items_control, na.rm = T),
+            sd_co     = sd(items_control, na.rm = T),
+            n_number  = n_distinct(items_control, na.rm = T))
+print(gender_prop)
+```
+Age
+```{r}
+age_cat_preschool <- df %>% 
+  filter(age_mean <= 5) %>% 
+  summarise(mean      = mean(age_mean, na.rm = T),
+            median    = median(age_mean, na.rm = T),
+            sd        = sd(age_mean, na.rm = T),
+            n_number  = n_distinct(id_study))
+print(age_cat_preschool)
+
+age_cat_school <- df %>% 
+  filter(age_mean > 5 & age_mean <= 12) %>% 
+  summarise(mean      = mean(age_mean, na.rm = T),
+            median    = median(age_mean, na.rm = T),
+            sd        = sd(age_mean, na.rm = T),
+            n_number  = n_distinct(id_study))
+print(age_cat_school)
+
+age_cat_teen <- df %>% 
+  filter(age_mean > 13 & age_mean <= 17) %>% 
+  summarise(mean      = mean(age_mean, na.rm = T),
+            median    = median(age_mean, na.rm = T),
+            sd        = sd(age_mean, na.rm = T),
+            n_number  = n_distinct(id_study))
+print(age_cat_teen)
+
+age_cat_adult <- df %>% 
+  filter(age_mean > 18 & age_mean <= 40) %>% 
+  summarise(mean      = mean(age_mean, na.rm = T),
+            median    = median(age_mean, na.rm = T),
+            sd        = sd(age_mean, na.rm = T),
+            n_number  = n_distinct(id_study))
+print(age_cat_adult)
+
+age_cat_aged <- df %>% 
+  filter(age_mean > 40) %>% 
+  summarise(mean      = mean(age_mean, na.rm = T),
+            median    = median(age_mean, na.rm = T),
+            sd        = sd(age_mean, na.rm = T),
+            n_number  = n_distinct(id_study))
+print(age_cat_aged)
+```
+
+## Proportional designs 
+This is how many experiemnts used the proportion of the sample of the accuracy rather than mean recognition/recollection. 
+```{r}
+df %>% 
+  filter(!is.na(accuracy_control_prop)) %>% 
+  NROW()
+```
+
+## RES design
+The number of studies that used RES(multiple recall before exposure) design and how many tests they used.  
+```{r}
+RES_design <- df %>% 
+  filter(postevent_recall >= 1) %>% 
+  summarise(n_number  = n_distinct(id_study, na.rm = T),
+            mean      = mean(postevent_recall),
+            median    = median(postevent_recall),
+            min       = min(postevent_recall),
+            max       = max(postevent_recall))
+print(RES_design)  
+```
+
+## Post exposure designs
+The number of tests that had multiple post exposure recalls.                                                                                                                        
+```{r}
+postex_test <- df %>% 
+  filter(postexposure_recall >= 1) %>% 
+  summarise(n_number  = n_distinct(id_study, na.rm = T),
+            mean      = mean(postexposure_recall),
+            median    = median(postexposure_recall),
+            min       = min(postexposure_recall),
+            max       = max(postexposure_recall))
+print(postex_test)
+```
+
+## Event materials 
+```{r}
+materials <- df %>% 
+  group_by(event_materials) %>%
+  summarise(n_number = n_distinct(id_study))
+
+materials %>% 
+  filter(n_number < 8) %>% 
+  summarise(n = sum(n_number))
+```
+
+## Event medium
+```{r}
+event_medium <- df %>% 
+  group_by(event_medium) %>%
+  summarise(n_number = n_distinct(id_study))
+
+sum(event_medium$n_number)
+```
+
+## Exposure metod
+```{r}
+PEI <- df %>% 
+  group_by(exposure_method) %>%
+  summarise(n_number = n_distinct(id_study))
+print(PEI)
+```
+## Test type
+```{r}
+test_type <- df %>% 
+  group_by(test_type) %>%
+  summarise(n_number = n_distinct(id_study))
+print(test_type)
+
+```
+## Open science practices 
+Note that these are grouped by study, not record, so these are not the numeber of uniquly authord studies in are sample. 
+```{r}
+# open data
+open_data <- df %>% 
+  group_by(open_data) %>%
+  summarise(n_number = n_distinct(id_study))
+print(open_data)
+
+# open data clamied by the authors
+open_data_c <- df %>% 
+  group_by(open_data_claimed) %>%
+  summarise(n_number = n_distinct(id_study))
+print(open_data_c)
+
+# preregistered
+pre_reg <- df %>% 
+  group_by(preregistered) %>%
+  summarise(n_number = n_distinct(id_study))
+print(pre_reg)
+
+# open experimental materials
+open_material <- df %>% 
+  group_by(open_materials) %>%
+  summarise(n_number = n_distinct(id_study))
+print(open_material)
+```
+
+

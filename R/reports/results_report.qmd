@@ -1,0 +1,132 @@
+---
+title: "results_report"
+format: html
+editor: visual
+execute: 
+  echo: false
+---
+
+```{r prepearing and loading data, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(metafor)
+library(cowplot)
+library(MASS)
+
+# Load data 
+data_es <- read_csv('data/misinformation_clean_data.csv')
+
+# Center moderator variables
+
+data_es <- data_es %>% 
+  mutate(
+    gender_female_prop          = gender_female_prop - .50,
+    publication_year            = publication_year - mean(publication_year, na.rm = TRUE),
+    control_acc                 = case_when(
+      !is.na(total_accuracy_control_mean) ~ total_accuracy_control_mean,
+      is.na(total_accuracy_control_mean) ~ total_accuracy_control_prop
+    ),
+    control_acc = control_acc - mean(control_acc, na.rm = TRUE),
+  )
+
+# Random effect missingness
+
+data_es$event_materials[is.na(data_es$event_materials)] <- "missing"
+data_es$country[is.na(data_es$country)]                 <- "missing"
+data_es$control_type[is.na(data_es$control_type)]       <- "missing"
+data_es$modality[is.na(data_es$modality)]               <- "missing"
+data_es$population[is.na(data_es$population)]           <- "missing"
+data_es$test_type[is.na(data_es$test_type)]             <- "missing"
+data_es$test_medium[is.na(data_es$test_medium)]         <- "missing"
+data_es$exposure_medium[is.na(data_es$exposure_medium)] <- "missing"
+```
+
+Fitting models
+
+```{r}
+# Fitting an initial model only accounting for dependencies
+meta_initial <- rma.mv(yi      = yi, 
+                       V       = vi,
+                       random  = list(
+                         ~1|id_record/id_study/id_control),
+                       data    = data_es,
+                       method  = "REML", 
+                       control = list(
+                         iter.max  = 1000,
+                         rel.tol   = 1e-8))
+
+saveRDS(meta_initial,"meta_inital.rds")
+
+# Fitting a full moderation model
+meta_full    <-   rma.mv(yi       = yi, 
+                          V       = vi,
+                          random  = list(
+                             ~1|id_record/id_study/id_control, 
+                             ~1|event_materials,
+                             ~1|country,
+                             ~1|control_type,
+                             ~1|modality,
+                             ~1|population,
+                             ~1|test_type,
+                             ~1|test_medium, 
+                             ~1|exposure_medium),
+                           mods   = 
+                            ~ postevent_retention_interval
+                            + postexposure_retention_interval
+                            + preevent_warning
+                            + postevent_warning
+                            + postexposure_warning
+                            + postevent_recall
+                            + postexposure_recall
+                            + publication_year
+                            + preregistered
+                            + control_acc,
+                          data    = data_es,
+                          method  = "REML", 
+                          control = list(
+                             iter.max  = 1000,
+                             rel.tol   = 1e-8)
+                          )
+```
+
+Interpreting the initial model. 
+```{r}
+summary(meta_initial)
+ranef.rma.mv(meta_initial)
+```
+The model shows that we have substantial heterogeneity across our effects. The $\tau^2$ between records is .28 and the standard deviation of the true effects is .53. The average misinformation effect is .72 with a standard deviation of .03 and a 95% CI(.65|.8). This illustrates that we have a large mean effect of misinformation, but that this effect has a high level of variation across records. Our naive estimation is that misinformation effects fall under a normal distribution of $N(.72, .28)$ as illustrated in the graph below. We also find a high level of variability within studies attributable to the individuals compared in the effects where different control groups.
+```{r}
+x <- seq(-3, 3, length.out = 1000)
+dens <- dnorm(x, .72, .28)
+null <- dnorm(x, 0, 1)
+
+ggplot() +
+  geom_line(aes(x = x, y = dens, col = "blue")) +
+  geom_line(aes(x = x, y = null, col = "red")) +
+  labs(title = "Theoretical Normal Distribution",
+       x = "Hedges' G",
+       y = "Density")+
+  theme_minimal()
+
+
+ggplot() +
+  geom_line(aes(x = x, y = dens, color = "Observed")) +  
+  geom_line(aes(x = x, y = null, color = "Null")) +  
+  labs(title = "Theoretical Effect Distribution",
+       x = "Hedges' G",
+       y = "Density") +
+  scale_color_manual(name = "Distribution",  
+                     values = c("Observed" = "blue",
+                                "Null" = "red")) +  
+  theme_minimal()
+```
+
+
+
+Running the model with robust variance estimation
+
+```{r}
+robust.rma.mv(meta_initial, cluster = id_study)
+```
+
+
+
