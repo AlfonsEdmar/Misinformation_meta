@@ -7,13 +7,14 @@ execute:
 ---
 
 Loading the data
+
 ```{r message=FALSE, warning=FALSE, print = FALSE}
 library(tidyverse)
-setwd("C:/Users/Edmar001/OneDrive - Universiteit Utrecht/Documents/R/projects/Misinformation_meta")
-df <- read_csv('data/misinformation_clean_data.csv')
+df <- read_csv('misinformation_clean_data.csv')
 ```
 
 ## Studies+samples+control by country
+
 ```{r}
 summary_country <- df %>% 
   group_by(country) %>%
@@ -25,7 +26,9 @@ summary_country <- df %>%
   arrange(desc(number_of_studies))
 summary_country
 ```
+
 ## Total items
+
 ```{r}
 total_items <- df %>% 
   summarise(mean      = mean(items_total, na.rm = T),
@@ -42,8 +45,9 @@ total_items <- df %>%
             n_number_misled  = max(items_misled, na.rm = T))
 print(total_items)
 ```
-Note that n_number is the number of distinct item levels across studies. I.e, we across studies, we have 111 different collection of items in terms of how many were used in the recognition test. 
-## Post event retention(in hours)
+
+Note that n_number is the number of distinct item levels across studies. I.e, we across studies, we have 111 different collection of items in terms of how many were used in the recognition test. \## Post event retention(in hours)
+
 ```{r}
 postev_ret <- df %>% 
   filter(postevent_retention_interval >= 1) %>% 
@@ -55,7 +59,9 @@ postev_ret <- df %>%
             n_number  = n_distinct(id_study, na.rm = T))
 print(postev_ret)
 ```
+
 ## Post exposure retention
+
 ```{r}
 postex_ret <- df %>% 
   filter(postexposure_retention_interval >= 1) %>% 
@@ -68,7 +74,9 @@ postex_ret <- df %>%
 print(postex_ret)
 
 ```
+
 Gender
+
 ```{r}
 gender_prop <- df %>% 
   summarise(mean      = mean(gender_female_prop, na.rm = T),
@@ -77,7 +85,9 @@ gender_prop <- df %>%
             n_number  = n_distinct(items_control, na.rm = T))
 print(gender_prop)
 ```
+
 Age
+
 ```{r}
 age_cat_preschool <- df %>% 
   filter(age_mean <= 5) %>% 
@@ -120,8 +130,10 @@ age_cat_aged <- df %>%
 print(age_cat_aged)
 ```
 
-## Proportional designs 
-This is how many experiemnts used the proportion of the sample of the accuracy rather than mean recognition/recollection. 
+## Proportional designs
+
+This is how many experiemnts used the proportion of the sample of the accuracy rather than mean recognition/recollection.
+
 ```{r}
 df %>% 
   filter(!is.na(accuracy_control_prop)) %>% 
@@ -129,7 +141,9 @@ df %>%
 ```
 
 ## RES design
-The number of studies that used RES(multiple recall before exposure) design and how many tests they used.  
+
+The number of studies that used RES(multiple recall before exposure) design and how many tests they used.
+
 ```{r}
 RES_design <- df %>% 
   filter(postevent_recall >= 1) %>% 
@@ -142,7 +156,9 @@ print(RES_design)
 ```
 
 ## Post exposure designs
-The number of tests that had multiple post exposure recalls.                                                                                                                        
+
+The number of tests that had multiple post exposure recalls.
+
 ```{r}
 postex_test <- df %>% 
   filter(postexposure_recall >= 1) %>% 
@@ -154,7 +170,8 @@ postex_test <- df %>%
 print(postex_test)
 ```
 
-## Event materials 
+## Event materials
+
 ```{r}
 materials <- df %>% 
   group_by(event_materials) %>%
@@ -166,6 +183,7 @@ materials %>%
 ```
 
 ## Event medium
+
 ```{r}
 event_medium <- df %>% 
   group_by(event_medium) %>%
@@ -175,13 +193,16 @@ sum(event_medium$n_number)
 ```
 
 ## Exposure metod
+
 ```{r}
 PEI <- df %>% 
   group_by(exposure_method) %>%
   summarise(n_number = n_distinct(id_study))
 print(PEI)
 ```
+
 ## Test type
+
 ```{r}
 test_type <- df %>% 
   group_by(test_type) %>%
@@ -189,8 +210,11 @@ test_type <- df %>%
 print(test_type)
 
 ```
-## Open science practices 
-Note that these are grouped by study, not record, so these are not the numeber of uniquly authord studies in are sample. 
+
+## Open science practices
+
+Note that these are grouped by study, not record, so these are not the numeber of uniquly authord studies in are sample.
+
 ```{r}
 # open data
 open_data <- df %>% 
@@ -216,5 +240,3 @@ open_material <- df %>%
   summarise(n_number = n_distinct(id_study))
 print(open_material)
 ```
-
-
