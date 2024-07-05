@@ -128,7 +128,6 @@ if (!file.exists("output/misinformation_meta_pet.rds")) {
   
 }
 
-meta_pet_ranef <- ranef(meta_pet)
 
 # PEESE
 
