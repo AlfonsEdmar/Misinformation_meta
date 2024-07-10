@@ -139,6 +139,14 @@ age_cat_aged <- df %>%
 print(age_cat_aged)
 ```
 
+## Experimental designs
+
+```{r}
+unique_studies <- df %>% distinct(id_study, .keep_all = TRUE)
+
+table(unique_studies$within_between)
+```
+
 ## Proportional designs
 
 This is how many experiemnts used the proportion of the sample of the accuracy rather than mean recognition/recollection.
