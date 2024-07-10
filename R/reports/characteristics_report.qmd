@@ -27,6 +27,15 @@ summary_country <- df %>%
 summary_country
 ```
 
+## Publication year
+
+```{r}
+df <- read.csv("misinformation_clean_data.csv")
+unique_records <- df %>% distinct(id_record, .keep_all = TRUE)
+median(unique_records$publication_year)
+sum(unique_records$publication_year >= 2018, na.rm = TRUE)
+```
+
 ## Total items
 
 ```{r}
