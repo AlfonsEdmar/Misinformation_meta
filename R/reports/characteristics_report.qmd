@@ -84,7 +84,7 @@ print(postex_ret)
 
 ```
 
-Gender
+## Gender
 
 ```{r}
 gender_prop <- df %>% 
@@ -95,7 +95,7 @@ gender_prop <- df %>%
 print(gender_prop)
 ```
 
-Age
+## Age
 
 ```{r}
 age_cat_preschool <- df %>% 
@@ -207,6 +207,7 @@ event_medium <- df %>%
   summarise(n_number = n_distinct(id_study))
 
 sum(event_medium$n_number)
+print(event_medium)
 ```
 
 ## Exposure metod
@@ -225,6 +226,16 @@ test_type <- df %>%
   group_by(test_type) %>%
   summarise(n_number = n_distinct(id_study))
 print(test_type)
+
+```
+
+## Control comparison
+
+```{r}
+control_comparison <- df %>% 
+  group_by(control_type) %>%
+  summarise(n_number = n_distinct(id_study))
+print(control_comparison)
 
 ```
 
