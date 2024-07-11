@@ -139,6 +139,26 @@ age_cat_aged <- df %>%
 print(age_cat_aged)
 ```
 
+## Population
+
+Sampling method
+
+```{r}
+population_study <- df %>% 
+  group_by(population) %>%
+  summarise(n_number = n_distinct(id_study))
+
+sum(population$n_number)
+print(population_study)
+
+population_n_total <- df %>%
+  distinct(id_study, .keep_all = TRUE) %>%
+  group_by(population) %>%
+  summarise(total_n = sum(n_total))
+print (population_n_total)
+
+```
+
 ## Experimental designs
 
 ```{r}
@@ -210,7 +230,7 @@ sum(event_medium$n_number)
 print(event_medium)
 ```
 
-## Exposure metod
+## Exposure method
 
 ```{r}
 PEI <- df %>% 
@@ -229,7 +249,7 @@ print(test_type)
 
 ```
 
-## Control comparison
+## Control comparison 
 
 ```{r}
 control_comparison <- df %>% 
