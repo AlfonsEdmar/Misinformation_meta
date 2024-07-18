@@ -204,6 +204,14 @@ raw$event_materials[
   raw$event_materials == "zaragoza_girl_in_park_1996"] <- 
   "zaragoza_girl_in_park_1991"
 
+raw$exposure_method[
+  raw$exposure_method == "narratvie"] <- "narrative"
+raw$exposure_method[
+  raw$exposure_method == "questionair"] <- "questionnaire"
+raw$exposure_method[
+  raw$exposure_method == "questionnair"] <- "questionnaire"
+
+
 raw$country[raw$country == "en"] <- "gb"
 raw$country[raw$country == "UK"] <- "gb"
 raw$country[raw$country == "US"] <- "us"
@@ -346,5 +354,4 @@ data_es <- data_es %>%
 # Exporting cleaned data--------------------------------------------------------
 
 # Write a csv file
-
 write.csv(data_es, 'data/misinformation_clean_data.csv')

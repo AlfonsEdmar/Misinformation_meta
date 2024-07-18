@@ -10,8 +10,8 @@ Loading the data
 
 ```{r message=FALSE, warning=FALSE, print = FALSE}
 library(tidyverse)
-
-df <- data_es
+#setwd("C:/Users/Edmar001/OneDrive - Universiteit Utrecht/Documents/R/projects/Misinformation_meta")
+df <- read_csv('data/misinformation_clean_data.csv')
 ```
 
 ## Studies+samples+control by country
@@ -20,12 +20,13 @@ df <- data_es
 summary_country <- df %>% 
   group_by(country) %>%
   summarise(
-    number_of_samples = n_distinct(id_record),
+    number_of_records = n_distinct(id_record),
     number_of_studies = n_distinct(id_study),
     number_of_control_groups  = n_distinct(id_control),
     number_of_effects  = n_distinct(id_effect)) %>% 
   arrange(desc(number_of_studies))
 summary_country
+sum(summary_country$number_of_records)
 ```
 
 ## Total items
@@ -133,7 +134,7 @@ print(age_cat_aged)
 
 ## Proportional designs
 
-This is how many experiemnts used the proportion of the sample of the accuracy rather than mean recognition/recollection.
+This is how many experiments used the proportion of the sample of the accuracy rather than mean recognition/recollection.
 
 ```{r}
 df %>% 
