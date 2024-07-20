@@ -125,15 +125,6 @@ dens <- dnorm(x, .72, .28)
 null <- dnorm(x, 0, 1)
 
 ggplot() +
-  geom_line(aes(x = x, y = dens, col = "blue")) +
-  geom_line(aes(x = x, y = null, col = "red")) +
-  labs(title = "Theoretical Normal Distribution",
-       x = "Hedges' G",
-       y = "Density")+
-  theme_minimal()
-
-
-ggplot() +
   geom_line(aes(x = x, y = dens, color = "Observed")) +  
   geom_line(aes(x = x, y = null, color = "Null")) +  
   labs(title = "Theoretical Effect Distribution",
@@ -159,19 +150,45 @@ Interpreting full model
 
 ```{r}
 summary(meta_full)
-ranef.rma.mv(meta_full)
+re <- ranef.rma.mv(meta_full)
 ```
 
-Let's first look at the random effects and the heterogeneity estimates. We observe a large amount of heterogeneity in both moderating random effects and overall between study heterogeneity. Like in the initial analysis we see a between record heterogeneity of $\tau^2 = .21$ with an ($I^2 = 37$%), no heterogeneity attributable across studies within the same record, and then substantial heterogeneity attributable to the control group used within samples nested in studies at $\tau^2=.15$ with an ($I^2 = 37$%).We also see substantial heterogeneity across event materials($\tau^2 = .06$), the control type used($\tau^2 = .05$), recollection test used($\tau^2 = .05$), and test medium($\tau^2 = .04$).
 
-The average misinformation effect remains unchanged from the initial model with an average effect of $g=.69$ with a 95% confidence interval of CI(0.3193, 1.0644). Moderating effects in the random effects variables can be found in the recognition test type variable where use of the interpolated test and the modified test. The interpolated test generally produces larger than average effects when adjusted for the variables included in the model with a $\beta=.3, SE = .14$. As expected, the modified test significantly reduces the effect size with a $\beta=-.4, SE = .1$. Outside of these effects, no individual level of the moderating variables seems to significantly impact the average effect size.
+```{r}
+re$control_type
 
-We find a fixed effect of the post exposure retention interval, post-exposure warnings, and control accuracy. An increase in the retention interval seems to reduce the effect, by our scale of time intervals we estimate the average effect to decrease by .0002 for every hour after exposure or roughly .034 every week. The precision of this effect is highly dubious but the passage of time between exposure and recall seems to reduce the effect. Post-exposure warnings reduce the misinformation effect by .26 with a 95% CI(-0.37 ,-0.17). Interestingly, the mean centred control accuracy had by far the largest impact on the size of the average misinformation effect with an estimate of 1.95 with a 95% CI(1.78, 2.13). This means that for each percentage point increase in control accuracy from the average accuracy the expected average misinformation effect incenses by .02. This indicates that how large the misinformation is dependent on how easy the events in the materials are to recall, with easier material producing larger effects. This also explains why little variation was found in some of the moderator variables.
+```
+
+
+```{r}
+re$population
+```
+
+
+```{r}
+re$test_type
+```
+
+
+```{r}
+re$test_medium
+```
+
+```{r}
+re$exposure_medium
+```
+
+
+Let's first look at the random effects and the heterogeneity estimates. We observe a large amount of heterogeneity in both moderating random effects and overall between study heterogeneity. Like in the initial analysis we see a between record heterogeneity of tau^2 = .21 with an (I^2 = 37%), no heterogeneity attributable across studies within the same record, and then substantial heterogeneity attributable to the control group used within samples nested in studies at tau^2=.15 with an (I^2 = 37%).We also see substantial heterogeneity across event materials(tau^2 = .06), the control type used(tau^2 = .05), recollection test used(tau^2 = .05), and test medium(tau^2 = .04).
+
+The average misinformation effect remains unchanged from the initial model with an average effect of g=.69 with a 95% confidence interval of CI(0.3193, 1.0644). Moderating effects in the random effects variables can be found in the recognition test type variable where use of the interpolated test and the modified test. The interpolated test generally produces larger than average effects when adjusted for the variables included in the model with a beta=.3, SE = .14. As expected, the modified test significantly reduces the effect size with a beta=-.4, SE = .1. Outside of these effects, no individual level of the moderating variables seems to significantly impact the average effect size.
+
+We find a fixed effect of the post exposure retention interval, post-exposure warnings, and control accuracy. An increase in the retention interval seems to reduce the effect, by our scale of time intervals we estimate the average effect to decrease by .0002 for every hour after exposure or roughly .034 every week. The precision of this effect is highly dubious but the passage of time between exposure and recall seems to reduce the effect. Post-exposure warnings reduce the misinformation effect by .26 with a 95% CI(-0.37 ,-0.17). Interestingly, the mean centred control accuracy had by far the largest impact on the size of the average misinformation effect with an estimate of 1.95 with a 95% CI(1.78, 2.13). This means that for each percentage point increase in control accuracy from the average accuracy the expected average misinformation effect incenses by .02. This indicates that how large the misinformation is dependent on how easy the events in the materials are to recall, with easier material producing larger effects. This also explains why little variation was found in some of the moderator variables..
 
 # Publication bias
 
 ```{r}
-if (file.exists('meta_full_pet.rds'){
+if (file.exists('meta_full_pet.rds')){
 meta_full_pet <- rma.mv(yi      = yi, 
                         V       = vi,
                         random  = list(
@@ -245,7 +262,7 @@ saveRDS(meta_full_peese, 'meta_full_peese.rds')
 
 ```
 
-#Interpreting pet-peese
+Interpreting pet-peese
 
 ```{r}
 summary(meta_full_pet)
@@ -253,3 +270,138 @@ summary(meta_full_peese)
 ```
 
 The pet is significant but also reproduces the effects found in the main models. The peese is also significant but significantly reduces the estimated effect size. This suggests that the presence of publication bias inflates the effect to the extant that the main effect is non-significant. Whether or not this is believable is another question. Personally I do not think this estimate is valid since the effect is clearly established, but that does not mean that our estimate is not inflated. Other models with accounts for dependency differently might be useful here since they give more alternatives on how to account for publication bias such as selection models - but for this we need to fit a normal meta-analysis.
+
+# Sensitivity analysis
+
+Fitting the models
+
+```{r}
+
+if(!file.exists("misinformation_meta_leverage.rds")){
+meta_leverage  <- rma.mv(yi     = yi, 
+                         V      = vi,
+                         random = list(
+                          ~1|id_record/id_study/id_control,
+                          ~1|event_materials,
+                          ~1|country,
+                          ~1|control_type,
+                          ~1|modality,
+                          ~1|population,
+                          ~1|test_type,
+                          ~1|test_medium,
+                          ~1|exposure_medium),
+                          mods    =
+                         ~postevent_retention_interval
+                          + postexposure_retention_interval
+                          + preevent_warning
+                          + postevent_warning
+                          + postexposure_warning
+                          + control_acc
+                          + postevent_recall
+                          + postexposure_recall
+                          + publication_year
+                          + preregistered,
+                         data    = data_es %>%
+                         filter(leverage <leverage_cut),
+                           method  = "REML", 
+                           control = list(
+                             iter.max  = 1000,
+                             rel.tol   = 1e-8
+                           ),
+                           verbose = FALSE)
+
+saveRDS(meta_leverage,"misinformation_meta_leverage.rds")
+}else{meta_leverage <-
+  readRDS("misinformation_meta_leverage.rds")}
+
+if(!file.exists('meta_resid.rds')){
+  meta_resid     <- rma.mv(yi      = yi, 
+                           V       = vi,
+                           random  =list(
+                          ~1|id_record/id_study/id_control,
+                          ~1|event_materials,
+                          ~1|country,
+                          ~1|control_type,
+                          ~1|modality,
+                          ~1|population,
+                          ~1|test_type,
+                          ~1|test_medium,                                                              ~1|exposure_medium),
+                           mods    = 
+                         ~postevent_retention_interval
+                         + postexposure_retention_interval
+                         + preevent_warning
+                         + postevent_warning
+                         + postexposure_warning
+                         + control_acc
+                         + postevent_recall
+                         + postexposure_recall
+                         + publication_year
+                         + preregistered,
+                         data    = data_es %>%
+                          filter(abs(resid) < qnorm(.975)),
+                         method  = "REML", 
+                         control = list(
+                           iter.max  = 1000,
+                           rel.tol   = 1e-8),
+                         verbose = FALSE)
+  saveRDS(meta_resid, "meta_resid.rds")
+}else{
+    meta_resid <- readRDS('meta_resid.rds')
+  }
+  
+```
+
+Interpreting the models.
+
+```{r}
+summary(meta_leverage)
+ranef.rma.mv(meta_leverage)
+
+summary(meta_resid)
+ranef.rma.mv(meta_resid)
+```
+
+Removing potentially influential cases does not impact our results in any meaningful way. The main effects found remains stable and changes in the observed heterogeneity is marginal at best. This speaks to the robustness of our findings, however, it does not mean that our results are unbiased in other areas.
+
+```{r}
+if(!file.exists("misinformation_meta_leverage_peese.rds")){
+meta_leverage_peese  <- rma.mv(yi     = yi, 
+                         V      = vi,
+                         random = list(
+                          ~1|id_record/id_study/id_control,
+                          ~1|event_materials,
+                          ~1|country,
+                          ~1|control_type,
+                          ~1|modality,
+                          ~1|population,
+                          ~1|test_type,
+                          ~1|test_medium,
+                          ~1|exposure_medium),
+                          mods    =
+                         ~postevent_retention_interval
+                          + postexposure_retention_interval
+                          + preevent_warning
+                          + postevent_warning
+                          + postexposure_warning
+                          + control_acc
+                          + postevent_recall
+                          + postexposure_recall
+                          + publication_year
+                          + preregistered
+                          + I(vi),
+                         data    = data_es %>%
+                         filter(leverage <leverage_cut),
+                           method  = "REML", 
+                           control = list(
+                             iter.max  = 1000,
+                             rel.tol   = 1e-8
+                           ),
+                           verbose = FALSE)
+
+saveRDS(meta_leverage,"misinformation_meta_leverage_peese.rds")
+}else{meta_leverage_peese <-
+  readRDS("misinformation_meta_leverage_peese.rds")}
+
+funnel.rma(meta_resid)
+```
+

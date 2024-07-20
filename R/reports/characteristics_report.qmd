@@ -10,7 +10,6 @@ Loading the data
 
 ```{r message=FALSE, warning=FALSE, print = FALSE}
 library(tidyverse)
-#setwd("C:/Users/Edmar001/OneDrive - Universiteit Utrecht/Documents/R/projects/Misinformation_meta")
 df <- read_csv('data/misinformation_clean_data.csv')
 ```
 
@@ -47,6 +46,17 @@ total_items <- df %>%
             n_number_misled  = max(items_misled, na.rm = T))
 print(total_items)
 ```
+
+## Study modality 
+```{r}
+modality <- df %>% 
+  mutate(modality = as.factor(modality)) %>% 
+  filter(!duplicated(id_study) == T) %>% 
+  group_by(modality)%>% 
+  summarise(n_number = NROW(modality))
+print(modality)
+```
+
 
 Note that n_number is the number of distinct item levels across studies. I.e, we across studies, we have 111 different collection of items in terms of how many were used in the recognition test. \## Post event retention(in hours)
 
