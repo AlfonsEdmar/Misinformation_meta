@@ -1,3 +1,3 @@
 # README
 
-This repository is a work-in-process for a meta-analysis of the misinformation effect. Currently, it consists of three folder, one containing the R scripts for the analysis, another containing manuscripts drafts, and a last one containing various data-files needed to conduct the analysis.
+This repository is a work-in-process for a meta-analysis of the misinformation effect. Currently, data collection and analyses are complete and the the manuscript is under construction. For a visual overview see https://alfonsedmar.shinyapps.io/misinformation_visual/. 
