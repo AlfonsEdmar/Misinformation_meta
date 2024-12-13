@@ -36,71 +36,52 @@ data_es$exposure_medium[is.na(data_es$exposure_medium)] <- "missing"
 
 # Age analysis------------------------------------------------------------------ 
 
-age_data <- data_es %>% filter(!is.na(data_es$age_mean))
+age_data <- data_es %>% 
+  filter(!is.na(age_mean))
 
-meta_age   <- rma.mv(yi      = yi, 
-                     V       = vi,
-                     random  = list(~1|id_record/id_study/id_control, 
-                                    ~1|event_materials,
-                                    ~1|country,
-                                    ~1|control_type,
-                                    ~1|modality,
-                                    ~1|population,
-                                    ~1|test_type,
-                                    ~1|test_medium,
-                                    ~1|exposure_medium),
-                     mods    = ~ postevent_retention_interval
-                     + age_mean
-                     + postexposure_retention_interval
-                     + preevent_warning
-                     + postevent_warning
-                     + postexposure_warning
-                     + control_acc
-                     + postevent_recall
-                     + postexposure_recall
-                     + publication_year,
-                     data    = age_data,
-                     method  = "REML", 
-                     control = list(
-                       iter.max  = 1000,
-                       rel.tol   = 1e-8
-                     ),
-                     verbose = TRUE)
+if (!file.exists('output/mema_age.rds')) {
+  
+  meta_age   <- rma.mv(yi      = yi, 
+                       V       = vi,
+                       random  = list(~1|id_record/id_study/id_control, 
+                                      ~1|event_materials,
+                                      ~1|country,
+                                      ~1|control_type,
+                                      ~1|modality,
+                                      ~1|population,
+                                      ~1|test_type,
+                                      ~1|test_medium,
+                                      ~1|exposure_medium),
+                       mods    = ~ postevent_retention_interval
+                       + age_mean
+                       + postexposure_retention_interval
+                       + preevent_warning
+                       + postevent_warning
+                       + postexposure_warning
+                       + control_acc
+                       + postevent_recall
+                       + postexposure_recall
+                       + publication_year
+                       + preregistered,
+                       data    = age_data,
+                       method  = "REML", 
+                       control = list(
+                         iter.max  = 1000,
+                         rel.tol   = 1e-8
+                       ),
+                       verbose = TRUE)
+  
+  saveRDS(meta_age, 'output/mema_age.rds')
+  
+} else {
+  
+  meta_age <- readRDS('output/mema_age.rds')
+  
+}
 
-saveRDS(meta_age, 'output/mema_age.rds')
-
-meta_age_quad  <- rma.mv(yi      = yi, 
-                         V       = vi,
-                         random  = list(~1|id_record/id_study/id_control, 
-                                        ~1|event_materials,
-                                        ~1|country,
-                                        ~1|control_type,
-                                        ~1|modality,
-                                        ~1|population,
-                                        ~1|test_type,
-                                        ~1|test_medium,
-                                        ~1|exposure_medium),
-                         mods    = ~ postevent_retention_interval
-                         + I(age_mean^2)
-                         + postexposure_retention_interval
-                         + preevent_warning
-                         + postevent_warning
-                         + postexposure_warning
-                         + control_acc
-                         + postevent_recall
-                         + postexposure_recall
-                         + publication_year,
-                         data    = age_data,
-                         method  = "REML", 
-                         control = list(
-                           iter.max  = 1000,
-                           rel.tol   = 1e-8
-                         ),
-                         verbose = TRUE)
-
-saveRDS(meta_age_quad, 'output/mema_quad_age.rds')
-
-meta_age_no_acc  <- rma.mv(yi      = yi, 
+if (!file.exists('output/mema_quad_age.rds')) {
+  
+  meta_age_quad  <- rma.mv(yi      = yi, 
                            V       = vi,
                            random  = list(~1|id_record/id_study/id_control, 
                                           ~1|event_materials,
@@ -113,13 +94,102 @@ meta_age_no_acc  <- rma.mv(yi      = yi,
                                           ~1|exposure_medium),
                            mods    = ~ postevent_retention_interval
                            + age_mean
+                           + I(age_mean^2)
                            + postexposure_retention_interval
                            + preevent_warning
                            + postevent_warning
                            + postexposure_warning
+                           + control_acc
                            + postevent_recall
                            + postexposure_recall
-                           + publication_year,
+                           + publication_year
+                           + preregistered,
+                           data    = age_data,
+                           method  = "REML", 
+                           control = list(
+                             iter.max  = 1000,
+                             rel.tol   = 1e-8
+                           ),
+                           verbose = TRUE)
+  
+  saveRDS(meta_age_quad, 'output/mema_quad_age.rds')
+  
+} else {
+  
+  meta_age_quad <- readRDS('output/mema_quad_age.rds')
+  
+}
+
+if (!file.exists('output/mema_age_no_accuracy.rds')) {
+  
+  meta_age_no_acc  <- rma.mv(yi      = yi, 
+                             V       = vi,
+                             random  = list(~1|id_record/id_study/id_control, 
+                                            ~1|event_materials,
+                                            ~1|country,
+                                            ~1|control_type,
+                                            ~1|modality,
+                                            ~1|population,
+                                            ~1|test_type,
+                                            ~1|test_medium,
+                                            ~1|exposure_medium),
+                             mods    = ~ postevent_retention_interval
+                             + age_mean
+                             + postexposure_retention_interval
+                             + preevent_warning
+                             + postevent_warning
+                             + postexposure_warning
+                             + postevent_recall
+                             + postexposure_recall
+                             + publication_year
+                             + preregistered,
+                             data    = age_data,
+                             method  = "REML", 
+                             control = list(
+                               iter.max  = 1000,
+                               rel.tol   = 1e-8
+                             ),
+                             verbose = FALSE)
+  
+  saveRDS(meta_age_no_acc, 'output/mema_age_no_accuracy.rds')
+  
+} else {
+  
+  meta_age_no_acc <- readRDS('output/mema_age_no_accuracy.rds')
+  
+}
+
+# Categorical age
+
+breaks <- c(0, 5, 18, 40, max(age_data$age_mean))
+labels <- c("0-5", "6-17", "17-40", "41+")
+age_data$age_cat <- cut(age_data$age_mean, breaks = breaks, labels = labels, include.lowest = TRUE)
+age_data$age_cat <- relevel(age_data$age_cat, '17-40')
+
+if (!file.exists('output/mema_age_no_accuracy.rds')) {
+  
+  meta_age_cat   <- rma.mv(yi      = yi, 
+                           V       = vi,
+                           random  = list(~1|id_record/id_study/id_control, 
+                                          ~1|event_materials,
+                                          ~1|country,
+                                          ~1|control_type,
+                                          ~1|modality,
+                                          ~1|population,
+                                          ~1|test_type,
+                                          ~1|test_medium,
+                                          ~1|exposure_medium),
+                           mods    = ~ postevent_retention_interval
+                           + age_cat
+                           + postexposure_retention_interval
+                           + preevent_warning
+                           + postevent_warning
+                           + postexposure_warning
+                           + control_acc
+                           + postevent_recall
+                           + postexposure_recall
+                           + publication_year
+                           + preregistered,
                            data    = age_data,
                            method  = "REML", 
                            control = list(
@@ -127,46 +197,14 @@ meta_age_no_acc  <- rma.mv(yi      = yi,
                              rel.tol   = 1e-8
                            ),
                            verbose = FALSE)
-
-saveRDS(meta_age_no_acc, 'output/mema_age_no_accuracy.rds')
-
-
-#Categorical age
-breaks <- c(0, 5, 18, 40, max(age_data$age_mean))
-labels <- c("0-5", "6-17", "17-40", "41+")
-age_data$age_cat <- cut(age_data$age_mean, breaks = breaks, labels = labels, include.lowest = TRUE)
-age_data$age_cat <- relevel(age_data$age_cat, '17-40')
-
-meta_age_cat   <- rma.mv(yi      = yi, 
-                         V       = vi,
-                         random  = list(~1|id_record/id_study/id_control, 
-                                        ~1|event_materials,
-                                        ~1|country,
-                                        ~1|control_type,
-                                        ~1|modality,
-                                        ~1|population,
-                                        ~1|test_type,
-                                        ~1|test_medium,
-                                        ~1|exposure_medium),
-                         mods    = ~ postevent_retention_interval
-                         + age_cat
-                         + postexposure_retention_interval
-                         + preevent_warning
-                         + postevent_warning
-                         + postexposure_warning
-                         + control_acc
-                         + postevent_recall
-                         + postexposure_recall
-                         + publication_year,
-                         data    = age_data,
-                         method  = "REML", 
-                         control = list(
-                           iter.max  = 1000,
-                           rel.tol   = 1e-8
-                         ),
-                         verbose = FALSE)
-
-saveRDS(meta_age_cat, 'output/mema_age_cat.rds')
+  
+  saveRDS(meta_age_cat, 'output/mema_age_cat.rds')
+  
+} else {
+  
+  meta_age_cat <- readRDS('output/mema_age_cat.rds')
+  
+}
 
 # Incentives -------------------------------------------------------------------
 
@@ -177,43 +215,189 @@ incent_data$incentives <- as.factor(incent_data$incentives)
 
 incent_data <- within(incent_data, incentives <- relevel(incentives, 6))
 
-meta_incent<- rma.mv(yi      = yi, 
-                     V       = vi,
-                     random  = list(~1|id_record/id_study/id_control, 
-                                    ~1|event_materials,
-                                    ~1|country,
-                                    ~1|control_type,
-                                    ~1|modality,
-                                    ~1|population,
-                                    ~1|test_type,
-                                    ~1|test_medium,
-                                    ~1|exposure_medium),
-                     mods    = ~ postevent_retention_interval
-                     + incentives
-                     + postexposure_retention_interval
-                     + preevent_warning
-                     + postevent_warning
-                     + postexposure_warning
-                     + control_acc
-                     + postevent_recall
-                     + postexposure_recall
-                     + publication_year,
-                     data    = incent_data,
-                     method  = "REML", 
-                     control = list(
-                       iter.max  = 1000,
-                       rel.tol   = 1e-8
-                     ),
-                     verbose = FALSE)
-
-saveRDS(meta_incent, "output/mema_incent.rds")
+if (!file.exists("output/mema_incent.rds")) {
+  
+  meta_incent <- rma.mv(yi      = yi, 
+                        V       = vi,
+                        random  = list(~1|id_record/id_study/id_control, 
+                                       ~1|event_materials,
+                                       ~1|country,
+                                       ~1|control_type,
+                                       ~1|modality,
+                                       ~1|population,
+                                       ~1|test_type,
+                                       ~1|test_medium,
+                                       ~1|exposure_medium),
+                        mods    = ~ postevent_retention_interval
+                        + incentives
+                        + postexposure_retention_interval
+                        + preevent_warning
+                        + postevent_warning
+                        + postexposure_warning
+                        + control_acc
+                        + postevent_recall
+                        + postexposure_recall
+                        + publication_year
+                        + preregistered,
+                        data    = incent_data,
+                        method  = "REML", 
+                        control = list(
+                          iter.max  = 1000,
+                          rel.tol   = 1e-8
+                        ),
+                        verbose = FALSE)
+  
+  saveRDS(meta_incent, "output/mema_incent.rds")
+  
+} else {
+  
+  meta_incent <- readRDS("output/mema_incent.rds")
+  
+}
 
 # Item Centrality --------------------------------------------------------------
 
 cent_data <- data_es %>% filter(!is.na(item_centrality))
 cent_data$item_centrality <- as.factor(cent_data$item_centrality)
 
-meta_centrality <- rma.mv(yi      = yi, 
+if (!file.exists("output/mema_centrality.rds")) {
+  
+  meta_centrality <- rma.mv(yi      = yi, 
+                            V       = vi,
+                            random  = list(~1|id_record/id_study/id_control, 
+                                           ~1|event_materials,
+                                           ~1|country,
+                                           ~1|control_type,
+                                           ~1|modality,
+                                           ~1|population,
+                                           ~1|test_type,
+                                           ~1|test_medium,
+                                           ~1|exposure_medium),
+                            mods    = ~ postevent_retention_interval
+                            + item_centrality
+                            + postexposure_retention_interval
+                            + preevent_warning
+                            + postevent_warning
+                            + postexposure_warning
+                            + control_acc
+                            + postevent_recall
+                            + postexposure_recall
+                            + publication_year
+                            + preregistered,
+                            data    = cent_data,
+                            method  = "REML", 
+                            control = list(
+                              iter.max  = 1000,
+                              rel.tol   = 1e-8
+                            ),
+                            verbose = FALSE)
+  
+  saveRDS(meta_centrality, "output/mema_centrality.rds")
+  
+} else {
+  
+  meta_centrality <- readRDS("output/mema_centrality.rds")
+  
+}
+
+if (!file.exists("output/mema_centrality.rds")) {
+  
+  meta_centrality_no_acc <- rma.mv(yi      = yi, 
+                                   V       = vi,
+                                   random  = list(~1|id_record/id_study/id_control, 
+                                                  ~1|event_materials,
+                                                  ~1|country,
+                                                  ~1|control_type,
+                                                  ~1|modality,
+                                                  ~1|population,
+                                                  ~1|test_type,
+                                                  ~1|test_medium,
+                                                  ~1|exposure_medium),
+                                   mods    = ~ postevent_retention_interval
+                                   + item_centrality
+                                   + postexposure_retention_interval
+                                   + preevent_warning
+                                   + postevent_warning
+                                   + postexposure_warning
+                                   + postevent_recall
+                                   + postexposure_recall
+                                   + publication_year
+                                   + preregistered,
+                                   data    = cent_data,
+                                   method  = "REML", 
+                                   control = list(
+                                     iter.max  = 1000,
+                                     rel.tol   = 1e-8
+                                   ),
+                                   verbose = FALSE)
+  
+  saveRDS(meta_centrality_no_acc, "output/mema_centrality_no_acc.rds")
+  
+} else {
+  
+  meta_centrality_no_acc <- readRDS("output/mema_centrality_no_acc.rds")
+  
+}
+
+# RES designs ------------------------------------------------------------------
+
+# Create subgroup of studies that feature more than zero post-event recall tests
+
+res_studies <- data_es %>% 
+  filter(postevent_recall > 0) %>% 
+  select(id_study) %>% 
+  unique()
+
+res_data <- data_es %>% 
+  filter(id_study %in% res_studies$id_study)
+
+if (!file.exists('output/mema_res.rds')) {
+  
+  meta_res   <- rma.mv(yi      = yi, 
+                       V       = vi,
+                       random  = list(~1|id_record/id_study/id_control, 
+                                      ~1|event_materials,
+                                      ~1|country,
+                                      ~1|control_type,
+                                      ~1|modality,
+                                      ~1|population,
+                                      ~1|test_type,
+                                      ~1|test_medium,
+                                      ~1|exposure_medium),
+                       mods    = ~ postevent_retention_interval
+                       + postexposure_retention_interval
+                       + preevent_warning
+                       + postevent_warning
+                       + postexposure_warning
+                       + control_acc
+                       + postevent_recall
+                       + postexposure_recall
+                       + publication_year
+                       + preregistered,
+                       data    = res_data,
+                       method  = "REML", 
+                       control = list(
+                         iter.max  = 1000,
+                         rel.tol   = 1e-8
+                       ),
+                       verbose = TRUE)
+  
+  saveRDS(meta_res, 'output/mema_res.rds')
+  
+} else {
+  
+  meta_res <- readRDS('output/mema_res.rds')
+  
+}
+
+# Only comparing zero tests to one test
+
+res_data_01 <- res_data %>% 
+  filter(postevent_recall < 2)
+
+if (!file.exists('output/mema_res_01.rds')) {
+  
+  meta_res_01   <- rma.mv(yi      = yi, 
                           V       = vi,
                           random  = list(~1|id_record/id_study/id_control, 
                                          ~1|event_materials,
@@ -225,7 +409,6 @@ meta_centrality <- rma.mv(yi      = yi,
                                          ~1|test_medium,
                                          ~1|exposure_medium),
                           mods    = ~ postevent_retention_interval
-                          + item_centrality
                           + postexposure_retention_interval
                           + preevent_warning
                           + postevent_warning
@@ -233,43 +416,61 @@ meta_centrality <- rma.mv(yi      = yi,
                           + control_acc
                           + postevent_recall
                           + postexposure_recall
-                          + publication_year,
-                          data    = cent_data,
+                          + publication_year
+                          + preregistered,
+                          data    = res_data_01,
                           method  = "REML", 
                           control = list(
                             iter.max  = 1000,
                             rel.tol   = 1e-8
                           ),
-                          verbose = FALSE)
+                          verbose = TRUE)
+  
+  saveRDS(meta_res_01, 'output/mema_res_01.rds')
+  
+} else {
+  
+  meta_res_01 <- readRDS('output/mema_res_01.rds')
+  
+}
 
-saveRDS(meta_centrality, "output/mema_centrality.rds")
+# Removing control accuracy
 
-meta_centrality_no_acc <- rma.mv(yi      = yi, 
-                          V       = vi,
-                          random  = list(~1|id_record/id_study/id_control, 
-                                         ~1|event_materials,
-                                         ~1|country,
-                                         ~1|control_type,
-                                         ~1|modality,
-                                         ~1|population,
-                                         ~1|test_type,
-                                         ~1|test_medium,
-                                         ~1|exposure_medium),
-                          mods    = ~ postevent_retention_interval
-                          + item_centrality
-                          + postexposure_retention_interval
-                          + preevent_warning
-                          + postevent_warning
-                          + postexposure_warning
-                          + postevent_recall
-                          + postexposure_recall
-                          + publication_year,
-                          data    = cent_data,
-                          method  = "REML", 
-                          control = list(
-                            iter.max  = 1000,
-                            rel.tol   = 1e-8
-                          ),
-                          verbose = FALSE)
+if (!file.exists('output/mema_res_no_acc.rds')) {
+  
+  meta_res_no_acc   <- rma.mv(yi      = yi, 
+                             V       = vi,
+                             random  = list(~1|id_record/id_study/id_control, 
+                                            ~1|event_materials,
+                                            ~1|country,
+                                            ~1|control_type,
+                                            ~1|modality,
+                                            ~1|population,
+                                            ~1|test_type,
+                                            ~1|test_medium,
+                                            ~1|exposure_medium),
+                             mods    = ~ postevent_retention_interval
+                             + postexposure_retention_interval
+                             + preevent_warning
+                             + postevent_warning
+                             + postexposure_warning
+                             + postevent_recall
+                             + postexposure_recall
+                             + publication_year
+                             + preregistered,
+                             data    = res_data,
+                             method  = "REML", 
+                             control = list(
+                               iter.max  = 1000,
+                               rel.tol   = 1e-8
+                             ),
+                             verbose = TRUE)
+  
+  saveRDS(meta_res_no_acc, 'output/mema_res_no_acc.rds')
+  
+} else {
+  
+  meta_res_no_acc <- readRDS('output/mema_res_no_acc.rds')
+  
+}
 
-saveRDS(meta_centrality_no_acc, "output/mema_centrality_no_acc.rds")

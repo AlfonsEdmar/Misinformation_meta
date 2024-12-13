@@ -35,9 +35,7 @@ raw <- raw %>%
 
 raw$id_control <- paste(raw$new, raw$id_temp, sep = "_")
 
-
 raw$id_record <- raw$new
-
 
 raw <- raw %>% 
   extract(
@@ -55,7 +53,6 @@ raw <- raw %>%
   )
 
 raw$id_effect <- str_pad(1:nrow(raw), width = 4, pad = "0")
-
 
 # Replace NA with 0 for open_science variables ---------------------------------
 
@@ -220,6 +217,7 @@ raw$control_type[raw$control_type == "constistent"] <- "consistent"
 raw$control_type[raw$control_type == "no misinformation"] <- "no_misinformation"
 
 raw$incentives[raw$incentives == "course_requirement"] <- "required"
+
 # Setting variables classes-----------------------------------------------------
 
 raw$publication_year     <- as.numeric(raw$publication_year)
@@ -259,65 +257,82 @@ raw$test_medium          <- as.factor(raw$test_medium)
 raw$test_type            <- as.factor(raw$test_type)
 raw$item_centrality      <- as.factor(raw$item_centrality)
 
-raw$total_accuracy_control_mean <- as.numeric(raw$total_accuracy_control_mean)
-raw$total_accuracy_mi_mean      <- as.numeric(raw$total_accuracy_mi_mean)
-raw$total_accuracy_control_sd   <- as.numeric(raw$total_accuracy_control_sd)
-raw$total_accuracy_mi_sd        <- as.numeric(raw$total_accuracy_mi_sd)
-raw$total_accuracy_control_prop <- as.numeric(raw$total_accuracy_control_prop)
-raw$total_accuracy_mi_prop      <- as.numeric(raw$total_accuracy_mi_prop)
+raw$accuracy_control_mean <- as.numeric(raw$accuracy_control_mean)
+raw$accuracy_mi_mean      <- as.numeric(raw$accuracy_mi_mean)
+raw$accuracy_control_sd   <- as.numeric(raw$accuracy_control_sd)
+raw$accuracy_mi_sd        <- as.numeric(raw$accuracy_mi_sd)
+raw$accuracy_control_prop <- as.numeric(raw$accuracy_control_prop)
+raw$accuracy_mi_prop      <- as.numeric(raw$accuracy_mi_prop)
 
 # Imputing missing variances ---------------------------------------------------
 
 set.seed(12343)
 
 # Dividing sample proportion and mean accuracy output data
+
 prop_data <- raw %>%
-  filter(!is.na(total_accuracy_control_prop))
+  filter(!is.na(accuracy_control_prop))
 
 mean_data <- raw %>%
-  filter(is.na(total_accuracy_control_prop))
+  filter(!is.na(accuracy_control_mean))
 
 # Constucting a predictor and missing observations matrix
+
 data <- mean_data %>%
-  filter(is.na(total_accuracy_control_prop)) %>% 
-  select(total_accuracy_control_mean, total_accuracy_mi_mean,
-         total_accuracy_control_sd, total_accuracy_mi_sd,
+  filter(is.na(accuracy_control_prop)) %>%
+  select(accuracy_control_mean, accuracy_mi_mean,
+         accuracy_control_sd , accuracy_mi_sd ,
          n_total, n_control, n_mi)
 
 # Imputing data with missForest
-imp <- missForest(as.matrix(data))
-index <- ifelse(is.na(data$total_accuracy_control_sd), 1, 0)
-imp_data <- cbind(as.data.frame(imp$ximp), index)
+
+imp            <- missForest(as.matrix(data))
+index          <- ifelse(is.na(data$accuracy_control_sd), 1, 0)
+imp_data       <- cbind(as.data.frame(imp$ximp), index)
 imp_data$index <- factor(imp_data$index)
 
 # Checking output 
-ggplot(imp_data, aes(col = index, group = index))+
-  geom_point(aes(x = total_accuracy_control_sd,
-                 y = total_accuracy_mi_sd), 
-                 alpha = .4)+
-  geom_smooth(aes(x = total_accuracy_control_sd,
-                  y = total_accuracy_mi_sd), 
-              method = 'lm')+
+
+ggplot(imp_data %>% 
+         filter(accuracy_control_sd < 15), 
+       aes(
+         col = index, 
+         group = index)
+  ) +
+  geom_point(
+    aes(
+      x = accuracy_control_sd, 
+      y = accuracy_mi_sd), 
+    alpha = .4
+  ) +
+  geom_smooth(
+    aes(
+      x = accuracy_control_sd,
+      y = accuracy_mi_sd), 
+    method = 'lm'
+  ) +
   theme_bw()
 
 
 # Wrangling an indicator for imputation
-mean_data <- cbind(mean_data, imp_data$index)
-names(mean_data)[NCOL(mean_data)] = 'sd_imputed'
-prop_data$sd_imputed <- rep(0, NROW(prop_data))
 
-mean_data$total_accuracy_control_sd <- imp_data$total_accuracy_control_sd
-mean_data$total_accuracy_mi_sd <- imp_data$total_accuracy_mi_sd
+mean_data                         <- cbind(mean_data, imp_data$index)
+names(mean_data)[ncol(mean_data)] <-  'sd_imputed'
+prop_data$sd_imputed              <- rep(0, nrow(prop_data))
+
+mean_data$accuracy_control_sd <- imp_data$accuracy_control_sd
+mean_data$accuracy_mi_sd      <- imp_data$accuracy_mi_sd
 
 
 # Calculating effect sizes for meta-analyses------------------------------------
+
 ## Calculating log odds ratio
 
 es_prop <- escalc(data    = prop_data,
-                  ci      = total_accuracy_mi_prop * n_mi,
-                  di      = (1 - total_accuracy_mi_prop) * n_mi,
-                  ai      = total_accuracy_control_prop * n_control,
-                  bi      = (1 - total_accuracy_control_prop) * n_control,
+                  ci      = accuracy_mi_prop * n_mi,
+                  di      = (1 - accuracy_mi_prop) * n_mi,
+                  ai      = accuracy_control_prop * n_control,
+                  bi      = (1 - accuracy_control_prop) * n_control,
                   measure = 'OR')
 
 ### Transforming log odds to standardized mean difference
@@ -329,13 +344,27 @@ es_prop <- es_prop %>%
 ## Calculating Hedges's g (standardized mean difference)
 
 es_mean <- escalc(data    = mean_data,
-                  m1i     = total_accuracy_control_mean,
-                  m2i     = total_accuracy_mi_mean,
-                  sd1i    = total_accuracy_control_sd,
-                  sd2i    = total_accuracy_mi_sd,
+                  m1i     = accuracy_control_mean,
+                  m2i     = accuracy_mi_mean,
+                  sd1i    = accuracy_control_sd,
+                  sd2i    = accuracy_mi_sd,
                   n1i     = n_control,
                   n2i     = n_mi,
                   measure = 'SMD')
+
+### Reverse effects as necessary
+
+es_mean <- es_mean %>% 
+  mutate(
+    yi = case_when(
+      accuracy_reverse == 0 ~  yi,
+      accuracy_reverse == 1 ~ -yi
+    )
+  )
+
+## Bind data
+
+es_prop$sd_imputed <- as.factor(es_prop$sd_imputed)
 
 data_es <- rbind(es_mean, es_prop)
 
@@ -354,4 +383,5 @@ data_es <- data_es %>%
 # Exporting cleaned data--------------------------------------------------------
 
 # Write a csv file
+
 write.csv(data_es, 'data/misinformation_clean_data.csv')
