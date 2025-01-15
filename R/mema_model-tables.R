@@ -13,7 +13,7 @@ source("R/mema_reporting-functions.R")
 report_table_primary     <- extract_table_data(meta_primary) %>% 
   standard_table()
 
-## PET-PEESE
+# PET-PEESE
 
 report_table_pet         <- extract_table_data(meta_pet) %>% 
   standard_table()
@@ -21,7 +21,7 @@ report_table_pet         <- extract_table_data(meta_pet) %>%
 report_table_peese       <- extract_table_data(meta_peese) %>% 
   standard_table()
 
-## Robustness checks
+# Robustness checks
 
 report_table_leverage    <- extract_table_data(meta_leverage) %>% 
   standard_table()
@@ -96,11 +96,15 @@ if (!dir.exists("output/tables")) {
 ## Primary results
 
 save_as_docx("Primary" = report_table_primary,
-             "PET"     = report_table_pet,
-             "PEESE"   = report_table_peese,
              path      = "output/tables/mema_table_primary.docx")
 
-### Robustness checks
+## PET-PEESE
+
+save_as_docx("PET"     = report_table_pet,
+             "PEESE"   = report_table_peese,
+             path      = "output/tables/mema_table_pet-peese.docx")
+
+## Robustness checks
 
 save_as_docx("Leverage"         = report_table_leverage,
              "Leverage: PET"    = report_table_pet_lev,

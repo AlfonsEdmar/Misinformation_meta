@@ -17,8 +17,8 @@ data_es <- data_es %>%
     gender_female_prop          = gender_female_prop - .50,
     publication_year            = publication_year - mean(publication_year, na.rm = TRUE),
     control_acc                 = case_when(
-      !is.na(total_accuracy_control_mean) ~ total_accuracy_control_mean,
-      is.na(total_accuracy_control_mean) ~ total_accuracy_control_prop
+      !is.na(accuracy_control_mean) ~ accuracy_control_mean,
+      is.na(accuracy_control_mean) ~ accuracy_control_prop
     ),
     control_acc = control_acc - mean(control_acc, na.rm = TRUE),
   )
@@ -166,7 +166,7 @@ labels <- c("0-5", "6-17", "17-40", "41+")
 age_data$age_cat <- cut(age_data$age_mean, breaks = breaks, labels = labels, include.lowest = TRUE)
 age_data$age_cat <- relevel(age_data$age_cat, '17-40')
 
-if (!file.exists('output/mema_age_no_accuracy.rds')) {
+if (!file.exists('output/mema_age_cat.rds')) {
   
   meta_age_cat   <- rma.mv(yi      = yi, 
                            V       = vi,
@@ -300,7 +300,7 @@ if (!file.exists("output/mema_centrality.rds")) {
   
 }
 
-if (!file.exists("output/mema_centrality.rds")) {
+if (!file.exists("output/mema_centrality_no_acc.rds")) {
   
   meta_centrality_no_acc <- rma.mv(yi      = yi, 
                                    V       = vi,
