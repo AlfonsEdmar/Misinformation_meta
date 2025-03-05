@@ -83,6 +83,21 @@ if (!file.exists("output/mema_primary.rds")) {
 
 meta_primary_ranef <- ranef(meta_primary)
 
+# Heterogeneity
+
+# This code is adapted from
+# https://www.metafor-project.org/doku.php/tips:i2_multilevel_multivariate
+
+W <- diag(1/meta_primary$vi)
+
+X <- model.matrix(meta_primary)
+
+P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
+
+I2 <- 100 * sum(meta_primary$sigma2) / (sum(meta_primary$sigma2) + (meta_primary$k - meta_primary$p)/sum(diag(P)))
+
+I2_components <- round(100 * meta_primary$sigma2 / (sum(meta_primary$sigma2) + (meta_primary$k-meta_primary$p)/sum(diag(P))), 2)
+
 # Bias correction --------------------------------------------------------------
 
 # PET

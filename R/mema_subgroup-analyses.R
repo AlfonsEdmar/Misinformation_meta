@@ -37,7 +37,10 @@ data_es$exposure_medium[is.na(data_es$exposure_medium)] <- "missing"
 # Age analysis------------------------------------------------------------------ 
 
 age_data <- data_es %>% 
-  filter(!is.na(age_mean))
+  filter(!is.na(age_mean)) %>% 
+  mutate(
+    age_mean = age_mean - mean(age_mean, na.rm = TRUE)
+  )
 
 if (!file.exists('output/mema_age.rds')) {
   
@@ -161,7 +164,7 @@ if (!file.exists('output/mema_age_no_accuracy.rds')) {
 
 # Categorical age
 
-breaks <- c(0, 5, 18, 40, max(age_data$age_mean))
+breaks <- c(0, 5, 18, 40, max(data_es$age_mean, na.rm = TRUE))
 labels <- c("0-5", "6-17", "17-40", "41+")
 age_data$age_cat <- cut(age_data$age_mean, breaks = breaks, labels = labels, include.lowest = TRUE)
 age_data$age_cat <- relevel(age_data$age_cat, '17-40')
@@ -257,7 +260,9 @@ if (!file.exists("output/mema_incent.rds")) {
 
 # Item Centrality --------------------------------------------------------------
 
-cent_data <- data_es %>% filter(!is.na(item_centrality))
+cent_data <- data_es %>% 
+  filter(!is.na(item_centrality))
+
 cent_data$item_centrality <- as.factor(cent_data$item_centrality)
 
 if (!file.exists("output/mema_centrality.rds")) {
