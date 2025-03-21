@@ -16,17 +16,28 @@ data_es <- read_csv('data/misinformation_clean_data.csv')
 
 # Data transformations ---------------------------------------------------------
 
-# Center moderator variables
+# Calculate and center moderator variables
 
 data_es <- data_es %>% 
   mutate(
     gender_female_prop          = gender_female_prop - .50,
     publication_year            = publication_year - mean(publication_year, na.rm = TRUE),
+    # Calculate control accuracy
     control_acc                 = case_when(
       !is.na(accuracy_control_mean) ~ accuracy_control_mean,
        is.na(accuracy_control_mean) ~ accuracy_control_prop
     ),
-    control_acc = control_acc - mean(control_acc, na.rm = TRUE),
+    control_acc = case_when(
+      accuracy_type == "count"      ~ control_acc / items_control,
+      accuracy_type == "proportion" ~ control_acc,
+    ),
+    # Handle edge cases where accuracy was calculated using total items instead
+    # of specific item types
+    control_acc = case_when(
+      control_acc >  1 ~ accuracy_control_mean / items_total,
+      control_acc <= 1 ~ control_acc
+    ), 
+    control_acc = control_acc - mean(control_acc, na.rm = TRUE)
   )
 
 # Random effect missingness
@@ -129,8 +140,9 @@ if (!file.exists("output/mema_pet.rds")) {
                            data   = data_es,
                            method = "REML",
                            control = list(
-                             iter.max  = 1000,
-                             rel.tol   = 1e-8
+                             iter.max    = 1000,
+                             rel.tol     = 1e-8, 
+                             sigma2.init = meta_primary$sigma2
                            ),
                            verbose = TRUE)
   
@@ -142,7 +154,6 @@ if (!file.exists("output/mema_pet.rds")) {
   meta_pet <- readRDS("output/mema_pet.rds")
   
 }
-
 
 # PEESE
 
@@ -173,8 +184,9 @@ if (!file.exists("output/mema_peese.rds")) {
                            data   = data_es,
                            method = "REML",
                            control = list(
-                             iter.max  = 1000,
-                             rel.tol   = 1e-8
+                             iter.max    = 1000,
+                             rel.tol     = 1e-8, 
+                             sigma2.init = meta_primary$sigma2
                            ),
                            verbose = TRUE)
   
@@ -259,8 +271,8 @@ pred_control_acc <- predict(meta_primary,
                               rep(0, 100),
                               rep(0, 100),
                               rep(0, 100),
-                              seq(min(data_es$control_acc),
-                                  max(data_es$control_acc), 
+                              seq(min(data_es$control_acc, na.rm = TRUE),
+                                  max(data_es$control_acc, na.rm = TRUE), 
                                   length.out = 100),
                               rep(0, 100),
                               rep(0, 100),
@@ -268,16 +280,16 @@ pred_control_acc <- predict(meta_primary,
                               rep(0, 100)
                             ))
 
-pred_control_acc$control_acc <- seq(min(data_es$control_acc),
-                                    max(data_es$control_acc), 
-                                    length.out = 100) - min(data_es$control_acc)
+pred_control_acc$control_acc <- seq(min(data_es$control_acc, na.rm = TRUE),
+                                    max(data_es$control_acc, na.rm = TRUE), 
+                                    length.out = 100) - min(data_es$control_acc, na.rm = TRUE)
 
 # Visualization of control accuracy
 
 scatter_control_acc <-
   ggplot(data_es,
          aes(
-           x = control_acc - min(control_acc),
+           x = control_acc - min(control_acc, na.rm = TRUE),
            y = yi
          )) +
   geom_vline(
@@ -470,8 +482,8 @@ pred_acc_peese   <- predict(meta_peese,
                               rep(0, 100),
                               rep(0, 100),
                               rep(0, 100),
-                              seq(min(data_es$control_acc),
-                                  max(data_es$control_acc), 
+                              seq(min(data_es$control_acc, na.rm = TRUE),
+                                  max(data_es$control_acc, na.rm = TRUE), 
                                   length.out = 100),
                               rep(0, 100),
                               rep(0, 100),
@@ -480,8 +492,8 @@ pred_acc_peese   <- predict(meta_peese,
                               rep(0, 100)
                             ))
 
-pred_acc_peese$control_acc   <- seq(min(data_es$control_acc),
-                                    max(data_es$control_acc), 
+pred_acc_peese$control_acc   <- seq(min(data_es$control_acc, na.rm = TRUE),
+                                    max(data_es$control_acc, na.rm = TRUE), 
                                     length.out = 100) - min(data_es$control_acc)
 
 # Visualization of control accuracy
@@ -613,8 +625,9 @@ if (!file.exists("output/mema_leverage.rds")) {
                              filter(leverage < leverage_cut),
                            method  = "REML", 
                            control = list(
-                             iter.max  = 1000,
-                             rel.tol   = 1e-8
+                             iter.max    = 1000,
+                             rel.tol     = 1e-8, 
+                             sigma2.init = meta_primary$sigma2
                            ),
                            verbose = TRUE)
   
@@ -660,8 +673,9 @@ if (!file.exists("output/mema_pet_leverage.rds")) {
                                  filter(leverage < leverage_cut),
                                method  = "REML", 
                                control = list(
-                                 iter.max  = 1000,
-                                 rel.tol   = 1e-8
+                                 iter.max    = 1000,
+                                 rel.tol     = 1e-8, 
+                                 sigma2.init = meta_primary$sigma2
                                ),
                                verbose = TRUE)
   
@@ -705,8 +719,9 @@ if (!file.exists("output/mema_peese_leverage.rds")) {
                                    filter(leverage < leverage_cut),
                                  method  = "REML", 
                                  control = list(
-                                   iter.max  = 1000,
-                                   rel.tol   = 1e-8
+                                   iter.max    = 1000,
+                                   rel.tol     = 1e-8, 
+                                   sigma2.init = meta_primary$sigma2
                                  ),
                                  verbose = TRUE)
   
@@ -749,8 +764,9 @@ if (!file.exists("output/mema_resid.rds")) {
                              filter(abs(resid) < qnorm(.975)),
                            method  = "REML", 
                            control = list(
-                             iter.max  = 1000,
-                             rel.tol   = 1e-8
+                             iter.max    = 1000,
+                             rel.tol     = 1e-8, 
+                             sigma2.init = meta_primary$sigma2
                            ),
                            verbose = TRUE)
   
@@ -796,8 +812,9 @@ if (!file.exists("output/mema_pet_resid.rds")) {
                                  filter(abs(resid) < qnorm(.975)),
                                method  = "REML", 
                                control = list(
-                                 iter.max  = 1000,
-                                 rel.tol   = 1e-8
+                                 iter.max    = 1000,
+                                 rel.tol     = 1e-8, 
+                                 sigma2.init = meta_primary$sigma2
                                ),
                                verbose = TRUE)
   
@@ -841,8 +858,9 @@ if (!file.exists("output/mema_peese_resid.rds")) {
                                    filter(abs(resid) < qnorm(.975)),
                                  method  = "REML", 
                                  control = list(
-                                   iter.max  = 1000,
-                                   rel.tol   = 1e-8
+                                   iter.max    = 1000,
+                                   rel.tol     = 1e-8, 
+                                   sigma2.init = meta_primary$sigma2
                                  ),
                                  verbose = TRUE)
   
@@ -885,8 +903,9 @@ if (!file.exists("output/mema_primary_imp.rds")) {
                                  filter(sd_imputed == 0),
                                method  = "REML", 
                                control = list(
-                                 iter.max  = 1000,
-                                 rel.tol   = 1e-8
+                                 iter.max    = 1000,
+                                 rel.tol     = 1e-8, 
+                                 sigma2.init = meta_primary$sigma2
                                ),
                                verbose = TRUE)
   
@@ -930,8 +949,9 @@ if (!file.exists("output/mema_pet_imp.rds")) {
                                  filter(sd_imputed == 0),
                                method = "REML",
                                control = list(
-                                 iter.max  = 1000,
-                                 rel.tol   = 1e-8
+                                 iter.max    = 1000,
+                                 rel.tol     = 1e-8, 
+                                 sigma2.init = meta_primary$sigma2
                                ),
                                verbose = TRUE)
   
@@ -974,8 +994,9 @@ if (!file.exists("output/mema_peese_imp.rds")) {
                                  filter(sd_imputed == 0),
                                method = "REML",
                                control = list(
-                                 iter.max  = 1000,
-                                 rel.tol   = 1e-8
+                                 iter.max    = 1000,
+                                 rel.tol     = 1e-8, 
+                                 sigma2.init = meta_primary$sigma2
                                ),
                                verbose = TRUE)
   
@@ -986,3 +1007,4 @@ if (!file.exists("output/mema_peese_imp.rds")) {
   meta_peese_imp <- readRDS("output/mema_peese_imp.rds")
   
 }
+_

@@ -4,23 +4,34 @@
 
 ################################################################################
 
-# Loading data
+# Load data --------------------------------------------------------------------
 
 data_es <- read_csv('data/misinformation_clean_data.csv')
 
 # Data transformations ---------------------------------------------------------
 
-# Center moderator variables
+# Calculate and center moderator variables
 
 data_es <- data_es %>% 
   mutate(
     gender_female_prop          = gender_female_prop - .50,
     publication_year            = publication_year - mean(publication_year, na.rm = TRUE),
+    # Calculate control accuracy
     control_acc                 = case_when(
       !is.na(accuracy_control_mean) ~ accuracy_control_mean,
       is.na(accuracy_control_mean) ~ accuracy_control_prop
     ),
-    control_acc = control_acc - mean(control_acc, na.rm = TRUE),
+    control_acc = case_when(
+      accuracy_type == "count"      ~ control_acc / items_control,
+      accuracy_type == "proportion" ~ control_acc,
+    ),
+    # Handle edge cases where accuracy was calculated using total items instead
+    # of specific item types
+    control_acc = case_when(
+      control_acc >  1 ~ accuracy_control_mean / items_total,
+      control_acc <= 1 ~ control_acc
+    ), 
+    control_acc = control_acc - mean(control_acc, na.rm = TRUE)
   )
 
 # Random effect missingness

@@ -13,7 +13,7 @@ library(metafor)
 
 # Load data --------------------------------------------------------------------
 
-raw <- read_xlsx("data/full_data_2024.xlsx", sheet = 1)
+raw <- read_xlsx("data/misinformation_full_data_2024.xlsx", sheet = 1)
 
 # Redo IDs ---------------------------------------------------------------------
 
