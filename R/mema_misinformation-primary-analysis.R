@@ -949,5 +949,5 @@ grid_plot <- plot_grid(grid_upper,
 
 save_plot("figures/mema_grid-full.png",
           grid_plot, 
-          base_height = 12,
-          base_width  = 8)
+          base_height = 14,
+          base_width  = 9)
