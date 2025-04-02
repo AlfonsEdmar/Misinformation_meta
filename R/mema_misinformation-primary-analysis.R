@@ -9,6 +9,7 @@
 library(tidyverse)
 library(metafor)
 library(cowplot)
+library(ggbeeswarm)
 
 # Load data --------------------------------------------------------------------
 
@@ -21,6 +22,7 @@ data_es <- read_csv('data/misinformation_clean_data.csv')
 data_es <- data_es %>% 
   mutate(
     gender_female_prop          = gender_female_prop - .50,
+    year_raw                    = publication_year,
     publication_year            = publication_year - mean(publication_year, na.rm = TRUE),
     # Calculate control accuracy
     control_acc                 = case_when(
@@ -211,25 +213,31 @@ se_seq   <- seq(.5, ceiling(max(sqrt(data_es$vi))), length.out = 100)
 ub95 <- meta_primary$beta[[1]] + 1/(se_seq*qnorm(.975))
 lb95 <- meta_primary$beta[[1]] - 1/(se_seq*qnorm(.975))
 
+ub95_null <-  1/(se_seq*qnorm(.975))
+lb95_null <- -1/(se_seq*qnorm(.975))
+
 funnel_plot <- 
   ggplot(data_es, 
          aes(
            x = yi, 
            y = precision)
   ) +
+  # Effect size points
   geom_point(
     shape = 1, 
     color = "black",
-    alpha = .40
+    alpha = .25
   ) +
+  # Confidence bands around point estimate
   geom_line(
     data = data.frame(prec_seq, se_seq, lb95, ub95),
     aes(
       y = prec_seq,
       x = lb95
     ),
-    linetype = "dashed",
-    alpha    = .50
+    linetype  = "dashed",
+    alpha     = .50,
+    linewidth = 1
   ) +
   geom_line(
     data = data.frame(prec_seq, se_seq, lb95, ub95),
@@ -237,9 +245,30 @@ funnel_plot <-
       y = prec_seq,
       x = ub95
     ),
-    linetype = "dashed",
+    linetype  = "dashed",
+    alpha     = .50,
+    linewidth = 1
+  ) +
+  # Confidence bands around zero
+  geom_line(
+    data = data.frame(prec_seq, se_seq, lb95_null, ub95_null),
+    aes(
+      y = prec_seq,
+      x = lb95_null
+    ),
+    linetype = "dotted",
     alpha    = .50
   ) +
+  geom_line(
+    data = data.frame(prec_seq, se_seq, lb95_null, ub95_null),
+    aes(
+      y = prec_seq,
+      x = ub95_null
+    ),
+    linetype = "dotted",
+    alpha    = .50
+  ) +
+  # Point estimate and zero lines
   geom_vline(
     xintercept = 0, 
     alpha      = .50,
@@ -248,17 +277,21 @@ funnel_plot <-
   geom_vline(
     xintercept = meta_primary$beta[[1]], 
     alpha      = .50,
-    linetype   = "dashed"
+    linetype   = "dashed",
+    linewidth  = 1
   ) +
+  # x-axis
   scale_x_continuous(
-    breaks = seq(-8, 8, .5)
+    breaks = seq(-4, 8, 1),
+    limits = c(-4, 8)
   ) +
+  # Labels and theme
   xlab("Effect Size") +
   ylab("Precision (inverse variance)") +
   theme_classic()
 
 save_plot("figures/mema_funnel-plot.png", funnel_plot,
-          base_height = 4.5, base_width = 10)
+          base_height = 6, base_width = 6)
 
 # Control accuracy exploration -------------------------------------------------
 
@@ -293,16 +326,24 @@ scatter_control_acc <-
            y = yi
          )) +
   geom_vline(
-    xintercept = abs(min(data_es$control_acc)),
-    linetype   = "dotted"
+    xintercept = abs(min(data_es$control_acc, na.rm = TRUE)),
+    linetype   = "dashed"
   ) +
   geom_hline(
     yintercept = meta_primary$beta[[1]],
+    linetype   = "dashed",
+    linewidth  = 1
+  ) +
+  geom_hline(
+    yintercept = 0,
     linetype   = "dotted"
   ) +
   geom_point(
+    aes(
+      size = 1/vi
+    ),
     shape = 1,
-    alpha = .15
+    alpha = .25
   ) +
   geom_line(
     data = as.data.frame(pred_control_acc),
@@ -310,9 +351,10 @@ scatter_control_acc <-
       x = control_acc,
       y = pred
     ),
-    linetype = "solid",
-    alpha    = .80,
-    color    = "darkred"
+    linetype  = "solid",
+    alpha     = .80,
+    color     = "darkred",
+    linewidth = 1
   ) +
   geom_line(
     data = as.data.frame(pred_control_acc),
@@ -320,9 +362,10 @@ scatter_control_acc <-
       x = control_acc,
       y = ci.lb
     ),
-    linetype = "dotted",
-    alpha    = .80,
-    color    = "darkred"
+    linetype  = "dashed",
+    alpha     = .80,
+    color     = "darkred",
+    linewidth = 1
   ) +
   geom_line(
     data = as.data.frame(pred_control_acc),
@@ -330,241 +373,30 @@ scatter_control_acc <-
       x = control_acc,
       y = ci.ub
     ),
-    linetype = "dotted",
-    alpha    = .80,
-    color    = "darkred"
-  ) +
-  geom_hline(
-    yintercept = 0,
-    linetype   = "dashed"
+    linetype  = "dashed",
+    alpha     = .80,
+    color     = "darkred",
+    linewidth = 1
   ) +
   scale_x_continuous(
-    breaks = seq(0, 1, .05)
+    breaks = seq(0, 1, .10)
   ) +
   scale_y_continuous(
-    breaks = seq(-6, 8, .5)
+    breaks = seq(-4, 8, 1),
+    limits = c(-4, 8)
   ) +
   labs(
     x = "Control Accuracy",
     y = "Effect size"
+  ) +
+  guides(
+    size = "none"
   ) +
   theme_classic()
 
 save_plot("figures/mema_control-accuracy-plot.png", 
           scatter_control_acc,
-          base_height = 8, base_width = 8)
-
-## Modified test
-
-data_es <- data_es %>% 
-  mutate(
-    modified = case_when(
-      test_type == "modified_test"                    ~ "modified",
-      test_type != "modified_test" | is.na(test_type) ~ "other"
-    )
-  )
-
-scatter_control_acc_modified <- 
-  ggplot(data_es,
-         aes(
-           x     = control_acc - min(control_acc),
-           y     = yi,
-           color = modified
-         )) +
-  geom_vline(
-    xintercept = abs(min(data_es$control_acc)),
-    linetype   = "dotted"
-  ) +
-  geom_hline(
-    yintercept = meta_primary$beta[[1]],
-    linetype   = "dotted"
-  ) +
-  geom_point(
-    shape = 1,
-    alpha = .15
-  ) +
-  geom_point(
-    shape = 1,
-    alpha = .50
-  ) +
-  geom_line(
-    data = as.data.frame(pred_control_acc),
-    aes(
-      x = control_acc,
-      y = pred
-    ),
-    linetype = "solid",
-    alpha    = .80,
-    color    = "#23001E"
-  ) +
-  geom_line(
-    data = as.data.frame(pred_control_acc),
-    aes(
-      x = control_acc,
-      y = ci.lb
-    ),
-    linetype = "dotted",
-    alpha    = .80,
-    color    = "#23001E"
-  ) +
-  geom_line(
-    data = as.data.frame(pred_control_acc),
-    aes(
-      x = control_acc,
-      y = ci.ub
-    ),
-    linetype = "dotted",
-    alpha    = .80,
-    color    = "#23001E"
-  ) +
-  geom_line(
-    data = as.data.frame(pred_control_acc),
-    aes(
-      x = control_acc,
-      y = pred + meta_primary_ranef$test_type["modified_test", 1]
-    ),
-    linetype = "solid",
-    alpha    = .80,
-    color    = "#FF220C"
-  ) +
-  geom_line(
-    data = as.data.frame(pred_control_acc),
-    aes(
-      x = control_acc,
-      y = ci.lb + meta_primary_ranef$test_type["modified_test", 1]
-    ),
-    linetype = "dotted",
-    alpha    = .80,
-    color    = "#FF220C"
-  ) +
-  geom_line(
-    data = as.data.frame(pred_control_acc),
-    aes(
-      x = control_acc,
-      y = ci.ub + meta_primary_ranef$test_type["modified_test", 1]
-    ),
-    linetype = "dotted",
-    alpha    = .80,
-    color    = "#FF220C"
-  ) +
-  geom_hline(
-    yintercept = 0,
-    linetype   = "dashed"
-  ) +
-  scale_color_manual(
-    values = c("#FF220C", "#88958D")
-  ) +
-  scale_x_continuous(
-    breaks = seq(0, 1, .05)
-  ) +
-  scale_y_continuous(
-    breaks = seq(-6, 8, .5)
-  ) +
-  labs(
-    x = "Control Accuracy",
-    y = "Effect size",
-    color = "Test"
-  ) +
-  theme_classic()
-
-save_plot("figures/mema_control-accuracy-modified-plot.png", 
-          scatter_control_acc_modified,
-          base_height = 8, base_width = 8)
-
-## PEESE
-
-# Create prediction line
-
-pred_acc_peese   <- predict(meta_peese, 
-                            newmods = cbind(
-                              rep(0, 100),
-                              rep(0, 100),
-                              rep(0, 100),
-                              rep(0, 100),
-                              rep(0, 100),
-                              seq(min(data_es$control_acc, na.rm = TRUE),
-                                  max(data_es$control_acc, na.rm = TRUE), 
-                                  length.out = 100),
-                              rep(0, 100),
-                              rep(0, 100),
-                              rep(0, 100),
-                              rep(0, 100),
-                              rep(0, 100)
-                            ))
-
-pred_acc_peese$control_acc   <- seq(min(data_es$control_acc, na.rm = TRUE),
-                                    max(data_es$control_acc, na.rm = TRUE), 
-                                    length.out = 100) - min(data_es$control_acc)
-
-# Visualization of control accuracy
-
-scatter_acc_peese <-
-  ggplot(data_es,
-         aes(
-           x = control_acc - min(control_acc),
-           y = yi
-         )) +
-  geom_vline(
-    xintercept = abs(min(data_es$control_acc)),
-    linetype   = "dotted"
-  ) +
-  geom_hline(
-    yintercept = meta_peese$beta[[1]],
-    linetype   = "dotted"
-  ) +
-  geom_point(
-    shape = 1,
-    alpha = .15
-  ) +
-  geom_line(
-    data = as.data.frame(pred_acc_peese),
-    aes(
-      x = control_acc,
-      y = pred
-    ),
-    linetype = "solid",
-    alpha    = .80,
-    color    = "darkred"
-  ) +
-  geom_line(
-    data = as.data.frame(pred_acc_peese),
-    aes(
-      x = control_acc,
-      y = ci.lb
-    ),
-    linetype = "dotted",
-    alpha    = .80,
-    color    = "darkred"
-  ) +
-  geom_line(
-    data = as.data.frame(pred_acc_peese),
-    aes(
-      x = control_acc,
-      y = ci.ub
-    ),
-    linetype = "dotted",
-    alpha    = .80,
-    color    = "darkred"
-  ) +
-  geom_hline(
-    yintercept = 0,
-    linetype   = "dashed"
-  ) +
-  scale_x_continuous(
-    breaks = seq(0, 1, .05)
-  ) +
-  scale_y_continuous(
-    breaks = seq(-6, 8, .5)
-  ) +
-  labs(
-    x = "Control Accuracy",
-    y = "Effect size"
-  ) +
-  theme_classic()
-
-save_plot("figures/mema_control-accuracy-peese-plot.png", 
-          scatter_acc_peese,
-          base_height = 8, base_width = 8)
+          base_height = 6, base_width = 6)
 
 # Influence analysis -----------------------------------------------------------
 
@@ -586,13 +418,28 @@ leverage_cut <- mean(data_es$leverage, na.rm = TRUE) * 3
 
 # Standardized residuals
 
-meta_res <- as.data.frame(rstandard(meta_primary))
+meta_res_df <- as.data.frame(rstandard(meta_primary))
 
-meta_res$id_effect <- row.names(meta_res)
-meta_res$id_effect <- str_pad(meta_res$id_effect, 4, "left", "0")
+meta_res_df$id_effect <- row.names(meta_res_df)
+meta_res_df$id_effect <- str_pad(meta_res_df$id_effect, 4, "left", "0")
 
 data_es <- data_es %>% 
-  left_join(meta_res, by = "id_effect")
+  left_join(meta_res_df, by = "id_effect")
+
+# Predicted values
+
+meta_pred_df <- as.data.frame(predict(meta_primary))
+
+meta_pred_df$id_effect <- row.names(meta_pred_df)
+meta_pred_df$id_effect <- str_pad(meta_pred_df$id_effect, 4, "left", "0")
+
+meta_pred_df <- meta_pred_df %>% 
+  rename(
+    se_pred = se
+  )
+
+data_es <- data_es %>% 
+  left_join(meta_pred_df, by = "id_effect")
 
 # Sensitivity analysis----------------------------------------------------------
 
@@ -1007,4 +854,100 @@ if (!file.exists("output/mema_peese_imp.rds")) {
   meta_peese_imp <- readRDS("output/mema_peese_imp.rds")
   
 }
-_
+
+# Visualization: Predicted vs. residuals ---------------------------------------
+
+plot_pred_res <- 
+  ggplot(data_es,
+         aes(
+           x    = pred,
+           y    = resid,
+           size = 1/vi
+         )) +
+  geom_point(
+    shape = 1,
+    alpha = .25
+  ) +
+  geom_hline(
+    yintercept = 0,
+    linetype   = "dotted"
+  ) +
+  geom_smooth(
+    method  = "lm",
+    formula = "y ~ x",
+    se      = FALSE
+  ) +
+  guides(
+    size = "none"
+  ) +
+  labs(
+    x = "Predicted",
+    y = "Standardized residual"
+  ) +
+  theme_classic()
+
+save_plot("figures/mema_pred-res-plot.png", 
+          plot_pred_res,
+          base_height = 6, base_width = 6)
+
+# Visualization: Publication history -------------------------------------------
+
+plot_timeline <- 
+ggplot(data_es,
+       aes(
+         x = year_raw,
+         y = yi,
+         size = 1/vi
+       )) +
+  geom_quasirandom(
+    shape = 1,
+    alpha = .25
+  ) +
+  geom_hline(
+    yintercept = meta_primary$beta[[1]],
+    linetype   = "dashed",
+    linewidth  = 1
+  ) +
+  geom_hline(
+    yintercept = 0,
+    linetype   = "dotted"
+  ) +
+  guides(
+    size = "none"
+  ) +
+  scale_y_continuous(
+    breaks = seq(-4, 20, 1),
+    limits = c(-4, 8)
+  ) +
+  scale_x_continuous(
+    breaks = seq(1975, 2020, 5)
+  ) +
+  labs(
+    x = "Publication year",
+    y = "Effect size"
+  ) +
+  theme_classic()
+
+save_plot("figures/mema_timeline-plot.png", 
+          plot_timeline,
+          base_height = 6, base_width = 12)
+
+# Visualization: Albatross -----------------------------------------------------
+
+source("R/mema_albatross.R")
+
+# Visualization: Grid ----------------------------------------------------------
+
+grid_upper <- plot_grid(funnel_plot, plot_pred_res,
+                        scatter_control_acc, albatross,
+                        nrow = 2)
+
+grid_plot <- plot_grid(grid_upper,
+                       plot_timeline,
+                       nrow = 2,
+                       rel_heights = c(1, .5))
+
+save_plot("figures/mema_grid-full.png",
+          grid_plot, 
+          base_height = 12,
+          base_width  = 8)
