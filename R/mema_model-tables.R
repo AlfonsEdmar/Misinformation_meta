@@ -57,6 +57,11 @@ report_table_age_no_acc  <- extract_table_data(meta_age_no_acc) %>%
 report_table_age_cat     <- extract_table_data(meta_age_cat) %>% 
   standard_table()
 
+## Proportion Female
+
+report_table_female      <- extract_table_data(meta_prop_female) %>% 
+  standard_table()
+
 ## Incentives
 
 report_table_incent      <- extract_table_data(meta_incent) %>% 
@@ -123,6 +128,11 @@ save_as_docx("Age"              = report_table_age,
              "Age: No accuracy" = report_table_age_no_acc,
              "Age: Categorical" = report_table_age_cat,
              path        = "output/tables/mema_table_age.docx")
+
+### Proportion Female
+
+save_as_docx("Proportion Female" = report_table_female,
+             path         = "output/tables/mema_tables_female.docx")
 
 ### Incentives
 

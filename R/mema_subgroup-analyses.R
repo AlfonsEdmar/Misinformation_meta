@@ -220,6 +220,48 @@ if (!file.exists('output/mema_age_cat.rds')) {
   
 }
 
+# Proportion female ------------------------------------------------------------
+
+if (!file.exists("output/mema_prop_female.rds")) {
+  
+  meta_prop_female   <- rma.mv(yi      = yi, 
+                               V       = vi,
+                               random  = list(~1|id_record/id_study/id_control, 
+                                              ~1|event_materials,
+                                              ~1|country,
+                                              ~1|control_type,
+                                              ~1|modality,
+                                              ~1|population,
+                                              ~1|test_type,
+                                              ~1|test_medium,
+                                              ~1|exposure_medium),
+                               mods    = ~ postevent_retention_interval
+                               + postexposure_retention_interval
+                               + preevent_warning
+                               + postevent_warning
+                               + postexposure_warning
+                               + control_acc
+                               + postevent_recall
+                               + postexposure_recall
+                               + publication_year
+                               + preregistered
+                               + gender_female_prop,
+                               data    = data_es,
+                               method  = "REML", 
+                               control = list(
+                                 iter.max  = 1000,
+                                 rel.tol   = 1e-8
+                               ),
+                               verbose = TRUE)
+  
+  saveRDS(meta_prop_female, "output/mema_prop_female.rds")
+  
+} else {
+  
+  meta_prop_female <- readRDS("output/mema_prop_female.rds")
+  
+}
+
 # Incentives -------------------------------------------------------------------
 
 incent_data <- data_es %>% filter(!is.na(data_es$incentives))

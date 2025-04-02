@@ -940,10 +940,12 @@ source("R/mema_albatross.R")
 
 grid_upper <- plot_grid(funnel_plot, plot_pred_res,
                         scatter_control_acc, albatross,
+                        labels = c("a", "b", "c", "d"),
                         nrow = 2)
 
 grid_plot <- plot_grid(grid_upper,
                        plot_timeline,
+                       labels = c("", "e"),
                        nrow = 2,
                        rel_heights = c(1, .5))
 
