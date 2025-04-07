@@ -86,6 +86,32 @@ report_table_res_01      <- extract_table_data(meta_res_01) %>%
 report_table_res_no_acc  <- extract_table_data(meta_res_no_acc) %>% 
   standard_table()
 
+# PET-PEESE supplemental
+
+report_pet_re            <- extract_table_data(meta_pet_re) %>% 
+  standard_table()
+
+report_pet_rem           <- extract_table_data(meta_pet_rem) %>% 
+  standard_table()
+
+report_pet_rs            <- extract_table_data(meta_pet_rs) %>% 
+  standard_table()
+
+report_pet_rma           <- extract_table_data(meta_pet_rma) %>% 
+  standard_table()
+
+report_peese_re          <- extract_table_data(meta_peese_re) %>% 
+  standard_table()
+
+report_peese_rem         <- extract_table_data(meta_peese_rem) %>% 
+  standard_table()
+
+report_peese_rs          <- extract_table_data(meta_peese_rs) %>% 
+  standard_table()
+
+report_peese_rma         <- extract_table_data(meta_peese_rma) %>% 
+  standard_table()
+
 # Export tables ----------------------------------------------------------------
 
 # Create folder for tables
@@ -118,6 +144,18 @@ save_as_docx("Leverage"         = report_table_leverage,
              "Residuals: PET"   = report_table_pet_res,
              "Residuals: PEESE" = report_table_peese_res,
              path        = "output/tables/mema_table_robust.docx")
+
+## PET-PEESE supplement
+
+save_as_docx("PET - Reduced random effects"                  = report_pet_re,
+             "PET - Reduced random effects, no moderators"   = report_pet_rem,  
+             "PET - Random slopes"                           = report_pet_rs,  
+             "PET - No random effects, no moderators"        = report_pet_rma,  
+             "PEESE - Reduced random effects"                = report_peese_re,  
+             "PEESE - Reduced random effects, no moderators" = report_peese_rem,
+             "PEESE - Random slopes"                         = report_peese_rs, 
+             "PEESE - No random effects, no moderators"      = report_peese_rma,
+             path = "output/tables/mema_table_pet-peese_supplement.docx")
 
 ## Subgroup analyses
 
