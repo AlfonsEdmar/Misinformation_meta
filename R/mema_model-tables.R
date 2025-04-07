@@ -26,19 +26,7 @@ report_table_peese       <- extract_table_data(meta_peese) %>%
 report_table_leverage    <- extract_table_data(meta_leverage) %>% 
   standard_table()
 
-report_table_pet_lev     <- extract_table_data(meta_pet_leverage) %>% 
-  standard_table()
-
-report_table_peese_lev   <- extract_table_data(meta_peese_leverage) %>% 
-  standard_table()
-
 report_table_resid       <- extract_table_data(meta_resid) %>% 
-  standard_table()
-
-report_table_pet_res     <- extract_table_data(meta_pet_resid) %>% 
-  standard_table()
-
-report_table_peese_res   <- extract_table_data(meta_peese_resid) %>% 
   standard_table()
 
 # Subgroup analyses
@@ -138,11 +126,7 @@ save_as_docx("PET"     = report_table_pet,
 ## Robustness checks
 
 save_as_docx("Leverage"         = report_table_leverage,
-             "Leverage: PET"    = report_table_pet_lev,
-             "Leverage: PEESE"  = report_table_peese_lev,
              "Residuals"        = report_table_resid,
-             "Residuals: PET"   = report_table_pet_res,
-             "Residuals: PEESE" = report_table_peese_res,
              path        = "output/tables/mema_table_robust.docx")
 
 ## PET-PEESE supplement
