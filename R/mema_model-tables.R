@@ -23,6 +23,9 @@ report_table_peese       <- extract_table_data(meta_peese) %>%
 
 # Robustness checks
 
+report_table_simple      <- extract_table_data(meta_simple) %>% 
+  standard_table()
+
 report_table_leverage    <- extract_table_data(meta_leverage) %>% 
   standard_table()
 
@@ -127,6 +130,7 @@ save_as_docx("PET"     = report_table_pet,
 
 save_as_docx("Leverage"         = report_table_leverage,
              "Residuals"        = report_table_resid,
+             "Simple"           = report_table_simple,
              path        = "output/tables/mema_table_robust.docx")
 
 ## PET-PEESE supplement

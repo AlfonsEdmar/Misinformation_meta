@@ -98,18 +98,45 @@ meta_primary_ranef <- ranef(meta_primary)
 
 # Heterogeneity
 
+## I-squared
+
 # This code is adapted from
 # https://www.metafor-project.org/doku.php/tips:i2_multilevel_multivariate
 
-W <- diag(1/meta_primary$vi)
+I2_calc <- function(meta_model) {
+  
+  W <- diag(1/meta_model$vi)
+  
+  X <- model.matrix(meta_model)
+  
+  P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
+  
+  I2 <- 100 * sum(meta_model$sigma2) / (sum(meta_model$sigma2) + (meta_model$k - meta_model$p)/sum(diag(P)))
+  
+  I2_components <- round(100 * meta_model$sigma2 / (sum(meta_model$sigma2) + (meta_model$k-meta_model$p)/sum(diag(P))), 2)
+  
+  return(list(I2, I2_components))
+  
+}
 
-X <- model.matrix(meta_primary)
+I2_primary <- I2_calc(meta_primary)
 
-P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
+## Intercept prediction interval
 
-I2 <- 100 * sum(meta_primary$sigma2) / (sum(meta_primary$sigma2) + (meta_primary$k - meta_primary$p)/sum(diag(P)))
+pi_intercept <- function(meta_model, pib = .975) {
+  
+  b0    <- meta_model$beta[[1]]
+  
+  sd_pi <- sqrt(sum(meta_model$sigma2) + meta_model$se[[1]]^2)
+  
+  pi_lb <- b0 - qnorm(.975)*sd_pi
+  pi_ub <- b0 + qnorm(.975)*sd_pi
+  
+  return(c(pi_lb, pi_ub))
+  
+}
 
-I2_components <- round(100 * meta_primary$sigma2 / (sum(meta_primary$sigma2) + (meta_primary$k-meta_primary$p)/sum(diag(P))), 2)
+pi_primary <- pi_intercept(meta_primary)
 
 # Bias correction --------------------------------------------------------------
 
@@ -488,6 +515,10 @@ if (!file.exists("output/mema_leverage.rds")) {
 
 meta_leverage_ranef <- ranef(meta_leverage)
 
+I2_leverage <- I2_calc(meta_leverage)
+
+pi_leverage <- pi_intercept(meta_leverage)
+
 # Excluding all cases with standardized residuals greater than |1.96|
 
 if (!file.exists("output/mema_resid.rds")) {
@@ -533,6 +564,10 @@ if (!file.exists("output/mema_resid.rds")) {
 
 meta_resid_ranef <- ranef(meta_resid)
 
+I2_resid <- I2_calc(meta_resid)
+
+pi_resid <- pi_intercept(meta_resid)
+
 # Removal of imputed variance cases --------------------------------------------
 
 if (!file.exists("output/mema_primary_imp.rds")) {
@@ -577,6 +612,10 @@ if (!file.exists("output/mema_primary_imp.rds")) {
 }
 
 meta_primary_imp_ranef <- ranef(meta_primary_imp)
+
+I2_imp <- I2_calc(meta_primary_imp)
+
+pi_imp <- pi_intercept(meta_primary_imp)
 
 # PET
 
@@ -666,6 +705,33 @@ if (!file.exists("output/mema_peese_imp.rds")) {
   meta_peese_imp <- readRDS("output/mema_peese_imp.rds")
   
 }
+
+# Simple model
+
+if (!file.exists("output/mema_simple.rds")) {
+  
+  meta_simple    <- rma.mv(yi      = yi, 
+                           V       = vi,
+                           random  = list(~1|id_record/id_study/id_control),
+                           data    = data_es[as.numeric(rownames(as.data.frame(predict(meta_primary)))), ],
+                           method  = "REML", 
+                           control = list(
+                             iter.max  = 1000,
+                             rel.tol   = 1e-8
+                           ),
+                           verbose = TRUE)
+  
+  saveRDS(meta_simple, "output/mema_simple.rds")
+  
+} else {
+  
+  meta_simple <- readRDS("output/mema_simple.rds")
+  
+}
+
+I2_simple <- I2_calc(meta_simple)
+
+pi_simple <- pi_intercept(meta_simple)
 
 # Visualization: Predicted vs. residuals ---------------------------------------
 
