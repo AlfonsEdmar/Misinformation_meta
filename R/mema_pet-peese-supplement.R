@@ -24,14 +24,13 @@ if (!file.exists("output/mema_pet_re.rds")) {
                               + publication_year
                               + preregistered
                               + I(sqrt(vi)),
-                              data   = data_es,
+                              data   = data_included,
                               method = "REML",
                               control = list(
                                 iter.max    = 1000,
                                 rel.tol     = 1e-8
                               ),
                               verbose = TRUE)
-  
   
   saveRDS(meta_pet_re, "output/mema_pet_re.rds")
   
@@ -49,14 +48,13 @@ if (!file.exists("output/mema_pet_rem.rds")) {
                               V       = vi,
                               random  = list(~1|id_record/id_study/id_control),
                               mods    = ~ I(sqrt(vi)),
-                              data    = data_es,
+                              data    = data_included,
                               method  = "REML",
                               control = list(
                                 iter.max    = 1000,
                                 rel.tol     = 1e-8
                               ),
                               verbose = TRUE)
-  
   
   saveRDS(meta_pet_rem, "output/mema_pet_rem.rds")
   
@@ -75,14 +73,13 @@ if (!file.exists("output/mema_pet_rs.rds")) {
                               random  = list(~1 |id_record/id_study/id_control,
                                              ~1 + I(sqrt(vi))|id_record),
                               mods    = ~ I(sqrt(vi)),
-                              data    = data_es,
+                              data    = data_included,
                               method  = "REML",
                               control = list(
                                 iter.max    = 1000,
                                 rel.tol     = 1e-8
                               ),
                               verbose = TRUE)
-  
   
   saveRDS(meta_pet_rs, "output/mema_pet_rs.rds")
   
@@ -100,7 +97,7 @@ if (!file.exists("output/mema_pet_rma.rds")) {
                                V       = vi,
                                random  = list(~1|id_effect),
                                mods    = ~  I(sqrt(vi)),
-                               data    = data_es,
+                               data    = data_included,
                                method  = "REML",
                                control = list(
                                  iter.max    = 1000,
@@ -136,7 +133,7 @@ if (!file.exists("output/mema_peese_re.rds")) {
                               + publication_year
                               + preregistered
                               + I(vi),
-                              data   = data_es,
+                              data   = data_included,
                               method = "REML",
                               control = list(
                                 iter.max    = 1000,
@@ -160,7 +157,7 @@ if (!file.exists("output/mema_peese_rem.rds")) {
                                V       = vi,
                                random  = list(~1|id_record/id_study/id_control),
                                mods    = ~ I(vi),
-                               data    = data_es,
+                               data    = data_included,
                                method  = "REML",
                                control = list(
                                  iter.max    = 1000,
@@ -185,14 +182,13 @@ if (!file.exists("output/mema_peese_rs.rds")) {
                               random  = list(~1|id_record/id_study/id_control,
                                              ~1 + I(vi)|id_record),
                               mods    = ~ I(vi),
-                              data    = data_es,
+                              data    = data_included,
                               method  = "REML",
                               control = list(
                                 iter.max    = 1000,
                                 rel.tol     = 1e-8
                               ),
                               verbose = TRUE)
-  
   
   saveRDS(meta_peese_rs, "output/mema_peese_rs.rds")
   
@@ -210,7 +206,7 @@ if (!file.exists("output/mema_peese_rma.rds")) {
                                V       = vi,
                                random  = list(~1|id_effect),
                                mods    = ~ I(vi),
-                               data    = data_es,
+                               data    = data_included,
                                method  = "REML",
                                control = list(
                                  iter.max    = 1000,

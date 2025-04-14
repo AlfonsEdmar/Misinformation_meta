@@ -115,7 +115,9 @@ I2_calc <- function(meta_model) {
   
   I2_components <- round(100 * meta_model$sigma2 / (sum(meta_model$sigma2) + (meta_model$k-meta_model$p)/sum(diag(P))), 2)
   
-  return(list(I2, I2_components))
+  sigma2 <- sum(meta_model$sigma2)
+  
+  return(list(sigma2 = sigma2, I2 = I2, I2_comp = I2_components))
   
 }
 
@@ -617,103 +619,16 @@ I2_imp <- I2_calc(meta_primary_imp)
 
 pi_imp <- pi_intercept(meta_primary_imp)
 
-# PET
-
-if (!file.exists("output/mema_pet_imp.rds")) {
-  
-  meta_pet_imp       <- rma.mv(yi     = yi, 
-                               V      = vi,
-                               random = list(~1|id_record/id_study/id_control, 
-                                             ~1|event_materials,
-                                             ~1|country,
-                                             ~1|control_type,
-                                             ~1|modality,
-                                             ~1|population,
-                                             ~1|test_type,
-                                             ~1|test_medium,
-                                             ~1|exposure_medium),
-                               mods   = ~ postevent_retention_interval
-                               + postexposure_retention_interval
-                               + preevent_warning
-                               + postevent_warning
-                               + postexposure_warning
-                               + control_acc
-                               + postevent_recall
-                               + postexposure_recall
-                               + publication_year
-                               + preregistered
-                               + I(sqrt(vi)),
-                               data   = data_es %>% 
-                                 filter(sd_imputed == 0),
-                               method = "REML",
-                               control = list(
-                                 iter.max    = 1000,
-                                 rel.tol     = 1e-8, 
-                                 sigma2.init = meta_primary$sigma2
-                               ),
-                               verbose = TRUE)
-  
-  
-  saveRDS(meta_pet_imp, "output/mema_pet_imp.rds")
-  
-} else {
-  
-  meta_pet_imp <- readRDS("output/mema_pet_imp.rds")
-  
-}
-
-# PEESE
-
-if (!file.exists("output/mema_peese_imp.rds")) {
-  
-  meta_peese_imp     <- rma.mv(yi     = yi, 
-                               V      = vi,
-                               random = list(~1|id_record/id_study/id_control, 
-                                             ~1|event_materials,
-                                             ~1|country,
-                                             ~1|control_type,
-                                             ~1|modality,
-                                             ~1|population,
-                                             ~1|test_type,
-                                             ~1|test_medium,
-                                             ~1|exposure_medium),
-                               mods   = ~ postevent_retention_interval
-                               + postexposure_retention_interval
-                               + preevent_warning
-                               + postevent_warning
-                               + postexposure_warning
-                               + control_acc
-                               + postevent_recall
-                               + postexposure_recall
-                               + publication_year
-                               + preregistered
-                               + I(vi),
-                               data   = data_es %>% 
-                                 filter(sd_imputed == 0),
-                               method = "REML",
-                               control = list(
-                                 iter.max    = 1000,
-                                 rel.tol     = 1e-8, 
-                                 sigma2.init = meta_primary$sigma2
-                               ),
-                               verbose = TRUE)
-  
-  saveRDS(meta_peese_imp, "output/mema_peese_imp.rds")
-  
-} else {
-  
-  meta_peese_imp <- readRDS("output/mema_peese_imp.rds")
-  
-}
-
 # Simple model
+
+data_included <- data_es[as.numeric(rownames(as.data.frame(predict(meta_primary)))), ]
 
 if (!file.exists("output/mema_simple.rds")) {
   
   meta_simple    <- rma.mv(yi      = yi, 
                            V       = vi,
                            random  = list(~1|id_record/id_study/id_control),
-                           data    = data_es[as.numeric(rownames(as.data.frame(predict(meta_primary)))), ],
+                           data    = data_included,
                            method  = "REML", 
                            control = list(
                              iter.max  = 1000,
