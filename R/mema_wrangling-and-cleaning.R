@@ -218,7 +218,7 @@ raw$control_type[raw$control_type == "no misinformation"] <- "no_misinformation"
 
 raw$incentives[raw$incentives == "course_requirement"] <- "required"
 
-# Setting variables classes-----------------------------------------------------
+# Setting variables classes ----------------------------------------------------
 
 raw$publication_year     <- as.numeric(raw$publication_year)
 
@@ -324,7 +324,7 @@ mean_data$accuracy_control_sd <- imp_data$accuracy_control_sd
 mean_data$accuracy_mi_sd      <- imp_data$accuracy_mi_sd
 
 
-# Calculating effect sizes for meta-analyses------------------------------------
+# Calculating effect sizes for meta-analysis -----------------------------------
 
 ## Calculating log odds ratio
 
@@ -380,7 +380,7 @@ data_es <- data_es %>%
   # to be estimated, which we are removing here.
   filter(yi > -7)
 
-# Exporting cleaned data--------------------------------------------------------
+# Exporting cleaned data -------------------------------------------------------
 
 # Write a csv file
 

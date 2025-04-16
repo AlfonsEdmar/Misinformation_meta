@@ -23,22 +23,16 @@ report_table_peese       <- extract_table_data(meta_peese) %>%
 
 # Robustness checks
 
+report_table_simple      <- extract_table_data(meta_simple) %>% 
+  standard_table()
+
+report_table_imp         <- extract_table_data(meta_primary_imp) %>% 
+  standard_table()
+
 report_table_leverage    <- extract_table_data(meta_leverage) %>% 
   standard_table()
 
-report_table_pet_lev     <- extract_table_data(meta_pet_leverage) %>% 
-  standard_table()
-
-report_table_peese_lev   <- extract_table_data(meta_peese_leverage) %>% 
-  standard_table()
-
 report_table_resid       <- extract_table_data(meta_resid) %>% 
-  standard_table()
-
-report_table_pet_res     <- extract_table_data(meta_pet_resid) %>% 
-  standard_table()
-
-report_table_peese_res   <- extract_table_data(meta_peese_resid) %>% 
   standard_table()
 
 # Subgroup analyses
@@ -86,6 +80,32 @@ report_table_res_01      <- extract_table_data(meta_res_01) %>%
 report_table_res_no_acc  <- extract_table_data(meta_res_no_acc) %>% 
   standard_table()
 
+# PET-PEESE supplemental
+
+report_pet_re            <- extract_table_data(meta_pet_re) %>% 
+  standard_table()
+
+report_pet_rem           <- extract_table_data(meta_pet_rem) %>% 
+  standard_table()
+
+report_pet_rs            <- extract_table_data(meta_pet_rs) %>% 
+  standard_table()
+
+report_pet_rma           <- extract_table_data(meta_pet_rma) %>% 
+  standard_table()
+
+report_peese_re          <- extract_table_data(meta_peese_re) %>% 
+  standard_table()
+
+report_peese_rem         <- extract_table_data(meta_peese_rem) %>% 
+  standard_table()
+
+report_peese_rs          <- extract_table_data(meta_peese_rs) %>% 
+  standard_table()
+
+report_peese_rma         <- extract_table_data(meta_peese_rma) %>% 
+  standard_table()
+
 # Export tables ----------------------------------------------------------------
 
 # Create folder for tables
@@ -112,12 +132,22 @@ save_as_docx("PET"     = report_table_pet,
 ## Robustness checks
 
 save_as_docx("Leverage"         = report_table_leverage,
-             "Leverage: PET"    = report_table_pet_lev,
-             "Leverage: PEESE"  = report_table_peese_lev,
              "Residuals"        = report_table_resid,
-             "Residuals: PET"   = report_table_pet_res,
-             "Residuals: PEESE" = report_table_peese_res,
+             "Imputations"      = report_table_imp,
+             "Simple"           = report_table_simple,
              path        = "output/tables/mema_table_robust.docx")
+
+## PET-PEESE supplement
+
+save_as_docx("PET - Reduced random effects"                  = report_pet_re,
+             "PET - Reduced random effects, no moderators"   = report_pet_rem,  
+             "PET - Random slopes"                           = report_pet_rs,  
+             "PET - No random effects, no moderators"        = report_pet_rma,  
+             "PEESE - Reduced random effects"                = report_peese_re,  
+             "PEESE - Reduced random effects, no moderators" = report_peese_rem,
+             "PEESE - Random slopes"                         = report_peese_rs, 
+             "PEESE - No random effects, no moderators"      = report_peese_rma,
+             path = "output/tables/mema_table_pet-peese_supplement.docx")
 
 ## Subgroup analyses
 

@@ -98,18 +98,47 @@ meta_primary_ranef <- ranef(meta_primary)
 
 # Heterogeneity
 
+## I-squared
+
 # This code is adapted from
 # https://www.metafor-project.org/doku.php/tips:i2_multilevel_multivariate
 
-W <- diag(1/meta_primary$vi)
+I2_calc <- function(meta_model) {
+  
+  W <- diag(1/meta_model$vi)
+  
+  X <- model.matrix(meta_model)
+  
+  P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
+  
+  I2 <- 100 * sum(meta_model$sigma2) / (sum(meta_model$sigma2) + (meta_model$k - meta_model$p)/sum(diag(P)))
+  
+  I2_components <- round(100 * meta_model$sigma2 / (sum(meta_model$sigma2) + (meta_model$k-meta_model$p)/sum(diag(P))), 2)
+  
+  sigma2 <- sum(meta_model$sigma2)
+  
+  return(list(sigma2 = sigma2, I2 = I2, I2_comp = I2_components))
+  
+}
 
-X <- model.matrix(meta_primary)
+I2_primary <- I2_calc(meta_primary)
 
-P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
+## Intercept prediction interval
 
-I2 <- 100 * sum(meta_primary$sigma2) / (sum(meta_primary$sigma2) + (meta_primary$k - meta_primary$p)/sum(diag(P)))
+pi_intercept <- function(meta_model, pib = .975) {
+  
+  b0    <- meta_model$beta[[1]]
+  
+  sd_pi <- sqrt(sum(meta_model$sigma2) + meta_model$se[[1]]^2)
+  
+  pi_lb <- b0 - qnorm(.975)*sd_pi
+  pi_ub <- b0 + qnorm(.975)*sd_pi
+  
+  return(c(pi_lb, pi_ub))
+  
+}
 
-I2_components <- round(100 * meta_primary$sigma2 / (sum(meta_primary$sigma2) + (meta_primary$k-meta_primary$p)/sum(diag(P))), 2)
+pi_primary <- pi_intercept(meta_primary)
 
 # Bias correction --------------------------------------------------------------
 
@@ -405,7 +434,7 @@ save_plot("figures/mema_control-accuracy-plot.png",
 meta_hat <- hatvalues(meta_primary)
 
 leverages <- data.frame(
-  id_effect = str_pad(names(meta_hat), 4, "left", "0"),
+  id_effect = data_es$id_effect[as.numeric(names(meta_hat))],
   leverage  = meta_hat
 )
 
@@ -420,7 +449,7 @@ leverage_cut <- mean(data_es$leverage, na.rm = TRUE) * 3
 
 meta_res_df <- as.data.frame(rstandard(meta_primary))
 
-meta_res_df$id_effect <- row.names(meta_res_df)
+meta_res_df$id_effect <- data_es$id_effect[as.numeric(row.names(meta_res_df))]
 meta_res_df$id_effect <- str_pad(meta_res_df$id_effect, 4, "left", "0")
 
 data_es <- data_es %>% 
@@ -430,7 +459,7 @@ data_es <- data_es %>%
 
 meta_pred_df <- as.data.frame(predict(meta_primary))
 
-meta_pred_df$id_effect <- row.names(meta_pred_df)
+meta_pred_df$id_effect <- data_es$id_effect[as.numeric(row.names(meta_pred_df))]
 meta_pred_df$id_effect <- str_pad(meta_pred_df$id_effect, 4, "left", "0")
 
 meta_pred_df <- meta_pred_df %>% 
@@ -488,99 +517,9 @@ if (!file.exists("output/mema_leverage.rds")) {
 
 meta_leverage_ranef <- ranef(meta_leverage)
 
-## PET-PEESE with high leverage cases removed
+I2_leverage <- I2_calc(meta_leverage)
 
-### PET
-
-if (!file.exists("output/mema_pet_leverage.rds")) {
-  
-  meta_pet_leverage  <- rma.mv(yi      = yi, 
-                               V       = vi,
-                               random  = list(~1|id_record/id_study/id_control, 
-                                              ~1|event_materials,
-                                              ~1|country,
-                                              ~1|control_type,
-                                              ~1|modality,
-                                              ~1|population,
-                                              ~1|test_type,
-                                              ~1|test_medium,
-                                              ~1|exposure_medium),
-                               mods    = ~ postevent_retention_interval
-                               + postexposure_retention_interval
-                               + preevent_warning
-                               + postevent_warning
-                               + postexposure_warning
-                               + control_acc
-                               + postevent_recall
-                               + postexposure_recall
-                               + publication_year
-                               + preregistered
-                               + I(sqrt(vi)),
-                               data    = data_es %>% 
-                                 filter(leverage < leverage_cut),
-                               method  = "REML", 
-                               control = list(
-                                 iter.max    = 1000,
-                                 rel.tol     = 1e-8, 
-                                 sigma2.init = meta_primary$sigma2
-                               ),
-                               verbose = TRUE)
-  
-  saveRDS(meta_pet_leverage, "output/mema_pet_leverage.rds")
-  
-} else {
-  
-  meta_pet_leverage <- readRDS("output/mema_pet_leverage.rds")
-  
-}
-
-meta_pet_leverage_ranef <- ranef(meta_pet_leverage)
-
-### PEESE
-
-if (!file.exists("output/mema_peese_leverage.rds")) {
-  
-  meta_peese_leverage  <- rma.mv(yi      = yi, 
-                                 V       = vi,
-                                 random  = list(~1|id_record/id_study/id_control, 
-                                                ~1|event_materials,
-                                                ~1|country,
-                                                ~1|control_type,
-                                                ~1|modality,
-                                                ~1|population,
-                                                ~1|test_type,
-                                                ~1|test_medium,
-                                                ~1|exposure_medium),
-                                 mods    = ~ postevent_retention_interval
-                                 + postexposure_retention_interval
-                                 + preevent_warning
-                                 + postevent_warning
-                                 + postexposure_warning
-                                 + control_acc
-                                 + postevent_recall
-                                 + postexposure_recall
-                                 + publication_year
-                                 + preregistered
-                                 + I(vi),
-                                 data    = data_es %>% 
-                                   filter(leverage < leverage_cut),
-                                 method  = "REML", 
-                                 control = list(
-                                   iter.max    = 1000,
-                                   rel.tol     = 1e-8, 
-                                   sigma2.init = meta_primary$sigma2
-                                 ),
-                                 verbose = TRUE)
-  
-  saveRDS(meta_peese_leverage, "output/mema_peese_leverage.rds")
-  
-} else {
-  
-  meta_peese_leverage <- readRDS("output/mema_peese_leverage.rds")
-  
-}
-
-meta_peese_leverage_ranef <- ranef(meta_peese_leverage)
+pi_leverage <- pi_intercept(meta_leverage)
 
 # Excluding all cases with standardized residuals greater than |1.96|
 
@@ -627,99 +566,9 @@ if (!file.exists("output/mema_resid.rds")) {
 
 meta_resid_ranef <- ranef(meta_resid)
 
-## PET-PEESE with large residual cases removed
+I2_resid <- I2_calc(meta_resid)
 
-### PET
-
-if (!file.exists("output/mema_pet_resid.rds")) {
-  
-  meta_pet_resid  <- rma.mv(yi      = yi, 
-                               V       = vi,
-                               random  = list(~1|id_record/id_study/id_control, 
-                                              ~1|event_materials,
-                                              ~1|country,
-                                              ~1|control_type,
-                                              ~1|modality,
-                                              ~1|population,
-                                              ~1|test_type,
-                                              ~1|test_medium,
-                                              ~1|exposure_medium),
-                               mods    = ~ postevent_retention_interval
-                               + postexposure_retention_interval
-                               + preevent_warning
-                               + postevent_warning
-                               + postexposure_warning
-                               + control_acc
-                               + postevent_recall
-                               + postexposure_recall
-                               + publication_year
-                               + preregistered
-                               + I(sqrt(vi)),
-                               data    = data_es %>% 
-                                 filter(abs(resid) < qnorm(.975)),
-                               method  = "REML", 
-                               control = list(
-                                 iter.max    = 1000,
-                                 rel.tol     = 1e-8, 
-                                 sigma2.init = meta_primary$sigma2
-                               ),
-                               verbose = TRUE)
-  
-  saveRDS(meta_pet_resid, "output/mema_pet_resid.rds")
-  
-} else {
-  
-  meta_pet_resid <- readRDS("output/mema_pet_resid.rds")
-  
-}
-
-meta_pet_resid_ranef <- ranef(meta_pet_resid)
-
-### PEESE
-
-if (!file.exists("output/mema_peese_resid.rds")) {
-  
-  meta_peese_resid  <- rma.mv(yi      = yi, 
-                                 V       = vi,
-                                 random  = list(~1|id_record/id_study/id_control, 
-                                                ~1|event_materials,
-                                                ~1|country,
-                                                ~1|control_type,
-                                                ~1|modality,
-                                                ~1|population,
-                                                ~1|test_type,
-                                                ~1|test_medium,
-                                                ~1|exposure_medium),
-                                 mods    = ~ postevent_retention_interval
-                                 + postexposure_retention_interval
-                                 + preevent_warning
-                                 + postevent_warning
-                                 + postexposure_warning
-                                 + control_acc
-                                 + postevent_recall
-                                 + postexposure_recall
-                                 + publication_year
-                                 + preregistered
-                                 + I(vi),
-                                 data    = data_es %>%
-                                   filter(abs(resid) < qnorm(.975)),
-                                 method  = "REML", 
-                                 control = list(
-                                   iter.max    = 1000,
-                                   rel.tol     = 1e-8, 
-                                   sigma2.init = meta_primary$sigma2
-                                 ),
-                                 verbose = TRUE)
-  
-  saveRDS(meta_peese_resid, "output/mema_peese_resid.rds")
-  
-} else {
-  
-  meta_peese_resid <- readRDS("output/mema_peese_resid.rds")
-  
-}
-
-meta_peese_resid_ranef <- ranef(meta_peese_resid)
+pi_resid <- pi_intercept(meta_resid)
 
 # Removal of imputed variance cases --------------------------------------------
 
@@ -766,94 +615,38 @@ if (!file.exists("output/mema_primary_imp.rds")) {
 
 meta_primary_imp_ranef <- ranef(meta_primary_imp)
 
-# PET
+I2_imp <- I2_calc(meta_primary_imp)
 
-if (!file.exists("output/mema_pet_imp.rds")) {
+pi_imp <- pi_intercept(meta_primary_imp)
+
+# Simple model
+
+data_included <- data_es[as.numeric(rownames(as.data.frame(predict(meta_primary)))), ]
+
+if (!file.exists("output/mema_simple.rds")) {
   
-  meta_pet_imp       <- rma.mv(yi     = yi, 
-                               V      = vi,
-                               random = list(~1|id_record/id_study/id_control, 
-                                             ~1|event_materials,
-                                             ~1|country,
-                                             ~1|control_type,
-                                             ~1|modality,
-                                             ~1|population,
-                                             ~1|test_type,
-                                             ~1|test_medium,
-                                             ~1|exposure_medium),
-                               mods   = ~ postevent_retention_interval
-                               + postexposure_retention_interval
-                               + preevent_warning
-                               + postevent_warning
-                               + postexposure_warning
-                               + control_acc
-                               + postevent_recall
-                               + postexposure_recall
-                               + publication_year
-                               + preregistered
-                               + I(sqrt(vi)),
-                               data   = data_es %>% 
-                                 filter(sd_imputed == 0),
-                               method = "REML",
-                               control = list(
-                                 iter.max    = 1000,
-                                 rel.tol     = 1e-8, 
-                                 sigma2.init = meta_primary$sigma2
-                               ),
-                               verbose = TRUE)
+  meta_simple    <- rma.mv(yi      = yi, 
+                           V       = vi,
+                           random  = list(~1|id_record/id_study/id_control),
+                           data    = data_included,
+                           method  = "REML", 
+                           control = list(
+                             iter.max  = 1000,
+                             rel.tol   = 1e-8
+                           ),
+                           verbose = TRUE)
   
-  
-  saveRDS(meta_pet_imp, "output/mema_pet_imp.rds")
+  saveRDS(meta_simple, "output/mema_simple.rds")
   
 } else {
   
-  meta_pet_imp <- readRDS("output/mema_pet_imp.rds")
+  meta_simple <- readRDS("output/mema_simple.rds")
   
 }
 
-# PEESE
+I2_simple <- I2_calc(meta_simple)
 
-if (!file.exists("output/mema_peese_imp.rds")) {
-  
-  meta_peese_imp     <- rma.mv(yi     = yi, 
-                               V      = vi,
-                               random = list(~1|id_record/id_study/id_control, 
-                                             ~1|event_materials,
-                                             ~1|country,
-                                             ~1|control_type,
-                                             ~1|modality,
-                                             ~1|population,
-                                             ~1|test_type,
-                                             ~1|test_medium,
-                                             ~1|exposure_medium),
-                               mods   = ~ postevent_retention_interval
-                               + postexposure_retention_interval
-                               + preevent_warning
-                               + postevent_warning
-                               + postexposure_warning
-                               + control_acc
-                               + postevent_recall
-                               + postexposure_recall
-                               + publication_year
-                               + preregistered
-                               + I(vi),
-                               data   = data_es %>% 
-                                 filter(sd_imputed == 0),
-                               method = "REML",
-                               control = list(
-                                 iter.max    = 1000,
-                                 rel.tol     = 1e-8, 
-                                 sigma2.init = meta_primary$sigma2
-                               ),
-                               verbose = TRUE)
-  
-  saveRDS(meta_peese_imp, "output/mema_peese_imp.rds")
-  
-} else {
-  
-  meta_peese_imp <- readRDS("output/mema_peese_imp.rds")
-  
-}
+pi_simple <- pi_intercept(meta_simple)
 
 # Visualization: Predicted vs. residuals ---------------------------------------
 
