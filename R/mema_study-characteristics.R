@@ -7,26 +7,52 @@
 # Load packages ----------------------------------------------------------------
 
 library(tidyverse)
+library(metafor)
+library(flextable)
 
 # Load data --------------------------------------------------------------------
 
-df <- read_csv("data/complete_data_cleaned.csv")
-
+# All studies fit in the primary model
+df <- read_csv("data/misinformation_included_data.csv")
+df_2 <- readxl::read_xlsx("data/misinformation_full_data_2024.xlsx")
+mema_primary <- read_rds('output/mema_primary.rds')
 # Country and number of studies------------------------------------------------- 
 
 summary_country <- df %>% 
   group_by(country) %>%
-  summarise(number_of_studies = n_distinct(id_study)) %>% 
+  summarise(number_of_records = n_distinct(id_record),
+            number_of_studies = n_distinct(id_study),
+            number_of_effects = n_distinct(id_effect)) %>% 
   arrange(desc(number_of_studies))
-summary_country
 
+flextable(summary_country) %>% 
+  bold(part = "header", bold = TRUE) %>% 
+  theme_apa()
+
+df %>% summarise(number_of_records = n_distinct(id_record),
+                 number_of_studies = n_distinct(id_study),
+                 number_of_control = n_distinct(id_control),
+                 number_of_effects = NROW(df))%>%
+  glimpse()
+
+df %>%
+  distinct(id_study, .keep_all = TRUE) %>% 
+  group_by(population) %>% 
+  summarise(tota_sample_size = sum(n_total))
+
+df %>%
+  group_by(category) %>% 
+  summarise(n_studies = n_distinct(id_record) )
+
+na_category <- df %>%  filter(is.na(df$category))
 #Items total--------------------------------------------------------------------
 
-total_items <- df %>% 
+df %>% 
   summarise(mean      = mean(items_total, na.rm = T),
             median    = median(items_total, na.rm = T),
             sd        = sd(items_total, na.rm = T),
-            n_number  = n_distinct(items_total, na.rm = T))
+            n_number  = n_distinct(items_total, na.rm = T))%>%
+  glimpse()
 
 #Postevent retention interval---------------------------------------------------
 
@@ -52,77 +78,59 @@ postex_ret <- df %>%
 
 # Proportion of female participants --------------------------------------------
 
-gender_prop <- df %>% 
-  summarise(mean      = mean(gender_female_prop, na.rm = T),
-            median    = median(items_control, na.rm = T),
-            sd_co     = sd(items_control, na.rm = T),
-            n_number  = n_distinct(items_control, na.rm = T))
+df %>% 
+  summarise(female_mean = mean(gender_female_prop + .5, na.rm = T),
+            female_median = median(gender_female_prop + .5, na.rm = T),
+            female_sd = sd(gender_female_prop + .5, na.rm = T))
+
 
 # Age Categories ---------------------------------------------------------------
 
-age_cat_preschool <- df %>% 
+df %>% 
+  summarise(mean      = mean(age_mean, na.rm = T),
+            median    = median(age_mean, na.rm = T))
+
+df %>% 
   filter(age_mean <= 5) %>% 
   summarise(mean      = mean(age_mean, na.rm = T),
             median    = median(age_mean, na.rm = T),
             sd        = sd(age_mean, na.rm = T),
-            n_number  = n_distinct(id_study))
+            n_number  = n_distinct(id_study),
+            n_number_perc  = n_distinct(id_study)/428)
 
-age_cat_school <- df %>% 
+df %>% 
   filter(age_mean > 5 & age_mean <= 12) %>% 
   summarise(mean      = mean(age_mean, na.rm = T),
             median    = median(age_mean, na.rm = T),
             sd        = sd(age_mean, na.rm = T),
-            n_number  = n_distinct(id_study))
+            n_number  = n_distinct(id_study),
+            n_number_perc  = n_distinct(id_study)/428)
 
-age_cat_teen <- df %>% 
+df %>% 
   filter(age_mean > 13 & age_mean <= 17) %>% 
   summarise(mean      = mean(age_mean, na.rm = T),
             median    = median(age_mean, na.rm = T),
             sd        = sd(age_mean, na.rm = T),
-            n_number  = n_distinct(id_study))
+            n_number  = n_distinct(id_study),
+            n_number_perc  = n_distinct(id_study)/428)
 
-age_cat_adult <- df %>% 
+df %>% 
   filter(age_mean > 18 & age_mean <= 40) %>% 
   summarise(mean      = mean(age_mean, na.rm = T),
             median    = median(age_mean, na.rm = T),
             sd        = sd(age_mean, na.rm = T),
-            n_number  = n_distinct(id_study))
+            n_number  = n_distinct(id_study),
+            n_number_perc  = n_distinct(id_study)/428)
 
-age_cat_aged <- df %>% 
+df %>% 
   filter(age_mean > 40) %>% 
   summarise(mean      = mean(age_mean, na.rm = T),
             median    = median(age_mean, na.rm = T),
             sd        = sd(age_mean, na.rm = T),
-            n_number  = n_distinct(id_study))
+            n_number  = n_distinct(id_study),
+            n_number_perc  = n_distinct(id_study)/428)
 
-# Total number of experiments --------------------------------------------------
-
-n_experiments <- df %>% 
-  summarise(n = n_distinct(id_study))
-
-# Total number of studies ------------------------------------------------------
-
-n_records <- df %>% 
-  summarise(n = n_distinct(id_record))
-
-
-# Total number of effects ------------------------------------------------------
-
-n_effects <- nrow(df)
-
-# Control Item type-------------------------------------------------------------
-
-control_type <- df %>% 
-  group_by(control_type) %>%
-  summarise(n_number = n_distinct(id_study))
-
-# n number of proportion designs------------------------------------------------
-
-df %>% 
-  filter(!is.na(accuracy_control_prop)) %>% 
-  NROW()
-
-
+# Note: we miss age means for 1114 effects
 # Items control ----------------------------------------------------------------
 
 control_items <- df %>% 
@@ -131,6 +139,7 @@ control_items <- df %>%
             median_co = median(items_control, na.rm = T),
             sd_co     = sd(items_control, na.rm = T),
             n_number  = n_distinct(items_control, na.rm = T))
+
 
 # Items misled -----------------------------------------------------------------
 
@@ -178,41 +187,57 @@ materials %>%
 event_medium <- df %>% 
   group_by(event_medium) %>%
   summarise(n_number = n_distinct(id_study))
-
+event_medium
 event_total <- sum(event_medium$n_number)
 
-# Post event imformation -------------------------------------------------------
+# Post event information -------------------------------------------------------
 
 PEI <- df %>% 
   group_by(exposure_method) %>%
   summarise(n_number = n_distinct(id_study))
 PEI
 
+# Control item types -----------------------------------------------------------
+control_item_type<- df %>% 
+  group_by(control_type) %>%
+  summarise(n_number = n_distinct(id_study))
+control_item_type
 # Post event information--------------------------------------------------------
 
 test_type <- df %>% 
   group_by(test_type) %>%
   summarise(n_number = n_distinct(id_study))
-  
+
+
 # Within/between ---------------------------------------------------------------
 
-bet <- data %>% filter(within_between == 'between')
-wit <- data %>% filter(within_between == 'within')
+bet <- df %>% filter(within_between == 'between')
+wit <- df %>% filter(within_between == 'within')
 
 # Open-science practices -------------------------------------------------------
 
-open_data <- df %>% 
+df %>% 
   group_by(open_data) %>%
-  summarise(n_number = n_distinct(id_study))
+  summarise(n_number = n_distinct(id_record))
 
 open_data_c <- df %>% 
   group_by(open_data_claimed) %>%
   summarise(n_number = n_distinct(id_study))
 
-pre_reg <- df %>% 
+df %>% 
   group_by(preregistered) %>%
-  summarise(n_number = n_distinct(id_study))
+  summarise(n_number = n_distinct(id_record))
 
-open_material <- df %>% 
+df %>% 
   group_by(open_materials) %>%
-  summarise(n_number = n_distinct(id_study))
+  summarise(n_number = n_distinct(id_record))
+
+# Incentives--------------------------------------------------------------------
+df %>% 
+  group_by(incentives) %>% 
+  summarise(incentives_rec = n_distinct(id_record),
+            incentives_stu = n_distinct(id_study),
+            incentives_effect = n_distinct(id_effect))
+
+# Outcome-----------------------------------------------------------------------
+
