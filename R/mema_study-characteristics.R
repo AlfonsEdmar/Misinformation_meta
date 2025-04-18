@@ -13,8 +13,8 @@ library(flextable)
 # Load data --------------------------------------------------------------------
 
 # All studies fit in the primary model
-df <- read_csv("data/misinformation_included_data.csv")
-df_2 <- readxl::read_xlsx("data/misinformation_full_data_2024.xlsx")
+df <- read_csv("data/mema_included_data.csv")
+df_2 <- readxl::read_xlsx("data/mema_full_data.xlsx")
 mema_primary <- read_rds('output/mema_primary.rds')
 # Country and number of studies------------------------------------------------- 
 

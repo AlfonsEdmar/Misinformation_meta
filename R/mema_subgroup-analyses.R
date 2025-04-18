@@ -6,7 +6,7 @@
 
 # Load data --------------------------------------------------------------------
 
-data_es <- read_csv('data/misinformation_clean_data.csv')
+data_es <- read_csv('data/mema_clean_data.csv')
 
 # Data transformations ---------------------------------------------------------
 
