@@ -13,7 +13,7 @@ library(metafor)
 
 # Load data --------------------------------------------------------------------
 
-raw <- read_xlsx("data/misinformation_full_data.xlsx", sheet = 1)
+raw <- read_xlsx("data/mema_full_data.xlsx", sheet = 1)
 
 # Redo IDs ---------------------------------------------------------------------
 
@@ -384,4 +384,4 @@ data_es <- data_es %>%
 
 # Write a csv file
 
-write.csv(data_es, 'data/misinformation_clean_data.csv')
+write.csv(data_es, 'data/mema_clean_data.csv')
