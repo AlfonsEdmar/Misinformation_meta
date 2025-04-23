@@ -13,7 +13,7 @@ library(flextable)
 # Load data --------------------------------------------------------------------
 
 # All studies fit in the primary model
-df <- read_csv("data/mema_included_data.csv")
+df <- read_csv("data/mema_data-included.csv")
 df_2 <- readxl::read_xlsx("data/mema_full_data.xlsx")
 mema_primary <- read_rds('output/mema_primary.rds')
 # Country and number of studies------------------------------------------------- 
@@ -139,8 +139,7 @@ control_items <- df %>%
             median_co = median(items_control, na.rm = T),
             sd_co     = sd(items_control, na.rm = T),
             n_number  = n_distinct(items_control, na.rm = T))
-
-
+control_items
 # Items misled -----------------------------------------------------------------
 
 misled_items <- df %>% 
@@ -197,6 +196,16 @@ PEI <- df %>%
   summarise(n_number = n_distinct(id_study))
 PEI
 
+# Exposure Medium --------------------------------------------------------------
+exposure_method <- df %>% 
+  group_by(exposure_method) %>%
+  summarise(n_number = n_distinct(id_study))
+
+other_methods <- df %>% 
+  group_by(exposure_method) %>%
+  summarise(n_number = n_distinct(id_study)) %>%
+  filter(n_number < 5)
+
 # Control item types -----------------------------------------------------------
 control_item_type<- df %>% 
   group_by(control_type) %>%
@@ -208,7 +217,7 @@ test_type <- df %>%
   group_by(test_type) %>%
   summarise(n_number = n_distinct(id_study))
 
-
+test_type
 # Within/between ---------------------------------------------------------------
 
 bet <- df %>% filter(within_between == 'between')
@@ -240,4 +249,6 @@ df %>%
             incentives_effect = n_distinct(id_effect))
 
 # Outcome-----------------------------------------------------------------------
+
+
 
