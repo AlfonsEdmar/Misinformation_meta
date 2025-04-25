@@ -100,12 +100,12 @@ extract_table_data <- function(meta, dig = 3, dig_ret = 5) {
   fixed_df$Parameter <- str_replace(
     fixed_df$Parameter,
     "postevent_recall",
-    "Post-Event Recall Tests")
+    "Post-Event Tests")
   
   fixed_df$Parameter <- str_replace(
     fixed_df$Parameter,
     "postexposure_recall",
-    "Post-Exposure Recall Tests")
+    "Post-Exposure Tests")
   
   fixed_df$Parameter <- str_replace(
     fixed_df$Parameter,

@@ -619,7 +619,7 @@ I2_imp <- I2_calc(meta_primary_imp)
 
 pi_imp <- pi_intercept(meta_primary_imp)
 
-# Simple model
+# Simple model -----------------------------------------------------------------
 
 data_included <- data_es[as.numeric(rownames(as.data.frame(predict(meta_primary)))), ]
 
@@ -647,6 +647,157 @@ if (!file.exists("output/mema_simple.rds")) {
 I2_simple <- I2_calc(meta_simple)
 
 pi_simple <- pi_intercept(meta_simple)
+
+# Possible quadratic trend for control accuracy --------------------------------
+
+if (!file.exists("output/mema_accsq.rds")) {
+  
+  meta_accsq   <- rma.mv(yi      = yi, 
+                         V       = vi,
+                         random  = list(~1|id_record/id_study/id_control, 
+                                        ~1|event_materials,
+                                        ~1|country,
+                                        ~1|control_type,
+                                        ~1|modality,
+                                        ~1|population,
+                                        ~1|test_type,
+                                        ~1|test_medium,
+                                        ~1|exposure_medium),
+                         mods    = ~ postevent_retention_interval
+                         + postexposure_retention_interval
+                         + preevent_warning
+                         + postevent_warning
+                         + postexposure_warning
+                         + control_acc
+                         + I(control_acc^2)
+                         + postevent_recall
+                         + postexposure_recall
+                         + publication_year
+                         + preregistered,
+                         data    = data_es,
+                         method  = "REML", 
+                         control = list(
+                           iter.max  = 1000,
+                           rel.tol   = 1e-8
+                         ),
+                         verbose = TRUE)
+  
+  saveRDS(meta_accsq, "output/mema_accsq.rds")
+  
+} else {
+  
+  meta_accsq <- readRDS("output/mema_accsq.rds")
+  
+}
+
+# Control accuracy quadratic visualization
+
+## Create prediction line
+
+pred_control_acc_sq <- predict(meta_accsq, 
+                               newmods = cbind(
+                                 rep(0, 100),
+                                 rep(0, 100),
+                                 rep(0, 100),
+                                 rep(0, 100),
+                                 rep(0, 100),
+                                 seq(min(data_es$control_acc, na.rm = TRUE),
+                                     max(data_es$control_acc, na.rm = TRUE), 
+                                     length.out = 100),
+                                 seq(min(data_es$control_acc, na.rm = TRUE),
+                                     max(data_es$control_acc, na.rm = TRUE), 
+                                     length.out = 100)^2,
+                                 rep(0, 100),
+                                 rep(0, 100),
+                                 rep(0, 100),
+                                 rep(0, 100)
+                               ))
+
+pred_control_acc_sq$control_acc <- seq(min(data_es$control_acc, na.rm = TRUE),
+                                       max(data_es$control_acc, na.rm = TRUE), 
+                                       length.out = 100) - min(data_es$control_acc, na.rm = TRUE)
+
+# Visualization of control accuracy
+
+scatter_control_acc_sq <-
+  ggplot(data_es,
+         aes(
+           x = control_acc - min(control_acc, na.rm = TRUE),
+           y = yi
+         )) +
+  geom_vline(
+    xintercept = abs(min(data_es$control_acc, na.rm = TRUE)),
+    linetype   = "dashed"
+  ) +
+  geom_hline(
+    yintercept = meta_accsq$beta[[1]],
+    linetype   = "dashed",
+    linewidth  = 1
+  ) +
+  geom_hline(
+    yintercept = 0,
+    linetype   = "dotted"
+  ) +
+  geom_point(
+    aes(
+      size = 1/vi
+    ),
+    shape = 1,
+    alpha = .25
+  ) +
+  geom_line(
+    data = as.data.frame(pred_control_acc_sq),
+    aes(
+      x = control_acc,
+      y = pred
+    ),
+    linetype  = "solid",
+    alpha     = .80,
+    color     = "darkred",
+    linewidth = 1
+  ) +
+  geom_line(
+    data = as.data.frame(pred_control_acc_sq),
+    aes(
+      x = control_acc,
+      y = ci.lb
+    ),
+    linetype  = "dashed",
+    alpha     = .80,
+    color     = "darkred",
+    linewidth = 1
+  ) +
+  geom_line(
+    data = as.data.frame(pred_control_acc_sq),
+    aes(
+      x = control_acc,
+      y = ci.ub
+    ),
+    linetype  = "dashed",
+    alpha     = .80,
+    color     = "darkred",
+    linewidth = 1
+  ) +
+  scale_x_continuous(
+    breaks = seq(0, 1, .10)
+  ) +
+  scale_y_continuous(
+    breaks = seq(-4, 8, 1),
+    limits = c(-4, 8)
+  ) +
+  labs(
+    x = "Control Accuracy",
+    y = "Effect size"
+  ) +
+  guides(
+    size = "none"
+  ) +
+  theme_classic()
+
+
+save_plot("figures/mema_control-accuracy-quadratic-plot.png", 
+          scatter_control_acc_sq,
+          base_height = 6, base_width = 6)
 
 # Visualization: Predicted vs. residuals ---------------------------------------
 
