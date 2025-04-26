@@ -1,3 +1,5 @@
 # README
 
-This repository is a work-in-process for a meta-analysis of the misinformation effect. Currently, data collection and analyses are complete and the the manuscript is under construction. For a visual overview see https://alfonsedmar.shinyapps.io/misinformation_visual/. 
+This repository contains the code and supporting materials for a meta-analysis of the misinformation effect. Code to reproduce all analyses is available here.
+
+A preprint for this project is available here: https://osf.io/preprints/psyarxiv/m68kf
