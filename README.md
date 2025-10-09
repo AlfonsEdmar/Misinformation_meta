@@ -24,3 +24,7 @@ the `R` folder) in the following order:
 
 A preprint for this project is available here:
 https://osf.io/preprints/psyarxiv/m68kf
+
+## Open Science Framework Repository
+
+The OSF repository for this project can be found here: https://osf.io/qxptz/
