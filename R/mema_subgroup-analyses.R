@@ -532,3 +532,56 @@ if (!file.exists('output/mema_res_no_acc.rds')) {
   
 }
 
+# Additive vs. Contradictory Misinformation ------------------------------------
+
+# Misinformation type as a random effect
+
+if (!file.exists("output/mema_type.rds")) {
+  
+  meta_type      <- rma.mv(yi      = yi, 
+                           V       = vi,
+                           random  = list(~1|id_record/id_study/id_control, 
+                                          ~1|event_materials,
+                                          ~1|country,
+                                          ~1|control_type,
+                                          ~1|modality,
+                                          ~1|population,
+                                          ~1|test_type,
+                                          ~1|test_medium,
+                                          ~1|exposure_medium,
+                                          ~1|misinformation_type),
+                           mods    = ~ postevent_retention_interval
+                           + postexposure_retention_interval
+                           + preevent_warning
+                           + postevent_warning
+                           + postexposure_warning
+                           + control_acc
+                           + postevent_recall
+                           + postexposure_recall
+                           + publication_year
+                           + preregistered,
+                           data    = data_es,
+                           method  = "REML", 
+                           control = list(
+                             iter.max  = 1000,
+                             rel.tol   = 1e-8
+                           ),
+                           verbose = TRUE)
+  
+  saveRDS(meta_type, "output/mema_type.rds")
+  
+} else {
+  
+  meta_type <- readRDS("output/mema_type.rds")
+  
+}
+
+## Random effects
+
+meta_type_ranef <- ranef(meta_type)
+
+## Heterogeneity
+
+I2_type <- I2_calc(meta_type)
+
+pi_type <- pi_intercept(meta_type)

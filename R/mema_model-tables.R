@@ -83,6 +83,11 @@ report_table_res_01      <- extract_table_data(meta_res_01) %>%
 report_table_res_no_acc  <- extract_table_data(meta_res_no_acc) %>% 
   standard_table()
 
+## Misinformation type
+
+report_table_type        <- extract_table_data(meta_type) %>% 
+  standard_table()
+
 # PET-PEESE supplemental
 
 report_pet_re            <- extract_table_data(meta_pet_re) %>% 
@@ -186,3 +191,7 @@ save_as_docx("RES"              = report_table_res,
              "RES: No accuracy" = report_table_res_no_acc,
              path        = "output/tables/mema_table_res.docx")
 
+### Misinformation Type
+
+save_as_docx("Type as Random"   = report_table_type,
+             path        = "output/tables/mema_table_type.docx")
