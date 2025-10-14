@@ -73,6 +73,7 @@ if (!file.exists('output/mema_age.rds')) {
                        + postevent_warning
                        + postexposure_warning
                        + control_acc
+                       + I(control_acc^2)
                        + postevent_recall
                        + postexposure_recall
                        + publication_year
@@ -114,6 +115,7 @@ if (!file.exists('output/mema_quad_age.rds')) {
                            + postevent_warning
                            + postexposure_warning
                            + control_acc
+                           + I(control_acc^2)
                            + postevent_recall
                            + postexposure_recall
                            + publication_year
@@ -200,6 +202,7 @@ if (!file.exists('output/mema_age_cat.rds')) {
                            + postevent_warning
                            + postexposure_warning
                            + control_acc
+                           + I(control_acc^2)
                            + postevent_recall
                            + postexposure_recall
                            + publication_year
@@ -241,6 +244,7 @@ if (!file.exists("output/mema_prop_female.rds")) {
                                + postevent_warning
                                + postexposure_warning
                                + control_acc
+                               + I(control_acc^2)
                                + postevent_recall
                                + postexposure_recall
                                + publication_year
@@ -291,6 +295,7 @@ if (!file.exists("output/mema_incent.rds")) {
                         + postevent_warning
                         + postexposure_warning
                         + control_acc
+                        + I(control_acc^2)
                         + postevent_recall
                         + postexposure_recall
                         + publication_year
@@ -338,6 +343,7 @@ if (!file.exists("output/mema_centrality.rds")) {
                             + postevent_warning
                             + postexposure_warning
                             + control_acc
+                            + I(control_acc^2)
                             + postevent_recall
                             + postexposure_recall
                             + publication_year
@@ -428,6 +434,7 @@ if (!file.exists('output/mema_res.rds')) {
                        + postevent_warning
                        + postexposure_warning
                        + control_acc
+                       + I(control_acc^2)
                        + postevent_recall
                        + postexposure_recall
                        + publication_year
@@ -472,6 +479,7 @@ if (!file.exists('output/mema_res_01.rds')) {
                           + postevent_warning
                           + postexposure_warning
                           + control_acc
+                          + I(control_acc^2)
                           + postevent_recall
                           + postexposure_recall
                           + publication_year
@@ -556,6 +564,7 @@ if (!file.exists("output/mema_type.rds")) {
                            + postevent_warning
                            + postexposure_warning
                            + control_acc
+                           + I(control_acc^2)
                            + postevent_recall
                            + postexposure_recall
                            + publication_year

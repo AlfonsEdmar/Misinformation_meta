@@ -26,7 +26,7 @@ report_table_peese       <- extract_table_data(meta_peese) %>%
 report_table_simple      <- extract_table_data(meta_simple) %>% 
   standard_table()
 
-report_table_acc_sq      <- extract_table_data(meta_accsq) %>% 
+report_table_linear      <- extract_table_data(meta_linear) %>% 
   standard_table()
 
 report_table_imp         <- extract_table_data(meta_primary_imp) %>% 
@@ -143,7 +143,7 @@ save_as_docx("Leverage"             = report_table_leverage,
              "Residuals"            = report_table_resid,
              "Imputations"          = report_table_imp,
              "Simple"               = report_table_simple,
-             "Accuracy - Quadratic" = report_table_acc_sq,
+             "Accuracy - Linear"    = report_table_linear,
              path        = "output/tables/mema_table_robust.docx")
 
 ## PET-PEESE supplement
