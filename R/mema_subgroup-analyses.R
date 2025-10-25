@@ -594,3 +594,45 @@ meta_type_ranef <- ranef(meta_type)
 I2_type <- I2_calc(meta_type)
 
 pi_type <- pi_intercept(meta_type)
+
+# Between-subjects only --------------------------------------------------------
+
+if (!file.exists("output/mema_between.rds")) {
+  
+  meta_between   <- rma.mv(yi      = yi, 
+                           V       = vi,
+                           random  = list(~1|id_record/id_study/id_control, 
+                                          ~1|event_materials,
+                                          ~1|country,
+                                          ~1|control_type,
+                                          ~1|modality,
+                                          ~1|population,
+                                          ~1|test_type,
+                                          ~1|test_medium,
+                                          ~1|exposure_medium),
+                           mods    = ~ postevent_retention_interval
+                           + postexposure_retention_interval
+                           + preevent_warning
+                           + postevent_warning
+                           + postexposure_warning
+                           + control_acc
+                           + I(control_acc^2)
+                           + postevent_recall
+                           + postexposure_recall
+                           + publication_year,
+                           data    = data_es %>% 
+                             filter(within_between == "between"),
+                           method  = "REML", 
+                           control = list(
+                             iter.max  = 1000,
+                             rel.tol   = 1e-8
+                           ),
+                           verbose = TRUE)
+  
+  saveRDS(meta_between, "output/mema_between.rds")
+  
+} else {
+  
+  meta_between <- readRDS("output/mema_between.rds")
+  
+}

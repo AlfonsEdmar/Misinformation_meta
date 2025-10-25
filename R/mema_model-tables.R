@@ -38,6 +38,9 @@ report_table_leverage    <- extract_table_data(meta_leverage) %>%
 report_table_resid       <- extract_table_data(meta_resid) %>% 
   standard_table()
 
+report_table_between     <- extract_table_data(meta_between) %>% 
+  standard_table()
+
 # Subgroup analyses
 
 ## Age
@@ -144,6 +147,7 @@ save_as_docx("Leverage"             = report_table_leverage,
              "Imputations"          = report_table_imp,
              "Simple"               = report_table_simple,
              "Accuracy - Linear"    = report_table_linear,
+             "Between Effects Only" = report_table_between,
              path        = "output/tables/mema_table_robust.docx")
 
 ## PET-PEESE supplement
