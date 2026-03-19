@@ -44,20 +44,21 @@ data_es <- data_es %>%
 
 # Random effect missingness
 
-data_es$event_materials[is.na(data_es$event_materials)] <- "missing"
-data_es$country[is.na(data_es$country)]                 <- "missing"
-data_es$control_type[is.na(data_es$control_type)]       <- "missing"
-data_es$modality[is.na(data_es$modality)]               <- "missing"
-data_es$population[is.na(data_es$population)]           <- "missing"
-data_es$test_type[is.na(data_es$test_type)]             <- "missing"
-data_es$test_medium[is.na(data_es$test_medium)]         <- "missing"
-data_es$exposure_medium[is.na(data_es$exposure_medium)] <- "missing"
+data_es$event_materials[is.na(data_es$event_materials)]         <- "missing"
+data_es$country[is.na(data_es$country)]                         <- "missing"
+data_es$control_type[is.na(data_es$control_type)]               <- "missing"
+data_es$modality[is.na(data_es$modality)]                       <- "missing"
+data_es$population[is.na(data_es$population)]                   <- "missing"
+data_es$test_type[is.na(data_es$test_type)]                     <- "missing"
+data_es$test_medium[is.na(data_es$test_medium)]                 <- "missing"
+data_es$exposure_medium[is.na(data_es$exposure_medium)]         <- "missing"
+data_es$misinformation_type[is.na(data_es$misinformation_type)] <- "missing"
 
 # Primary analysis--------------------------------------------------------------
 
 if (!file.exists("output/mema_linear.rds")) {
   
-  meta_linear   <- rma.mv(yi      = yi, 
+  meta_primary   <- rma.mv(yi      = yi, 
                           V       = vi,
                           random  = list(~1|id_record/id_study/id_control, 
                                          ~1|event_materials,
@@ -86,15 +87,15 @@ if (!file.exists("output/mema_linear.rds")) {
                           ),
                           verbose = TRUE)
   
-  saveRDS(meta_linear, "output/mema_linear.rds")
+  saveRDS(meta_primary, "output/mema_primary.rds")
   
 } else {
   
-  meta_linear <- readRDS("output/mema_linear.rds")
+  meta_primary <- readRDS("output/mema_primary.rds")
   
 }
 
-meta_linear_ranef <- ranef(meta_linear)
+meta_primary_ranef <- ranef(meta_primary)
 
 # Heterogeneity
 
@@ -121,7 +122,7 @@ I2_calc <- function(meta_model) {
   
 }
 
-I2_linear <- I2_calc(meta_linear)
+I2_primary <- I2_calc(meta_primary)
 
 ## Intercept prediction interval
 
@@ -138,55 +139,69 @@ pi_intercept <- function(meta_model, pib = .975) {
   
 }
 
-pi_linear <- pi_intercept(meta_linear)
+pi_primary <- pi_intercept(meta_primary)
 
 # Quadratic effect of control accuracy
 
-if (!file.exists("output/mema_primary.rds")) {
+if (!file.exists("output/mema_quad.rds")) {
   
-  meta_primary   <- rma.mv(yi      = yi, 
-                           V       = vi,
-                           random  = list(~1|id_record/id_study/id_control, 
-                                          ~1|event_materials,
-                                          ~1|country,
-                                          ~1|control_type,
-                                          ~1|modality,
-                                          ~1|population,
-                                          ~1|test_type,
-                                          ~1|test_medium,
-                                          ~1|exposure_medium),
-                           mods    = ~ postevent_retention_interval
-                           + postexposure_retention_interval
-                           + preevent_warning
-                           + postevent_warning
-                           + postexposure_warning
-                           + control_acc
-                           + I(control_acc^2)
-                           + postevent_recall
-                           + postexposure_recall
-                           + publication_year
-                           + preregistered,
-                           data    = data_es,
-                           method  = "REML", 
-                           control = list(
-                             iter.max  = 1000,
-                             rel.tol   = 1e-8
-                           ),
-                           verbose = TRUE)
+  meta_quad   <- rma.mv(yi      = yi, 
+                        V       = vi,
+                        random  = list(~1|id_record/id_study/id_control, 
+                                       ~1|event_materials,
+                                       ~1|country,
+                                       ~1|control_type,
+                                       ~1|modality,
+                                       ~1|population,
+                                       ~1|test_type,
+                                       ~1|test_medium,
+                                       ~1|exposure_medium),
+                        mods    = ~ postevent_retention_interval
+                        + postexposure_retention_interval
+                        + preevent_warning
+                        + postevent_warning
+                        + postexposure_warning
+                        + control_acc
+                        + I(control_acc^2)
+                        + postevent_recall
+                        + postexposure_recall
+                        + publication_year
+                        + preregistered,
+                        data    = data_es,
+                        method  = "REML", 
+                        control = list(
+                          iter.max  = 1000,
+                          rel.tol   = 1e-8
+                        ),
+                        verbose = TRUE)
   
-  saveRDS(meta_primary, "output/mema_primary.rds")
+  saveRDS(meta_quad, "output/mema_quad.rds")
   
 } else {
   
-  meta_primary <- readRDS("output/mema_primary.rds")
+  meta_quad <- readRDS("output/mema_quad.rds")
   
 }
 
-meta_primary_ranef <- ranef(meta_primary)
+meta_quad_ranef <- ranef(meta_quad)
 
-I2_primary <- I2_calc(meta_primary)
+I2_quad <- I2_calc(meta_quad)
 
-pi_primary <- pi_intercept(meta_primary)
+pi_quad <- pi_intercept(meta_quad)
+
+# Model comparison
+
+if (!file.exists("output/mema_primary.rds")) {
+  
+  meta_comparison <- anova(meta_primary, meta_quad, refit = TRUE)
+  
+  saveRDS(meta_comparison, "output/mema_comparison.rds")
+  
+} else {
+  
+  meta_comparison <- readRDS("output/mema_comparison.rds")
+  
+}
 
 # Bias correction --------------------------------------------------------------
 
@@ -211,7 +226,6 @@ if (!file.exists("output/mema_pet.rds")) {
                            + postevent_warning
                            + postexposure_warning
                            + control_acc
-                           + I(control_acc^2)
                            + postevent_recall
                            + postexposure_recall
                            + publication_year
@@ -256,7 +270,6 @@ if (!file.exists("output/mema_peese.rds")) {
                            + postevent_warning
                            + postexposure_warning
                            + control_acc
-                           + I(control_acc^2)
                            + postevent_recall
                            + postexposure_recall
                            + publication_year
@@ -438,7 +451,6 @@ if (!file.exists("output/mema_leverage.rds")) {
                            + postevent_warning
                            + postexposure_warning
                            + control_acc
-                           + I(control_acc^2)
                            + postevent_recall
                            + postexposure_recall
                            + publication_year
@@ -488,7 +500,6 @@ if (!file.exists("output/mema_resid.rds")) {
                            + postevent_warning
                            + postexposure_warning
                            + control_acc
-                           + I(control_acc^2)
                            + postevent_recall
                            + postexposure_recall
                            + publication_year
@@ -538,7 +549,6 @@ if (!file.exists("output/mema_primary_imp.rds")) {
                                + postevent_warning
                                + postexposure_warning
                                + control_acc
-                               + I(control_acc^2)
                                + postevent_recall
                                + postexposure_recall
                                + publication_year
@@ -601,7 +611,7 @@ pi_simple <- pi_intercept(meta_simple)
 
 # Create prediction line
 
-pred_control_acc <- predict(meta_linear, 
+pred_control_acc <- predict(meta_primary, 
                             newmods = cbind(
                               rep(0, 100),
                               rep(0, 100),
@@ -706,7 +716,7 @@ save_plot("figures/mema_control-accuracy-plot.png",
 
 ## Create prediction line
 
-pred_control_acc_sq <- predict(meta_primary, 
+pred_control_acc_sq <- predict(meta_quad, 
                                newmods = cbind(
                                  rep(0, 100),
                                  rep(0, 100),
@@ -895,7 +905,7 @@ source("R/mema_albatross.R")
 # Visualization: Grid ----------------------------------------------------------
 
 grid_upper <- plot_grid(funnel_plot, plot_pred_res,
-                        scatter_control_acc_sq, albatross,
+                        scatter_control_acc, albatross,
                         labels = c("a", "b", "c", "d"),
                         nrow = 2)
 

@@ -19,7 +19,6 @@ if (!file.exists("output/mema_pet_re.rds")) {
                               + postevent_warning
                               + postexposure_warning
                               + control_acc
-                              + I(control_acc^2)
                               + postevent_recall
                               + postexposure_recall
                               + publication_year
@@ -129,7 +128,6 @@ if (!file.exists("output/mema_peese_re.rds")) {
                               + postevent_warning
                               + postexposure_warning
                               + control_acc
-                              + I(control_acc^2)
                               + postevent_recall
                               + postexposure_recall
                               + publication_year

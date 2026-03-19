@@ -26,7 +26,7 @@ report_table_peese       <- extract_table_data(meta_peese) %>%
 report_table_simple      <- extract_table_data(meta_simple) %>% 
   standard_table()
 
-report_table_linear      <- extract_table_data(meta_linear) %>% 
+report_table_quad      <- extract_table_data(meta_quad) %>% 
   standard_table()
 
 report_table_imp         <- extract_table_data(meta_primary_imp) %>% 
@@ -146,7 +146,7 @@ save_as_docx("Leverage"             = report_table_leverage,
              "Residuals"            = report_table_resid,
              "Imputations"          = report_table_imp,
              "Simple"               = report_table_simple,
-             "Accuracy - Linear"    = report_table_linear,
+             "Accuracy - Quadratic" = report_table_quad,
              "Between Effects Only" = report_table_between,
              path        = "output/tables/mema_table_robust.docx")
 
