@@ -52,11 +52,13 @@ data_es$population[is.na(data_es$population)]                   <- "missing"
 data_es$test_type[is.na(data_es$test_type)]                     <- "missing"
 data_es$test_medium[is.na(data_es$test_medium)]                 <- "missing"
 data_es$exposure_medium[is.na(data_es$exposure_medium)]         <- "missing"
+
+data_es$misinformation_type[data_es$misinformation_type == "unclear"] <- NA
 data_es$misinformation_type[is.na(data_es$misinformation_type)] <- "missing"
 
 # Primary analysis--------------------------------------------------------------
 
-if (!file.exists("output/mema_linear.rds")) {
+if (!file.exists("output/mema_primary.rds")) {
   
   meta_primary   <- rma.mv(yi      = yi, 
                           V       = vi,
@@ -191,7 +193,7 @@ pi_quad <- pi_intercept(meta_quad)
 
 # Model comparison
 
-if (!file.exists("output/mema_primary.rds")) {
+if (!file.exists("output/mema_comparison.rds")) {
   
   meta_comparison <- anova(meta_primary, meta_quad, refit = TRUE)
   

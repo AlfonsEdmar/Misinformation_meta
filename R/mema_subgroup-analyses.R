@@ -36,14 +36,19 @@ data_es <- data_es %>%
 
 # Random effect missingness
 
-data_es$event_materials[is.na(data_es$event_materials)] <- "missing"
-data_es$country[is.na(data_es$country)]                 <- "missing"
-data_es$control_type[is.na(data_es$control_type)]       <- "missing"
-data_es$modality[is.na(data_es$modality)]               <- "missing"
-data_es$population[is.na(data_es$population)]           <- "missing"
-data_es$test_type[is.na(data_es$test_type)]             <- "missing"
-data_es$test_medium[is.na(data_es$test_medium)]         <- "missing"
-data_es$exposure_medium[is.na(data_es$exposure_medium)] <- "missing"
+data_es$event_materials[is.na(data_es$event_materials)]         <- "missing"
+data_es$country[is.na(data_es$country)]                         <- "missing"
+data_es$control_type[is.na(data_es$control_type)]               <- "missing"
+data_es$modality[is.na(data_es$modality)]                       <- "missing"
+data_es$population[is.na(data_es$population)]                   <- "missing"
+data_es$test_type[is.na(data_es$test_type)]                     <- "missing"
+data_es$test_medium[is.na(data_es$test_medium)]                 <- "missing"
+data_es$exposure_medium[is.na(data_es$exposure_medium)]         <- "missing"
+
+data_es$misinformation_type[data_es$misinformation_type == "unclear"] <- NA
+data_es$misinformation_type[is.na(data_es$misinformation_type)] <- "missing"
+
+
 
 # Age analysis------------------------------------------------------------------ 
 

@@ -218,6 +218,8 @@ raw$control_type[raw$control_type == "no misinformation"] <- "no_misinformation"
 
 raw$incentives[raw$incentives == "course_requirement"] <- "required"
 
+raw$misinformation_type[raw$misinformation_type == "contradctory"] <- "contradictory"
+
 # Setting variables classes ----------------------------------------------------
 
 raw$publication_year     <- as.numeric(raw$publication_year)
