@@ -214,6 +214,9 @@ raw$country[raw$country == "UK"] <- "gb"
 raw$country[raw$country == "US"] <- "us"
 
 raw$control_type[raw$control_type == "constistent"] <- "consistent"
+raw$control_type[raw$control_type == "consistend"]  <- "consistent"
+raw$control_type[raw$control_type == "consitent"]   <- "consistent"
+
 raw$control_type[raw$control_type == "no misinformation"] <- "no_misinformation"
 
 raw$incentives[raw$incentives == "course_requirement"] <- "required"
