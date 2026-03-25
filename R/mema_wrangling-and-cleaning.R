@@ -210,6 +210,7 @@ raw$exposure_method[
 
 
 raw$country[raw$country == "en"] <- "gb"
+raw$country[raw$country == "uk"] <- "gb"
 raw$country[raw$country == "UK"] <- "gb"
 raw$country[raw$country == "US"] <- "us"
 

@@ -583,6 +583,8 @@ pi_imp <- pi_intercept(meta_primary_imp)
 
 data_included <- data_es[as.numeric(rownames(as.data.frame(predict(meta_primary)))), ]
 
+write_csv(data_included, "data/mema_data-included.csv")
+
 if (!file.exists("output/mema_simple.rds")) {
   
   meta_simple    <- rma.mv(yi      = yi, 

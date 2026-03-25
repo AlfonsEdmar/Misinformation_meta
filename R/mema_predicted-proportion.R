@@ -88,6 +88,8 @@ summary_sd$prediction <- summary_sd$sd*predictions$pred
 summary_sd$pred_lb    <- summary_sd$sd*predictions$ci.lb
 summary_sd$pred_ub    <- summary_sd$sd*predictions$ci.ub
 
+write_csv(summary_sd, "output/tables/mema_predicted-proportion-accuracy.csv")
+
 # Visualization ----------------------------------------------------------------
 
 prediction_prop_plot <- 
