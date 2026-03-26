@@ -610,6 +610,17 @@ I2_simple <- I2_calc(meta_simple)
 
 pi_simple <- pi_intercept(meta_simple)
 
+if (!file.exists("output/mema_simple-comparison.rds")) {
+  
+  meta_simple_comparison <- anova(meta_primary, meta_simple, refit = TRUE)
+  
+  saveRDS(meta_simple_comparison, "output/mema_simple-comparison")
+  
+} else {
+  
+  meta_simple_comparison <- readRDS("output/mema_simple-comparison")
+  
+}
 
 # Control accuracy linear visualization ----------------------------------------
 
