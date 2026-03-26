@@ -91,8 +91,11 @@ unique_values <- apply(raw, 2, unique)
 
 raw$within_between[raw$within_between == "betwen"] <- "between"
 
+raw$incentives[raw$incentives == "course credit"] <- "course_credit"
 raw$incentives[raw$incentives == "course_credit_or_ money"] <- "course_credit_or_money"
 raw$incentives[raw$incentives == "credit_or_money"] <- "course_credit_or_money"
+raw$incentives[raw$incentives == "money or course credit"] <- "course_credit_or_money"
+raw$incentives[raw$incentives == "course credit or money"] <- "course_credit_or_money"
 raw$incentives[raw$incentives == "assignment"] <- "required"
 raw$incentives[raw$incentives == "other"] <- "goods"
 
@@ -113,6 +116,16 @@ raw$test_type[raw$test_type == "modified"] <- "modified_test"
 raw$test_type[raw$test_type == "MMFI"] <- "MMFR"
 raw$test_type[raw$test_type == "prop-selection"] <- "recognition"
 raw$test_type[raw$test_type == "recogition"] <- "recognition"
+raw$test_type[raw$test_type == "recogniton"] <- "recognition"
+raw$test_type[raw$test_type == "NA"] <- NA
+
+raw$test_medium[raw$test_medium == "NA"] <- NA
+raw$test_medium[raw$test_medium == "<NA>"] <- NA
+
+raw$modality[raw$modality == "NA"] <- NA
+raw$modality[raw$modality == "<NA>"] <- NA
+
+raw$exposure_medium[raw$exposure_medium == "NA"] <- NA
 
 
 raw$event_materials[
@@ -204,9 +217,17 @@ raw$event_materials[
 raw$exposure_method[
   raw$exposure_method == "narratvie"] <- "narrative"
 raw$exposure_method[
+  raw$exposure_method == "statements"] <- "narrative"
+raw$exposure_method[
+  raw$exposure_method == "statement"] <- "narrative"
+raw$exposure_method[
+  raw$exposure_method == "story"] <- "narrative"
+raw$exposure_method[
   raw$exposure_method == "questionair"] <- "questionnaire"
 raw$exposure_method[
   raw$exposure_method == "questionnair"] <- "questionnaire"
+raw$exposure_method[
+  raw$exposure_method == "cowittness"] <- "cowitness"
 
 
 raw$country[raw$country == "en"] <- "gb"
@@ -223,6 +244,7 @@ raw$control_type[raw$control_type == "no misinformation"] <- "no_misinformation"
 raw$incentives[raw$incentives == "course_requirement"] <- "required"
 
 raw$misinformation_type[raw$misinformation_type == "contradctory"] <- "contradictory"
+raw$misinformation_type[raw$misinformation_type == "NA"] <- NA
 
 # Setting variables classes ----------------------------------------------------
 
