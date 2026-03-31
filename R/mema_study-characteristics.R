@@ -132,7 +132,8 @@ df %>%
             n_number  = n_distinct(id_study),
             n_number_perc  = n_distinct(id_study)/480)
 
-# Note: we miss age means for 1114 effects
+df %>% 
+  summarise(missing = sum(is.na(age_mean)))
 # Items control ----------------------------------------------------------------
 
 control_items <- df %>% 
@@ -245,7 +246,7 @@ wit <- df %>% filter(within_between == 'within')
 
 df %>% 
   group_by(open_data) %>%
-  summarise(n_number = n_distinct(id_record))
+  summarise(n_number = n_distinct(id_study))
 
 open_data_c <- df %>% 
   group_by(open_data_claimed) %>%
@@ -257,7 +258,7 @@ df %>%
 
 df %>% 
   group_by(open_materials) %>%
-  summarise(n_number = n_distinct(id_record))
+  summarise(n_number = n_distinct(id_study))
 
 # Incentives--------------------------------------------------------------------
 df %>% 
@@ -268,5 +269,6 @@ df %>%
 
 # Outcome-----------------------------------------------------------------------
 
-
+df %>% 
+  summarise(proportions = sum(is.na(accuracy_control_prop)))
 
