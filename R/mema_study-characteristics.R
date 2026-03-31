@@ -25,6 +25,7 @@ summary_country <- df %>%
             number_of_effects = n_distinct(id_effect)) %>% 
   arrange(desc(number_of_studies))
 
+flextable(summary_country)
 flextable(summary_country) %>% 
   bold(part = "header", bold = TRUE) %>% 
   theme_apa()
@@ -88,6 +89,7 @@ df %>%
 
 df %>% 
   summarise(mean      = mean(age_mean, na.rm = T),
+            sd        = sd(age_mean, na.rm = T),
             median    = median(age_mean, na.rm = T))
 
 df %>% 
@@ -96,7 +98,7 @@ df %>%
             median    = median(age_mean, na.rm = T),
             sd        = sd(age_mean, na.rm = T),
             n_number  = n_distinct(id_study),
-            n_number_perc  = n_distinct(id_study)/428)
+            n_number_perc  = n_distinct(id_study)/480)
 
 df %>% 
   filter(age_mean > 5 & age_mean <= 12) %>% 
@@ -104,7 +106,7 @@ df %>%
             median    = median(age_mean, na.rm = T),
             sd        = sd(age_mean, na.rm = T),
             n_number  = n_distinct(id_study),
-            n_number_perc  = n_distinct(id_study)/428)
+            n_number_perc  = n_distinct(id_study)/480)
 
 df %>% 
   filter(age_mean > 13 & age_mean <= 17) %>% 
@@ -112,7 +114,7 @@ df %>%
             median    = median(age_mean, na.rm = T),
             sd        = sd(age_mean, na.rm = T),
             n_number  = n_distinct(id_study),
-            n_number_perc  = n_distinct(id_study)/428)
+            n_number_perc  = n_distinct(id_study)/480)
 
 df %>% 
   filter(age_mean > 18 & age_mean <= 40) %>% 
@@ -120,7 +122,7 @@ df %>%
             median    = median(age_mean, na.rm = T),
             sd        = sd(age_mean, na.rm = T),
             n_number  = n_distinct(id_study),
-            n_number_perc  = n_distinct(id_study)/428)
+            n_number_perc  = n_distinct(id_study)/480)
 
 df %>% 
   filter(age_mean > 40) %>% 
@@ -128,7 +130,7 @@ df %>%
             median    = median(age_mean, na.rm = T),
             sd        = sd(age_mean, na.rm = T),
             n_number  = n_distinct(id_study),
-            n_number_perc  = n_distinct(id_study)/428)
+            n_number_perc  = n_distinct(id_study)/480)
 
 # Note: we miss age means for 1114 effects
 # Items control ----------------------------------------------------------------
@@ -150,6 +152,16 @@ misled_items <- df %>%
             n_number  = n_distinct(items_misled, na.rm = T))
 misled_items
 
+# Items total ------------------------------------------------------------------
+
+total_items <- df %>% 
+  filter(is.na(accuracy_control_prop)) %>% 
+  summarise(mean      = mean(items_total, na.rm = T),
+            median    = median(items_total, na.rm = T),
+            sd        = sd(items_total, na.rm = T),
+            n_number  = n_distinct(items_total, na.rm = T))
+total_items
+
 # Number of initial test studies ----------------------------------------------- 
 
 RES_design <- df %>% 
@@ -159,7 +171,8 @@ RES_design <- df %>%
             median    = median(postevent_recall),
             min       = min(postevent_recall),
             max       = max(postevent_recall))
-  
+
+RES_design
 
 #number of post-exposure test studies------------------------------------------- 
 
@@ -177,6 +190,8 @@ materials <- df %>%
   group_by(event_materials) %>%
   summarise(n_number = n_distinct(id_study))
 
+materials
+
 materials %>% 
   filter(n_number < 8) %>% 
   summarise(n = sum(n_number))
@@ -186,7 +201,9 @@ materials %>%
 event_medium <- df %>% 
   group_by(event_medium) %>%
   summarise(n_number = n_distinct(id_study))
+
 event_medium
+
 event_total <- sum(event_medium$n_number)
 
 # Post event information -------------------------------------------------------
@@ -218,6 +235,7 @@ test_type <- df %>%
   summarise(n_number = n_distinct(id_study))
 
 test_type
+
 # Within/between ---------------------------------------------------------------
 
 bet <- df %>% filter(within_between == 'between')
