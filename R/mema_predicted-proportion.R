@@ -88,6 +88,17 @@ summary_sd$prediction <- summary_sd$sd*predictions$pred
 summary_sd$pred_lb    <- summary_sd$sd*predictions$ci.lb
 summary_sd$pred_ub    <- summary_sd$sd*predictions$ci.ub
 
+
+# Create folder for tables
+
+if (!dir.exists("output/tables")) {
+  
+  dir.create("output/tables")
+  
+}
+
+# Write predicted proportions
+
 write_csv(summary_sd, "output/tables/mema_predicted-proportion-accuracy.csv")
 
 # Visualization ----------------------------------------------------------------
@@ -137,10 +148,10 @@ ggplot(summary_sd,
   ) +
   labs(
     x = "Control Accuracy",
-    y = "Predicted Misinformation Effect (Accuracy Change)"
+    y = "Predicted misinformation effect (accuracy change)"
   ) +
   theme_classic()
 
 save_plot("figures/mema_predicted-proportion-plot.png",
           prediction_prop_plot,
-          base_height = 4, base_width = 8)
+          base_height = 6, base_width = 6)
