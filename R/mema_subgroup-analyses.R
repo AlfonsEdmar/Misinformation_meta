@@ -631,3 +631,9 @@ if (!file.exists("output/mema_between.rds")) {
   meta_between <- readRDS("output/mema_between.rds")
   
 }
+
+## Heterogeneity
+
+I2_type <- I2_calc(meta_between)
+
+pi_type <- pi_intercept(meta_between)
