@@ -3,8 +3,9 @@
 .RData
 .Ruserdata
 .sumplemental_material.html
+.supplimental_material.pdf
 .sumplemental_material.rmarkdown
-.supplemental_material_files
+.supplemental_material_files/*
 
 
 *.docx

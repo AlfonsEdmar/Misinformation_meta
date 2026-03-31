@@ -738,8 +738,8 @@ save_plot("figures/mema_performance-grid-full.png",
 
 mod_grid_upper <- plot_grid(scatter_retention_60, scatter_retention_full,
                             scatter_control_acc, prediction_prop_plot,
-                            scatter_warning, scatter_prereg,
-                            labels = c("a", "b", "c", "d", "e", "f"),
+                            scatter_warning,
+                            labels = c("a", "b", "c", "d", "e"),
                             nrow = 3)
 
 # mod_grid_plot  <- plot_grid(mod_grid_upper,
