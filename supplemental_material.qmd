@@ -1,0 +1,333 @@
+---
+title: "Supplemental Material"
+format: pdf
+toc: true 
+toc-depth: 3
+execute:
+  echo: false
+---
+
+```{r echo=FALSE, include=FALSE}
+source("R/mema_misinformation-primary-analysis.R")
+source("R/mema_subgroup-analyses.R")
+source("R/mema_pet-peese-supplement.R")
+source("R/mema_model-tables.R")
+```
+
+INSERT A PAGE BREAK
+
+# Supplemental Tables 
+## Primary results
+
+```{r}
+report_table_primary     <- extract_table_data(meta_primary) %>% 
+  standard_table()
+report_table_primary
+```
+
+## Robustness checks
+### Simplified model without moderators
+
+```{r}
+report_table_simple      <- extract_table_data(meta_simple) %>% 
+  standard_table()
+report_table_simple
+```
+### Treating control accuracy as quadratic 
+```{r}
+report_table_quad      <- extract_table_data(meta_quad) %>% 
+  standard_table()
+report_table_quad
+```
+
+### Evaluating the impact of imputed effect variances
+```{r}
+report_table_imp         <- extract_table_data(meta_primary_imp) %>% 
+  standard_table()
+report_table_imp
+```
+
+### Evaluating the impact of leverage on the primary model, excluding leverages greater than of equal three times the average leverage
+```{r}
+report_table_leverage    <- extract_table_data(meta_leverage) %>% 
+  standard_table()
+report_table_leverage
+```
+
+### Evaluating the the primary model, excluding cases with an residual greater than 1.96
+
+```{r}
+report_table_resid       <- extract_table_data(meta_resid) %>% 
+  standard_table()
+report_table_resid
+```
+
+### Evaluating the model using between subjects effects only
+```{r}
+report_table_between     <- extract_table_data(meta_between) %>% 
+  standard_table()
+report_table_between
+```
+
+
+## Subgroup analyses
+
+#### Evaluating the effect of age
+
+```{r}
+report_table_age         <- extract_table_data(meta_age) %>% 
+  standard_table()
+report_table_age
+```
+
+#### Evaluating the effect of age trated as a quadratic
+```{r}
+report_table_age_quad    <- extract_table_data(meta_age_quad) %>% 
+  standard_table()
+report_table_age_quad
+```
+
+#### Evaluating the effect of age excluding the inpact of control accuracy
+```{r}
+report_table_age_no_acc  <- extract_table_data(meta_age_no_acc) %>% 
+  standard_table()
+report_table_age_no_acc
+```
+
+#### Evaluating the effect of age treated as a categorical variable
+```{r}
+report_table_age_cat     <- extract_table_data(meta_age_cat) %>% 
+  standard_table()
+report_table_age_cat
+```
+
+
+#### Evaluating the impact of the proportion of Female participants
+
+```{r}
+report_table_female      <- extract_table_data(meta_prop_female) %>% 
+  standard_table()
+report_table_female
+```
+
+#### Evaluating the effect of different incentives 
+
+```{r}
+report_table_incent      <- extract_table_data(meta_incent) %>% 
+  standard_table()
+report_table_incent
+```
+
+#### Evaluating the effect of item centrality
+```{r}
+report_table_cent        <- extract_table_data(meta_centrality) %>% 
+  standard_table()
+report_table_cent
+```
+
+#### Evaluating the effect of item centrality without adjust for contorl accuracy
+```{r}
+report_table_cent_no_acc <- extract_table_data(meta_centrality_no_acc) %>% 
+  standard_table()
+report_table_cent_no_acc
+```
+
+
+#### Evaluating recall enhanced suggestibility
+```{r}
+report_table_res         <- extract_table_data(meta_res) %>% 
+  standard_table()
+report_table_res
+```
+
+#### Evaluating recall enhanced suggestibility with studies having at least one repeated recall
+```{r}
+report_table_res_01      <- extract_table_data(meta_res_01) %>% 
+  standard_table()
+report_table_res_01
+```
+
+#### Evaluating recall enhanced suggestibility with studies having at least one repeated recall
+```{r}
+report_table_res_no_acc  <- extract_table_data(meta_res_no_acc) %>% 
+  standard_table()
+report_table_res_no_acc
+```
+
+
+#### Analysis of Misinformation Type (Additive, Contradictory, or Mixed)
+```{r}
+report_table_type        <- extract_table_data(meta_type) %>% 
+  standard_table()
+report_table_type
+```
+
+### PET-PEESE 
+
+#### PET on primary model
+```{r}
+report_table_pet         <- extract_table_data(meta_pet) %>% 
+  standard_table()
+report_table_pet
+```
+
+#### PEESE on primary model
+```{r}
+report_table_peese       <- extract_table_data(meta_peese) %>% 
+  standard_table()
+report_table_peese
+```
+
+#### Exploratory PET-PEESE analyses
+
+##### PET-PEESE on simplified model
+
+```{r}
+report_pet_re            <- extract_table_data(meta_pet_re) %>% 
+  standard_table()
+report_pet_re
+
+report_peese_re          <- extract_table_data(meta_peese_re) %>% 
+  standard_table()
+report_peese_re
+```
+
+##### PET-PEESE on simplified model with no moderators
+```{r}
+report_pet_rem           <- extract_table_data(meta_pet_rem) %>% 
+  standard_table()
+report_pet_rem
+report_peese_rem         <- extract_table_data(meta_peese_rem) %>% 
+  standard_table()
+report_peese_rem
+```
+
+##### PET-PEESE on simplified model with no moderators and random slopes for each record
+
+```{r}
+report_pet_rs            <- extract_table_data(meta_pet_rs) %>% 
+  standard_table()
+report_pet_rs
+report_peese_rs          <- extract_table_data(meta_peese_rs) %>% 
+  standard_table()
+report_peese_rs
+```
+
+##### PET-PEESE on a random-effects meta-analysis
+```{r}
+report_pet_rma           <- extract_table_data(meta_pet_rma) %>% 
+  standard_table()
+report_pet_rma
+report_peese_rma         <- extract_table_data(meta_peese_rma) %>% 
+  standard_table()
+report_peese_rma
+```
+
+
+
+
+# Deviations from preregistration 
+
+| Aspect | Preregistration Plan | Final Implementations | Notes |
+|-------------|--------------------|----------------------|------------------------|
+| Data Extraction | Variables for study and sample characteristics, accuracy, test statistics, demographics, and experimental conditions | Same as planned, with additional variables (id_misled, bibtexkey, misinformation type) | Expanded data extraction to include bibliographic information and unique misled item identifiers. For studies with multiple control or experimental groups, all relevant comparisons were extracted; id_control and id_misled tracked the groups. Misinformation type was later extracted based on a reviewer’s suggestion (contradictory, additive, or mixed). |
+| Random Effects | Record and study (nested in record), control sample (nested in study), event material, country | Record, study, and sample interdependence (i.e., sharing the same control group) as nested random effects. Event materials, study country of origin, type of control condition, experiment modality, participant population, type of accuracy test, medium of test administration, and misinformation exposure medium.. | Extra random effects added to better account for study heterogeneity |
+| Fixed-Effects | Retention intervals, warnings, accuracy in control, number of tests, publication year, modality, age, gender, recall test type, exposure credibility, event valence | Retention intervals (in hours), the number of warnings received before or after the event, accuracy in the control condition, the number of accuracy tests conducted after the event and/or misinformation exposure, publication year, and an indicator for whether the study was pre-registered. | Age, gender, incentives, item centrality excluded from main model due to missing data; analyzed separately |
+| Missing data handling | Not specified | Missing random-effect categories treated as “missing”; missing variance imputed with random forest (missForest) | Ensures inclusion of most data without biasing results |
+| Effect size computation | Hedges’ g | Hedges’ g computed as planned; for proportions, log odds converted to Hedges’ g; missing variances imputed | Expanded approach for proportions and missing data |
+| Sensitivity analysis | Cook’s distance for outliers | Refitted the primary model excluding outlying observations identified via high leverage and residuals, and also refitted models excluding imputed variances.; did not use Cook’s distance | Chosen for computational feasibility with large dataset |
+| Moderator Analyses | Recall test type, recall test prior to PEI, age (linear and quadratic), post-exposure retention interval, pre-exposure retention interval, post-event warnings, post-exposure warnings, exposure credibility, event-valence, study publication year, study modality (field vs lab experiments) and gender. Recall test-performance included as continuous moderator in the primary model. | Age, gender, item centrality, and recall test prior to PEI (Retrieval-Enhanced Suggestibility) analyzed in separate models; In the preregistration, recall test performance was described as being treated as a continuous variable; in practice, this referred to accuracy outcomes (e.g., proportion correct, mean correct items), which were consistently analyzed as continuous measures when calculating effect sizes. | High missing data required separate analyses for some moderators |
+| Dataset | Based on master’s thesis, initial effect sizes | Expanded to include additional studies (dissertations, book chapters) | To ensure more exhaustive coverage of literature |
+| Statistical modeling | Multilevel mixed-effects model to account for nested structure; planned use of metafor in R | Three-level mixed-effects cross-classified meta-regression model with nested random effects for record, study, and sample, plus additional random effects for event material, study country, control type, modality, participant population, test type, test medium, and exposure medium | Expansion of planned model to include additional random effects and a three-level structure, allowing more comprehensive modeling of dependency and heterogeneity across studies. |
+| Open science indicators | Coded preregistration, open data, materials | Coded as planned; full codebook available on OSF | Ensures transparency and replicability |
+
+
+# References to studies excluded studies using misinformation endorsment 
+
+Bright-Paul, A., & Jarrold, C. (2012). Children’s eyewitness memory: Repeating post-event misinformation reduces the distinctiveness of a witnessed event. Memory, 20(8), 818–835.
+  
+Chambers, K. L. (1997). Are eyewitnesses victim to the sleeper effect? The role of credibility and delay in source monitoring errors. Dissertation Abstracts International: Section B: The Sciences and Engineering, 2708.
+  
+Chambers, K. L., & Zaragoza, M. S. (2001). Intended and unintended effects of explicit warnings on eyewitness suggestibility: Evidence from source identification tests. Memory and Cognition, 29(8), 1120–1129.
+  
+Cullen, H. J., Paterson, H. M., & van Golde, C. (2021). Stopping crime? The effect of crime re-enactments on eyewitness memory. Psychiatry, Psychology and Law, 28(2), 286–309.
+  
+Davis, S. D., & Meade, M. L. (2013). Both young and older adults discount suggestions from older adults on a social memory test. Psychonomic Bulletin & Review, 20(4), 760–765.
+  
+Drivdahl, S. B., & Zaragoza, M. S. (2001). The Role of Perceptual Elaboration and Individual Differences in the Creation of False Memories for Suggested Events. Applied Cognitive Psychology, 15(3), 265–281.
+  
+Forgas, J. P., Laham, S. M., & Vargas, P. T. (2005). Mood effects on eyewitness memory: Affective influences on susceptibility to misinformation. Journal of Experimental Social Psychology, 41(6), 574–588.
+  
+Göz, I., Tekin, S., & Dinn, A. A. (2015). Does semantic association play a role in post-event misinformation effect? Turk Psikoloji Dergisi, 30(75), 36–43.
+  
+Greene, C. M., Bradshaw, R., Huston, C., & Murphy, G. (2021). The medium and the message: Comparing the effectiveness of six methods of misinformation delivery in an eyewitness memory paradigm. Journal of Experimental Psychology: Applied. https://www.proquest.com/scholarly-journals/medium-message-comparing-effectiveness-six/docview/2539551949/se-2?accountid=11162
+  
+Greenspan, R. L., & Loftus, E. F. (2021). What happens after debriefing? The effectiveness and benefits of postexperimental debriefing. Memory & Cognition. https://www.proquest.com/scholarly-journals/what-happens-after-debriefing-effectiveness/docview/2560335728/se-2?accountid=11162
+  
+Hejniak, A., Szpitalak, M., Kȩkus, M., Chylińska, K., & Woźniak, M. (2019). The need for cognitive closure as a determinant of susceptibility to misinformation and proneness to false confession. Z Zagadnien Nauk Sadowych, 118, 141–156.
+  
+Hoscheidt, S. M., LaBar, K. S., Ryan, L., Jacobs, W. J., & Nadel, L. (2014). Encoding negative events under stress: High subjective arousal is related to accurate emotional memory despite misinformation exposure. Neurobiology of Learning and Memory, 112, 237–247.
+  
+Huff, M. J., Weinsheimer, C. C., & Bodner, G. E. (2016). Reducing the misinformation effect through initial testing: Take two tests and recall me in the morning? Applied Cognitive Psychology, 30(1), 61–69.
+  
+Kenchel, J. M., & Loftus, E. F. (2019). Does Choice of Eyewitness Research Materials Influence Findings? ProQuest Dissertations and Theses, 13897545, 37.
+  
+Kirk, E., Gurney, D., Edwards, R., & Dodimead, C. (2015). Handmade memories: The robustness of the gestural misinformation effect in children’s eyewitness interviews. Journal of Nonverbal Behavior, 39(3), 259–273.
+  
+Lane, S. M. (1996). Self-generated elaborations and eyewitness suggestibility. Dissertation Abstracts International: Section B: The Sciences and Engineering, 5807.
+  
+Lane, S. M. (2006). Dividing attention during a witnessed event increases eyewitness suggestibility. Applied Cognitive Psychology, 20(2), 199–212.
+  
+Lane, S. M., & Zaragoza, M. S. (2007). A little elaboration goes a long way: The role of generation in eyewitness suggestibility. Memory & Cognition, 35(6), 1255–1266.
+  
+Lindsay, D. S., Allen, B. P., Chan, J. C. K., & Dahl, L. C. (2004). Eyewitness suggestibility and source similarity: Intrusions of details from one event into memory reports of another event. Journal of Memory and Language, 50(1), 96–111.
+  
+Lindsay, D. S., & Johnson, M. K. (1989). The eyewitness suggestibility effect and memory for source. Memory & Cognition, 17(3), 349–358.
+  
+Lo, J. C., Chong, P. L. H., Ganesan, S., Leong, R. L. F., & Chee, M. W. L. (2016). Sleep deprivation increases formation of false memory. Journal of Sleep Research, 25(6), 673–682.
+  
+Mitchell, K. J. (1998). An examination of the effect of contextual overlap on eyewitness suggestibility. Dissertation Abstracts International: Section B: The Sciences and Engineering, 6253.
+  
+Mitchell, K. J., & Zaragoza, M. S. (2001). Contextual overlap and eyewitness suggestibility. Memory & Cognition, 29(4), 616–626.
+  
+Murphy, G., Lynch, L., Loftus, E., & Egan, R. (2021). Push polls increase false memories for fake news stories. Memory. https://www.proquest.com/scholarly-journals/push-polls-increase-false-memories-fake-news/docview/2537716287/se-2?accountid=11162
+  
+Niedźwieńska, A. (2003). Misleading postevent information and flashbulb memories. Memory, 11(6), 549–558.
+  
+Nitschke, J. P., Chu, S., Pruessner, J. C., Bartz, J. A., & Sheldon, S. (2019). Post-learning stress reduces the misinformation effect: Effects of psychosocial stress on memory updating. Psychoneuroendocrinology, 102, 164–171.
+  
+Okamoto, S., & Sugahara, Y. (1986). Effects of postevent information on eyewitness testimony. Japanese Psychological Research, 28(4), 196–201.
+  
+Patihis, L., Frenda, S. J., & Loftus, E. F. (2018). False memory tasks do not reliably predict other false memories. Psychology of Consciousness: Theory, Research, and Practice, 5(2), 140–160.
+  
+Polak, M., Dukała, K., Szpitalak, M., & Polczyk, R. (2016). Toward a non-memory misinformation effect: Accessing the original source does not prevent yielding to misinformation. Current Psychology: A Journal for Diverse Perspectives on Diverse Psychological Issues, 35(1), 1–12.
+  
+Polczyk, R. (2017). The “memory” misinformation effect may not be caused by memory failures: Exploring memory states of misinformed subjects. Polish Psychological Bulletin, 48(3), 388–400.
+  
+Porter, S., ten Brinke, L., Riley, S. N., & Baker, A. (2014). Prime time news: The influence of primed positive and negative emotion on susceptibility to false memories. Cognition and Emotion, 28(8), 1422–1434.
+  
+Rindal, E. J., Chrobak, Q. M., Zaragoza, M. S., & Weihing, C. A. (2017). Mechanisms of eyewitness suggestibility: Tests of the explanatory role hypothesis. Psychonomic Bulletin and Review, 24(5), 1413–1425.
+  
+Robinson, J., & Mcguire, J. (2006). Suggestibility and children with mild learning disabilities: The use of the cognitive interview. Psychology, Crime and Law, 12(5), 537–556.
+  
+Roebers, C. M., Bjorklund, D. F., Schneider, W., & Cassel, W. S. (2002). Differences and similarities in event recall and suggestibility between children and adults in Germany and the United States. Experimental Psychology, 49(2), 132–140.
+  
+Siwiak, A., & Szpitalak, M. (2018). The tendency to conspiracy thinking and misinformation. Z Zagadnien Nauk Sadowych, 112, 139–153.
+  
+Sutherland, R., & Hayne, H. (2001). Age-related changes in the misinformation effect. Journal of Experimental Child Psychology, 79(4), 388–404.
+  
+Szpitalak, M., Polak, M., Polczyk, R., & Dukała, K. (2016). The influence of social, para-social, and nonsocial misleading post-event sources on memory performance. European Journal of Social Psychology, 46(2), 185–197.
+  
+Szpitalak, M., & Polczyk, R. (2011). Distortions in eyewitness memory—Memory and non-memory mechanisms. Z Zagadnien Nauk Sadowych, 85, 40–49.
+  
+Szpitalak, M., & Polczyk, R. (2013). Promoting eyewitness testimony quality: Warning vs. Reinforced self-affirmation as methods of reduction of the misinformation effect. Polish Psychological Bulletin, 44(1), 85–91.
+  
+Szpitalak, M., & Polczyk, R. (2019a). How to induce resistance to the misinformation effect? Characteristics of positive feedback in the reinforced self-affirmation procedure. Psychology, Crime & Law, 25(7), 771–791.
+  
+Szpitalak, M., & Polczyk, R. (2019b). Inducing resistance to the misinformation effect by means of reinforced self-affirmation: The importance of positive feedback. PLoS ONE, 14(1), 16.
+  
+Szpitalak, M., & Polczyk, R. (2021). Mediators and Moderators of Reinforced Self-Affirmation as a Method for Reducing the Memory Misinformation Effect. Frontiers in Psychology, 12. https://www.scopus.com/inward/record.uri?eid=2-s2.0-85120917613&doi=10.3389%2ffpsyg.2021.666707&partnerID=40&md5=e13b59553991198094c70fc2853f4a31
+  
+Ulatowska, J., Olszewska, J., & Hanson, M. D. (2016). Do format differences in the presentation of information affect susceptibility to memory distortions? The three-stage misinformation procedure reconsidered. The American Journal of Psychology, 129(4), 407–417.
+   
+Weingardt, K. R., Loftus, E. F., & Lindsay, D. S. (1995).Misinformation revisited: New evidence on the suggestibility of memory. Memory & Cognition, 23(1), 72–82. https://doi.org/10.3758/BF03210558

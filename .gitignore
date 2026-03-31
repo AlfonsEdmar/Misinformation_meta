@@ -2,6 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+.sumplemental_material.html
+.sumplemental_material.rmarkdown
+.supplemental_material_files
+
 
 *.docx
 

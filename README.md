@@ -16,7 +16,7 @@ To reproduce all analyses we recommend running the following scripts (found in
 the `R` folder) in the following order:
 
 - `mema_misinformation-primary-analysis.R`
-- `mema_subgroup-analysis.R`
+- `mema_subgroup-analyses.R`
 - `mema_pet-peese-supplement.R`
 - `mema_model-tables.R`
 
@@ -26,6 +26,11 @@ report. However, if you want to reproduce the model estimation process, we
 recommend simply removing the contents of the output folder prior to running the
 scripts. Note that the model fitting process can take several hours, depending
 on the available computational resources.
+
+To fully reproduce the results the following packages are needed:
+```
+install.packages(c("tidyverse", "metafor", "cowplot", "ggbeeswarm", "missForest", "readxl"))
+```
 
 ## Open Science Framework Repository
 

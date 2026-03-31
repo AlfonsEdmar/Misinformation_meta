@@ -254,7 +254,7 @@ open_data_c <- df %>%
 
 df %>% 
   group_by(preregistered) %>%
-  summarise(n_number = n_distinct(id_record))
+  summarise(n_number = n_distinct(id_study))
 
 df %>% 
   group_by(open_materials) %>%

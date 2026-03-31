@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Supplemental Material</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="supplemental_material_files/libs/clipboard/clipboard.min.js"></script>
+<script src="supplemental_material_files/libs/quarto-html/quarto.js"></script>
+<script src="supplemental_material_files/libs/quarto-html/popper.min.js"></script>
+<script src="supplemental_material_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="supplemental_material_files/libs/quarto-html/anchor.min.js"></script>
+<link href="supplemental_material_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="supplemental_material_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="supplemental_material_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="supplemental_material_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="supplemental_material_files/libs/bootstrap/bootstrap-c0367b04c37547644fece4185067e4a7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="supplemental_material_files/libs/tabwid-1.1.3/tabwid.css" rel="stylesheet">
+<script src="supplemental_material_files/libs/tabwid-1.1.3/tabwid.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#supplemental-tables" id="toc-supplemental-tables" class="nav-link active" data-scroll-target="#supplemental-tables">Supplemental Tables</a>
+  <ul class="collapse">
+  <li><a href="#primary-results" id="toc-primary-results" class="nav-link" data-scroll-target="#primary-results">Primary results</a></li>
+  <li><a href="#robustness-checks" id="toc-robustness-checks" class="nav-link" data-scroll-target="#robustness-checks">Robustness checks</a>
+  <ul class="collapse">
+  <li><a href="#simplified-model-without-moderators" id="toc-simplified-model-without-moderators" class="nav-link" data-scroll-target="#simplified-model-without-moderators">Simplified model without moderators</a></li>
+  <li><a href="#treating-control-accuracy-as-quadratic" id="toc-treating-control-accuracy-as-quadratic" class="nav-link" data-scroll-target="#treating-control-accuracy-as-quadratic">Treating control accuracy as quadratic</a></li>
+  <li><a href="#evaluating-the-impact-of-imputed-effect-variances" id="toc-evaluating-the-impact-of-imputed-effect-variances" class="nav-link" data-scroll-target="#evaluating-the-impact-of-imputed-effect-variances">Evaluating the impact of imputed effect variances</a></li>
+  <li><a href="#evaluating-the-impact-of-leverage-on-the-primary-model-excluding-leverages-greater-than-of-equal-three-times-the-average-leverage" id="toc-evaluating-the-impact-of-leverage-on-the-primary-model-excluding-leverages-greater-than-of-equal-three-times-the-average-leverage" class="nav-link" data-scroll-target="#evaluating-the-impact-of-leverage-on-the-primary-model-excluding-leverages-greater-than-of-equal-three-times-the-average-leverage">Evaluating the impact of leverage on the primary model, excluding leverages greater than of equal three times the average leverage</a></li>
+  <li><a href="#evaluating-the-the-primary-model-excluding-cases-with-an-residual-greater-than-1.96" id="toc-evaluating-the-the-primary-model-excluding-cases-with-an-residual-greater-than-1.96" class="nav-link" data-scroll-target="#evaluating-the-the-primary-model-excluding-cases-with-an-residual-greater-than-1.96">Evaluating the the primary model, excluding cases with an residual greater than 1.96</a></li>
+  <li><a href="#evaluating-the-model-using-between-subjects-effects-only" id="toc-evaluating-the-model-using-between-subjects-effects-only" class="nav-link" data-scroll-target="#evaluating-the-model-using-between-subjects-effects-only">Evaluating the model using between subjects effects only</a></li>
+  </ul></li>
+  <li><a href="#subgroup-analyses" id="toc-subgroup-analyses" class="nav-link" data-scroll-target="#subgroup-analyses">Subgroup analyses</a>
+  <ul class="collapse">
+  <li><a href="#pet-peese" id="toc-pet-peese" class="nav-link" data-scroll-target="#pet-peese">PET-PEESE</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Supplemental Material</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/mema_misinformation-primary-analysis.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.4     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors
+Loading required package: Matrix
+
+
+Attaching package: 'Matrix'
+
+
+The following objects are masked from 'package:tidyr':
+
+    expand, pack, unpack
+
+
+Loading required package: metadat
+
+Loading required package: numDeriv
+
+
+Loading the 'metafor' package (version 4.8-0). For an
+introduction to the package please type: help(metafor)
+
+
+
+Attaching package: 'cowplot'
+
+
+The following object is masked from 'package:lubridate':
+
+    stamp
+
+
+New names:
+Rows: 2018 Columns: 79
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (42): id_record, id_study, id_control, id_misled, id_effect, authors, bi...
+dbl (37): ...1, publication_year, preregistered, open_data, open_data_claime...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 12 rows containing missing values or values outside the scale range
+(`geom_point()`).
+Removed 12 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 20 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The following aesthetics were dropped during statistical transformation: size.
+ℹ This can happen when ggplot fails to infer the correct grouping structure in
+  the data.
+ℹ Did you forget to specify a `group` aesthetic or to convert a numerical
+  variable into a factor?</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 20 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
+(`position_quasirandom()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 70 rows containing missing values or values outside the scale range
+(`geom_line()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 27 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 82 rows containing missing values or values outside the scale range
+(`geom_line()`).
+Removed 82 rows containing missing values or values outside the scale range
+(`geom_line()`).
+Removed 82 rows containing missing values or values outside the scale range
+(`geom_line()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
+(`position_quasirandom()`).
+Removed 5 rows containing missing values or values outside the scale range
+(`position_quasirandom()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 70 rows containing missing values or values outside the scale range
+(`geom_line()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 20 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The following aesthetics were dropped during statistical transformation: size.
+ℹ This can happen when ggplot fails to infer the correct grouping structure in
+  the data.
+ℹ Did you forget to specify a `group` aesthetic or to convert a numerical
+  variable into a factor?</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 20 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
+(`position_quasirandom()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 27 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 82 rows containing missing values or values outside the scale range
+(`geom_line()`).
+Removed 82 rows containing missing values or values outside the scale range
+(`geom_line()`).
+Removed 82 rows containing missing values or values outside the scale range
+(`geom_line()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 12 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
+(`position_quasirandom()`).
+Removed 5 rows containing missing values or values outside the scale range
+(`position_quasirandom()`).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/mema_subgroup-analyses.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+Rows: 2018 Columns: 79
+── Column specification
+──────────────────────────────────────────────────────── Delimiter: "," chr
+(42): id_record, id_study, id_control, id_misled, id_effect, authors, bi... dbl
+(37): ...1, publication_year, preregistered, open_data, open_data_claime...
+ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
+Specify the column types or set `show_col_types = FALSE` to quiet this message.
+• `` -&gt; `...1`</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/mema_pet-peese-supplement.R"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/mema_model-tables.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: flextable
+
+Attaching package: 'flextable'
+
+The following object is masked from 'package:purrr':
+
+    compose</code></pre>
+</div>
+</div>
+<section id="supplemental-tables" class="level1">
+<h1>Supplemental Tables</h1>
+<section id="primary-results" class="level2">
+<h2 class="anchored" data-anchor-id="primary-results">Primary results</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>report_table_primary     <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_primary) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="robustness-checks" class="level2">
+<h2 class="anchored" data-anchor-id="robustness-checks">Robustness checks</h2>
+<section id="simplified-model-without-moderators" class="level3">
+<h3 class="anchored" data-anchor-id="simplified-model-without-moderators">Simplified model without moderators</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>report_table_simple      <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_simple) <span class="sc">%&gt;%</span> </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="treating-control-accuracy-as-quadratic" class="level3">
+<h3 class="anchored" data-anchor-id="treating-control-accuracy-as-quadratic">Treating control accuracy as quadratic</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>report_table_quad      <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_quad) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluating-the-impact-of-imputed-effect-variances" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-the-impact-of-imputed-effect-variances">Evaluating the impact of imputed effect variances</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>report_table_imp         <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_primary_imp) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluating-the-impact-of-leverage-on-the-primary-model-excluding-leverages-greater-than-of-equal-three-times-the-average-leverage" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-the-impact-of-leverage-on-the-primary-model-excluding-leverages-greater-than-of-equal-three-times-the-average-leverage">Evaluating the impact of leverage on the primary model, excluding leverages greater than of equal three times the average leverage</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>report_table_leverage    <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_leverage) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluating-the-the-primary-model-excluding-cases-with-an-residual-greater-than-1.96" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-the-the-primary-model-excluding-cases-with-an-residual-greater-than-1.96">Evaluating the the primary model, excluding cases with an residual greater than 1.96</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>report_table_resid       <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_resid) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluating-the-model-using-between-subjects-effects-only" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-the-model-using-between-subjects-effects-only">Evaluating the model using between subjects effects only</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>report_table_between     <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_between) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="subgroup-analyses" class="level2">
+<h2 class="anchored" data-anchor-id="subgroup-analyses">Subgroup analyses</h2>
+<section id="evaluating-the-effect-of-age" class="level4">
+<h4 class="anchored" data-anchor-id="evaluating-the-effect-of-age">Evaluating the effect of age</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>report_table_age         <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_age) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluating-the-effect-of-age-trated-as-a-quadratic" class="level4">
+<h4 class="anchored" data-anchor-id="evaluating-the-effect-of-age-trated-as-a-quadratic">Evaluating the effect of age trated as a quadratic</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>report_table_age_quad    <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_age_quad) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluating-the-effect-of-age-excluding-the-inpact-of-control-accuracy" class="level4">
+<h4 class="anchored" data-anchor-id="evaluating-the-effect-of-age-excluding-the-inpact-of-control-accuracy">Evaluating the effect of age excluding the inpact of control accuracy</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>report_table_age_no_acc  <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_age_no_acc) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluating-the-effect-of-age-treated-as-a-categorical-variable" class="level4">
+<h4 class="anchored" data-anchor-id="evaluating-the-effect-of-age-treated-as-a-categorical-variable">Evaluating the effect of age treated as a categorical variable</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>report_table_age_cat     <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_age_cat) <span class="sc">%&gt;%</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluating-the-impact-of-the-proportion-of-female-participants" class="level4">
+<h4 class="anchored" data-anchor-id="evaluating-the-impact-of-the-proportion-of-female-participants">Evaluating the impact of the proportion of Female participants</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>report_table_female      <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_prop_female) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>report_table_female</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-73cbd5c0{}.cl-73b33af6{font-family:'Helvetica';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-73b33b0a{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-73bd9a50{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-73bd9a64{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-73be1c28{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c3c{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c46{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c47{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c50{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c5a{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c64{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c65{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c6e{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c78{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c79{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c82{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c8c{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c8d{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1c96{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1ca0{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1ca1{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1caa{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cab{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cac{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cb4{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cb5{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cbe{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cbf{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cc8{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cd2{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cdc{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cdd{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cde{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1ce6{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1ce7{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1ce8{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cf0{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cfa{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1cfb{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1d04{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1d05{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1d0e{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1d18{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1d19{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1d1a{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1d2c{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1d2d{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1d36{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73be1d37{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-73cbd5c0"><thead><tr style="overflow-wrap:break-word;"><th class="cl-73be1c28"><p class="cl-73bd9a50"><span class="cl-73b33af6">Parameter</span></p></th><th class="cl-73be1c3c"><p class="cl-73bd9a64"><span class="cl-73b33af6">Estimate</span></p></th><th class="cl-73be1c46"><p class="cl-73bd9a64"><span class="cl-73b33af6">Sigma</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td colspan="3" class="cl-73be1c47"><p class="cl-73bd9a50"><span class="cl-73b33af6">Effect</span><span class="cl-73b33af6">: </span><span class="cl-73b33af6">Fixed</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1c64"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Intercept (Average Effect)</span></p></td><td class="cl-73be1c65"><p class="cl-73bd9a64"><span class="cl-73b33b0a"> 0.695 [ 0.232,  1.158]</span></p></td><td class="cl-73be1c6e"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1c78"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Post-Event Retention</span></p></td><td class="cl-73be1c79"><p class="cl-73bd9a64"><span class="cl-73b33b0a"> 0.00001 [-0.00001,  0.00003]</span></p></td><td class="cl-73be1c82"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1c8c"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Post-Exposure Retention</span></p></td><td class="cl-73be1c8d"><p class="cl-73bd9a64"><span class="cl-73b33b0a">-0.00020 [-0.00024, -0.00016]</span></p></td><td class="cl-73be1c96"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1ca0"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Pre-Event Warning</span></p></td><td class="cl-73be1ca1"><p class="cl-73bd9a64"><span class="cl-73b33b0a"> 0.432 [-0.044,  0.908]</span></p></td><td class="cl-73be1caa"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1ca0"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Post-Event Warning</span></p></td><td class="cl-73be1ca1"><p class="cl-73bd9a64"><span class="cl-73b33b0a">-0.277 [-0.548, -0.007]</span></p></td><td class="cl-73be1caa"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1ca0"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Post-Exposure Warning</span></p></td><td class="cl-73be1ca1"><p class="cl-73bd9a64"><span class="cl-73b33b0a">-0.328 [-0.450, -0.206]</span></p></td><td class="cl-73be1caa"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1cab"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Control Accuracy</span></p></td><td class="cl-73be1cac"><p class="cl-73bd9a64"><span class="cl-73b33b0a"> 1.467 [ 1.280,  1.653]</span></p></td><td class="cl-73be1cb4"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1c78"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Post-Event Tests</span></p></td><td class="cl-73be1c79"><p class="cl-73bd9a64"><span class="cl-73b33b0a"> 0.063 [-0.044,  0.171]</span></p></td><td class="cl-73be1c82"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1c8c"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Post-Exposure Tests</span></p></td><td class="cl-73be1c8d"><p class="cl-73bd9a64"><span class="cl-73b33b0a">-0.053 [-0.117,  0.010]</span></p></td><td class="cl-73be1c96"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1c78"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Publication Year</span></p></td><td class="cl-73be1c79"><p class="cl-73bd9a64"><span class="cl-73b33b0a">-0.000 [-0.009,  0.008]</span></p></td><td class="cl-73be1c82"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1ca0"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Preregistration</span></p></td><td class="cl-73be1ca1"><p class="cl-73bd9a64"><span class="cl-73b33b0a"> 0.049 [-0.232,  0.331]</span></p></td><td class="cl-73be1caa"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1cb5"><p class="cl-73bd9a50"><span class="cl-73b33b0a">gender_female_prop</span></p></td><td class="cl-73be1cbe"><p class="cl-73bd9a64"><span class="cl-73b33b0a">-0.202 [-0.636,  0.232]</span></p></td><td class="cl-73be1cbf"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td colspan="3" class="cl-73be1c47"><p class="cl-73bd9a50"><span class="cl-73b33af6">Effect</span><span class="cl-73b33af6">: </span><span class="cl-73b33af6">Random</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1cc8"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Record</span></p></td><td class="cl-73be1cd2"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td><td class="cl-73be1cdc"><p class="cl-73bd9a64"><span class="cl-73b33b0a">0.568</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1cab"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Study</span></p></td><td class="cl-73be1cac"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td><td class="cl-73be1cb4"><p class="cl-73bd9a64"><span class="cl-73b33b0a">0.015</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1cdd"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Control Group</span></p></td><td class="cl-73be1cde"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td><td class="cl-73be1ce6"><p class="cl-73bd9a64"><span class="cl-73b33b0a">0.349</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1ce7"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Event Materials</span></p></td><td class="cl-73be1ce8"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td><td class="cl-73be1cf0"><p class="cl-73bd9a64"><span class="cl-73b33b0a">0.008</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1cab"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Country</span></p></td><td class="cl-73be1cac"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td><td class="cl-73be1cb4"><p class="cl-73bd9a64"><span class="cl-73b33b0a">0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1cab"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Control Type</span></p></td><td class="cl-73be1cac"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td><td class="cl-73be1cb4"><p class="cl-73bd9a64"><span class="cl-73b33b0a">0.287</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1cfa"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Modality</span></p></td><td class="cl-73be1cfb"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td><td class="cl-73be1d04"><p class="cl-73bd9a64"><span class="cl-73b33b0a">0.017</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1c8c"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Population</span></p></td><td class="cl-73be1c8d"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td><td class="cl-73be1c96"><p class="cl-73bd9a64"><span class="cl-73b33b0a">0.000</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1d05"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Test Type</span></p></td><td class="cl-73be1d0e"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td><td class="cl-73be1d18"><p class="cl-73bd9a64"><span class="cl-73b33b0a">0.242</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1d19"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Test Medium</span></p></td><td class="cl-73be1d1a"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td><td class="cl-73be1d2c"><p class="cl-73bd9a64"><span class="cl-73b33b0a">0.252</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-73be1d2d"><p class="cl-73bd9a50"><span class="cl-73b33b0a">Exposure Medium</span></p></td><td class="cl-73be1d36"><p class="cl-73bd9a64"><span class="cl-73b33b0a"></span></p></td><td class="cl-73be1d37"><p class="cl-73bd9a64"><span class="cl-73b33b0a">0.071</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="evaluating-the-effect-of-different-incentives" class="level4">
+<h4 class="anchored" data-anchor-id="evaluating-the-effect-of-different-incentives">Evaluating the effect of different incentives</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>report_table_incent      <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_incent) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluating-the-effect-of-item-centrality" class="level4">
+<h4 class="anchored" data-anchor-id="evaluating-the-effect-of-item-centrality">Evaluating the effect of item centrality</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>report_table_cent        <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_centrality) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluating-the-effect-of-item-centrality-without-adjust-for-contorl-accuracy" class="level4">
+<h4 class="anchored" data-anchor-id="evaluating-the-effect-of-item-centrality-without-adjust-for-contorl-accuracy">Evaluating the effect of item centrality without adjust for contorl accuracy</h4>
+<p>report_table_cent_no_acc &lt;- extract_table_data(meta_centrality_no_acc) %&gt;% standard_table()</p>
+</section>
+<section id="evaluating-recall-enhanced-suggestibility" class="level4">
+<h4 class="anchored" data-anchor-id="evaluating-recall-enhanced-suggestibility">Evaluating recall enhanced suggestibility</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>report_table_res         <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_res) <span class="sc">%&gt;%</span> </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluating-recall-enhanced-suggestibility-with-studies-having-at-least-one-repeated-recall" class="level4">
+<h4 class="anchored" data-anchor-id="evaluating-recall-enhanced-suggestibility-with-studies-having-at-least-one-repeated-recall">Evaluating recall enhanced suggestibility with studies having at least one repeated recall</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>report_table_res_01      <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_res_01) <span class="sc">%&gt;%</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluating-recall-enhanced-suggestibility-with-studies-having-at-least-one-repeated-recall-1" class="level4">
+<h4 class="anchored" data-anchor-id="evaluating-recall-enhanced-suggestibility-with-studies-having-at-least-one-repeated-recall-1">Evaluating recall enhanced suggestibility with studies having at least one repeated recall</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>report_table_res_no_acc  <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_res_no_acc) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>report_table_res_no_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-755a5858{}.cl-753e2b4c{font-family:'Helvetica';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-753e2b6a{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-7547d8a4{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-7547d8b8{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-75482d9a{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482dae{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482db8{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482db9{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482dc2{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482dc3{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482dcc{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482dd6{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482de0{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482de1{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482dea{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482deb{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482df4{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482df5{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482dfe{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482dff{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e08{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e12{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e13{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e1c{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e26{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e27{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e30{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e31{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e3a{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e3b{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e44{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e45{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e4e{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e4f{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e58{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e62{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e63{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e64{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e6c{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e76{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e77{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e80{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e81{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e8a{width:2.026in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e8b{width:2.307in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-75482e8c{width:0.744in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-755a5858"><thead><tr style="overflow-wrap:break-word;"><th class="cl-75482d9a"><p class="cl-7547d8a4"><span class="cl-753e2b4c">Parameter</span></p></th><th class="cl-75482dae"><p class="cl-7547d8b8"><span class="cl-753e2b4c">Estimate</span></p></th><th class="cl-75482db8"><p class="cl-7547d8b8"><span class="cl-753e2b4c">Sigma</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td colspan="3" class="cl-75482db9"><p class="cl-7547d8a4"><span class="cl-753e2b4c">Effect</span><span class="cl-753e2b4c">: </span><span class="cl-753e2b4c">Fixed</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482dcc"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Intercept (Average Effect)</span></p></td><td class="cl-75482dd6"><p class="cl-7547d8b8"><span class="cl-753e2b6a"> 0.913 [ 0.316,  1.510]</span></p></td><td class="cl-75482de0"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482de1"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Post-Event Retention</span></p></td><td class="cl-75482dea"><p class="cl-7547d8b8"><span class="cl-753e2b6a">-0.00005 [-0.00019,  0.00009]</span></p></td><td class="cl-75482deb"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482df4"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Post-Exposure Retention</span></p></td><td class="cl-75482df5"><p class="cl-7547d8b8"><span class="cl-753e2b6a">-0.00025 [-0.00029, -0.00020]</span></p></td><td class="cl-75482dfe"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482dff"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Post-Event Warning</span></p></td><td class="cl-75482e08"><p class="cl-7547d8b8"><span class="cl-753e2b6a">-0.437 [-0.905,  0.031]</span></p></td><td class="cl-75482e12"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482dff"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Post-Exposure Warning</span></p></td><td class="cl-75482e08"><p class="cl-7547d8b8"><span class="cl-753e2b6a">-0.617 [-0.817, -0.416]</span></p></td><td class="cl-75482e12"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482de1"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Post-Event Tests</span></p></td><td class="cl-75482dea"><p class="cl-7547d8b8"><span class="cl-753e2b6a"> 0.047 [-0.027,  0.122]</span></p></td><td class="cl-75482deb"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482df4"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Post-Exposure Tests</span></p></td><td class="cl-75482df5"><p class="cl-7547d8b8"><span class="cl-753e2b6a">-0.057 [-0.198,  0.083]</span></p></td><td class="cl-75482dfe"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482de1"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Publication Year</span></p></td><td class="cl-75482dea"><p class="cl-7547d8b8"><span class="cl-753e2b6a">-0.004 [-0.019,  0.010]</span></p></td><td class="cl-75482deb"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482dff"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Preregistration</span></p></td><td class="cl-75482e08"><p class="cl-7547d8b8"><span class="cl-753e2b6a"> 0.179 [-0.433,  0.792]</span></p></td><td class="cl-75482e12"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td colspan="3" class="cl-75482db9"><p class="cl-7547d8a4"><span class="cl-753e2b4c">Effect</span><span class="cl-753e2b4c">: </span><span class="cl-753e2b4c">Random</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482e13"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Record</span></p></td><td class="cl-75482e1c"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td><td class="cl-75482e26"><p class="cl-7547d8b8"><span class="cl-753e2b6a">0.308</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482e27"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Study</span></p></td><td class="cl-75482e30"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td><td class="cl-75482e31"><p class="cl-7547d8b8"><span class="cl-753e2b6a">0.208</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482e3a"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Control Group</span></p></td><td class="cl-75482e3b"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td><td class="cl-75482e44"><p class="cl-7547d8b8"><span class="cl-753e2b6a">0.397</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482e45"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Event Materials</span></p></td><td class="cl-75482e4e"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td><td class="cl-75482e4f"><p class="cl-7547d8b8"><span class="cl-753e2b6a">0.433</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482e27"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Country</span></p></td><td class="cl-75482e30"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td><td class="cl-75482e31"><p class="cl-7547d8b8"><span class="cl-753e2b6a">0.188</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482e27"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Control Type</span></p></td><td class="cl-75482e30"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td><td class="cl-75482e31"><p class="cl-7547d8b8"><span class="cl-753e2b6a">0.496</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482e58"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Modality</span></p></td><td class="cl-75482e62"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td><td class="cl-75482e63"><p class="cl-7547d8b8"><span class="cl-753e2b6a">0.051</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482df4"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Population</span></p></td><td class="cl-75482df5"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td><td class="cl-75482dfe"><p class="cl-7547d8b8"><span class="cl-753e2b6a">0.124</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482e64"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Test Type</span></p></td><td class="cl-75482e6c"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td><td class="cl-75482e76"><p class="cl-7547d8b8"><span class="cl-753e2b6a">0.005</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482e77"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Test Medium</span></p></td><td class="cl-75482e80"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td><td class="cl-75482e81"><p class="cl-7547d8b8"><span class="cl-753e2b6a">0.006</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-75482e8a"><p class="cl-7547d8a4"><span class="cl-753e2b6a">Exposure Medium</span></p></td><td class="cl-75482e8b"><p class="cl-7547d8b8"><span class="cl-753e2b6a"></span></p></td><td class="cl-75482e8c"><p class="cl-7547d8b8"><span class="cl-753e2b6a">0.002</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="analysis-of-misinformation-type-additive-contradictory-or-mixed" class="level4">
+<h4 class="anchored" data-anchor-id="analysis-of-misinformation-type-additive-contradictory-or-mixed">Analysis of Misinformation Type (Additive, Contradictory, or Mixed)</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>report_table_type        <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_type) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="pet-peese" class="level3">
+<h3 class="anchored" data-anchor-id="pet-peese">PET-PEESE</h3>
+<section id="pet-on-primary-model" class="level4">
+<h4 class="anchored" data-anchor-id="pet-on-primary-model">PET on primary model</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>report_table_pet         <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_pet) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="peese-on-primary-model" class="level4">
+<h4 class="anchored" data-anchor-id="peese-on-primary-model">PEESE on primary model</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>report_table_peese       <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_peese) <span class="sc">%&gt;%</span> </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exploratory-pet-peese-analyses" class="level4">
+<h4 class="anchored" data-anchor-id="exploratory-pet-peese-analyses">Exploratory PET-PEESE analyses</h4>
+<section id="pet-peese-on-simplified-model" class="level5">
+<h5 class="anchored" data-anchor-id="pet-peese-on-simplified-model">PET-PEESE on simplified model</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>report_pet_re            <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_pet_re) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>report_peese_re          <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_peese_re) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="pet-peese-on-simplified-model-with-no-moderators" class="level5">
+<h5 class="anchored" data-anchor-id="pet-peese-on-simplified-model-with-no-moderators">PET-PEESE on simplified model with no moderators</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>report_pet_rem           <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_pet_rem) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>report_peese_rem         <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_peese_rem) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="pet-peese-on-simplified-model-with-no-moderators-and-random-slopes-for-each-record" class="level5">
+<h5 class="anchored" data-anchor-id="pet-peese-on-simplified-model-with-no-moderators-and-random-slopes-for-each-record">PET-PEESE on simplified model with no moderators and random slopes for each record</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>report_pet_rs            <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_pet_rs) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>report_peese_rs          <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_peese_rs) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="pet-peese-on-a-random-effects-meta-analysis" class="level5">
+<h5 class="anchored" data-anchor-id="pet-peese-on-a-random-effects-meta-analysis">PET-PEESE on a random-effects meta-analysis</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>report_pet_rma           <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_pet_rma) <span class="sc">%&gt;%</span> </span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>report_peese_rma         <span class="ot">&lt;-</span> <span class="fu">extract_table_data</span>(meta_peese_rma) <span class="sc">%&gt;%</span> </span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standard_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
