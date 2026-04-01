@@ -272,3 +272,28 @@ df %>%
 df %>% 
   summarise(proportions = sum(is.na(accuracy_control_prop)))
 
+# Publication year--------------------------------------------------------------
+
+df %>% 
+  filter(year_raw > 1974 & year_raw < 1985) %>% 
+  summarise(n = n_distinct(id_record))
+df %>% 
+  filter(year_raw > 1984 & year_raw < 1995) %>% 
+  summarise(n = n_distinct(id_record))
+df %>% 
+  filter(year_raw > 1994 & year_raw < 2005) %>% 
+  summarise(n = n_distinct(id_record))
+df %>% 
+  filter(year_raw > 2004 & year_raw < 2015) %>% 
+  summarise(n = n_distinct(id_record))
+df %>% 
+  filter(year_raw > 2014 & year_raw < 2026) %>% 
+  summarise(n = n_distinct(id_record))
+
+anyNA(df$year_raw)
+
+
+
+
+
+

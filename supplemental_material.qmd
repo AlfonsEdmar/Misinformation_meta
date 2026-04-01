@@ -14,7 +14,7 @@ source("R/mema_pet-peese-supplement.R")
 source("R/mema_model-tables.R")
 ```
 
-INSERT A PAGE BREAK
+{{< pagebreak >}}
 
 # Supplemental Tables 
 ## Primary results
@@ -244,15 +244,19 @@ report_peese_rma
 
 # References to studies excluded studies using misinformation endorsment 
 
+Bird, E., Wiener, J., & Attard-Johnson, J. (2024). The efficacy of the Self-Administered Interview in minimising the misinformation effect. Applied Cognitive Psychology, 38(1), e4179. https://doi.org/10.1002/acp.4179
+    
 Bright-Paul, A., & Jarrold, C. (2012). Children’s eyewitness memory: Repeating post-event misinformation reduces the distinctiveness of a witnessed event. Memory, 20(8), 818–835.
   
 Chambers, K. L. (1997). Are eyewitnesses victim to the sleeper effect? The role of credibility and delay in source monitoring errors. Dissertation Abstracts International: Section B: The Sciences and Engineering, 2708.
-  
+   
 Chambers, K. L., & Zaragoza, M. S. (2001). Intended and unintended effects of explicit warnings on eyewitness suggestibility: Evidence from source identification tests. Memory and Cognition, 29(8), 1120–1129.
   
 Cullen, H. J., Paterson, H. M., & van Golde, C. (2021). Stopping crime? The effect of crime re-enactments on eyewitness memory. Psychiatry, Psychology and Law, 28(2), 286–309.
   
 Davis, S. D., & Meade, M. L. (2013). Both young and older adults discount suggestions from older adults on a social memory test. Psychonomic Bulletin & Review, 20(4), 760–765.
+  
+Devitt, A.L., Foster, J. Age-related changes in susceptibility to false memories in different tasks. Mem Cogn (2025). https://doi.org/10.3758/s13421-025-01778-x
   
 Drivdahl, S. B., & Zaragoza, M. S. (2001). The Role of Perceptual Elaboration and Individual Differences in the Creation of False Memories for Suggested Events. Applied Cognitive Psychology, 15(3), 265–281.
   
@@ -260,7 +264,11 @@ Forgas, J. P., Laham, S. M., & Vargas, P. T. (2005). Mood effects on eyewitness 
   
 Göz, I., Tekin, S., & Dinn, A. A. (2015). Does semantic association play a role in post-event misinformation effect? Turk Psikoloji Dergisi, 30(75), 36–43.
   
+Grant, L. H., Pan, A. Y., Huang, Y., Gallo, D. A., & Keysar, B. (2023). Foreign language reduces false memories by increasing memory monitoring. Journal of Experimental Psychology: General, 152(7), 1967–1977. https://doi.org/10.1037/xge0001378
+  
 Greene, C. M., Bradshaw, R., Huston, C., & Murphy, G. (2021). The medium and the message: Comparing the effectiveness of six methods of misinformation delivery in an eyewitness memory paradigm. Journal of Experimental Psychology: Applied. https://www.proquest.com/scholarly-journals/medium-message-comparing-effectiveness-six/docview/2539551949/se-2?accountid=11162
+  
+Greene, C.M., Brassil, M. & Murphy, G. He said, she said: the “accused” and “complainant” in a sexual assault scenario are equally susceptible to misinformation. Sci Rep 15, 27693 (2025). https://doi.org/10.1038/s41598-025-13587-y
   
 Greenspan, R. L., & Loftus, E. F. (2021). What happens after debriefing? The effectiveness and benefits of postexperimental debriefing. Memory & Cognition. https://www.proquest.com/scholarly-journals/what-happens-after-debriefing-effectiveness/docview/2560335728/se-2?accountid=11162
   
@@ -280,9 +288,11 @@ Lane, S. M. (2006). Dividing attention during a witnessed event increases eyewit
   
 Lane, S. M., & Zaragoza, M. S. (2007). A little elaboration goes a long way: The role of generation in eyewitness suggestibility. Memory & Cognition, 35(6), 1255–1266.
   
+Lindsay, D. S., & Johnson, M. K. (1989). The eyewitness suggestibility effect and memory for source. Memory & Cognition, 17(3), 349–358.
+  
 Lindsay, D. S., Allen, B. P., Chan, J. C. K., & Dahl, L. C. (2004). Eyewitness suggestibility and source similarity: Intrusions of details from one event into memory reports of another event. Journal of Memory and Language, 50(1), 96–111.
   
-Lindsay, D. S., & Johnson, M. K. (1989). The eyewitness suggestibility effect and memory for source. Memory & Cognition, 17(3), 349–358.
+Liu, W., Huizhen, D., Siman, Z., Jiayu, Z., & Xiaoyu, W. (2024). The more stress, the more accurate memory? The influence of stress on retrieval-enhanced suggestibility effect. Journal of Cognitive Psychology, 36(7), 793–804. https://doi.org/10.1080/20445911.2024.2386733
   
 Lo, J. C., Chong, P. L. H., Ganesan, S., Leong, R. L. F., & Chee, M. W. L. (2016). Sleep deprivation increases formation of false memory. Journal of Sleep Research, 25(6), 673–682.
   
@@ -316,8 +326,6 @@ Siwiak, A., & Szpitalak, M. (2018). The tendency to conspiracy thinking and misi
   
 Sutherland, R., & Hayne, H. (2001). Age-related changes in the misinformation effect. Journal of Experimental Child Psychology, 79(4), 388–404.
   
-Szpitalak, M., Polak, M., Polczyk, R., & Dukała, K. (2016). The influence of social, para-social, and nonsocial misleading post-event sources on memory performance. European Journal of Social Psychology, 46(2), 185–197.
-  
 Szpitalak, M., & Polczyk, R. (2011). Distortions in eyewitness memory—Memory and non-memory mechanisms. Z Zagadnien Nauk Sadowych, 85, 40–49.
   
 Szpitalak, M., & Polczyk, R. (2013). Promoting eyewitness testimony quality: Warning vs. Reinforced self-affirmation as methods of reduction of the misinformation effect. Polish Psychological Bulletin, 44(1), 85–91.
@@ -328,6 +336,14 @@ Szpitalak, M., & Polczyk, R. (2019b). Inducing resistance to the misinformation 
   
 Szpitalak, M., & Polczyk, R. (2021). Mediators and Moderators of Reinforced Self-Affirmation as a Method for Reducing the Memory Misinformation Effect. Frontiers in Psychology, 12. https://www.scopus.com/inward/record.uri?eid=2-s2.0-85120917613&doi=10.3389%2ffpsyg.2021.666707&partnerID=40&md5=e13b59553991198094c70fc2853f4a31
   
+Szpitalak, M., Polak, M., Polczyk, R., & Dukała, K. (2016). The influence of social, para-social, and nonsocial misleading post-event sources on memory performance. European Journal of Social Psychology, 46(2), 185–197.
+  
 Ulatowska, J., Olszewska, J., & Hanson, M. D. (2016). Do format differences in the presentation of information affect susceptibility to memory distortions? The three-stage misinformation procedure reconsidered. The American Journal of Psychology, 129(4), 407–417.
-   
+  
+Wang, J., Wang, B., Otgaar, H., Patihis, L., & Sauerland, M. (2024). Self-relevance enhances susceptibility to false memory. Behavioral Sciences & the Law, 42(2), 79–95. https://doi.org/10.1002/bsl.2644
+  
 Weingardt, K. R., Loftus, E. F., & Lindsay, D. S. (1995).Misinformation revisited: New evidence on the suggestibility of memory. Memory & Cognition, 23(1), 72–82. https://doi.org/10.3758/BF03210558
+  
+XIONG K, ZHANG X, LIAO X, et al. Behavioral characteristics of false memory in individuals with depressed mood based on misinformation paradigm. Journal of Army Medical University, 2022, 44(19): 1961-1967. https://doi.org/10.16016/j.2097-0927.202202106
+  
+钱慧昌. (2022). 不同时间点警告对目击者记忆保护作用的差异. 中华行为医学与脑科学杂志, 31(07), 647. https://doi.org/10.3760/cma.j.cn371468-20220516-00263
