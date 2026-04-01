@@ -162,7 +162,7 @@ report_table_type        <- extract_table_data(meta_type) %>%
 report_table_type
 ```
 
-### PET-PEESE 
+## PET-PEESE 
 
 #### PET on primary model
 ```{r}
@@ -224,7 +224,7 @@ report_peese_rma
 ```
 
 
-
+{{< pagebreak >}}
 
 # Deviations from preregistration 
 
@@ -241,6 +241,7 @@ report_peese_rma
 | Statistical modeling | Multilevel mixed-effects model to account for nested structure; planned use of metafor in R | Three-level mixed-effects cross-classified meta-regression model with nested random effects for record, study, and sample, plus additional random effects for event material, study country, control type, modality, participant population, test type, test medium, and exposure medium | Expansion of planned model to include additional random effects and a three-level structure, allowing more comprehensive modeling of dependency and heterogeneity across studies. |
 | Open science indicators | Coded preregistration, open data, materials | Coded as planned; full codebook available on OSF | Ensures transparency and replicability |
 
+{{< pagebreak >}}
 
 # References to studies excluded studies using misinformation endorsment 
 
@@ -334,7 +335,7 @@ Szpitalak, M., & Polczyk, R. (2019a). How to induce resistance to the misinforma
   
 Szpitalak, M., & Polczyk, R. (2019b). Inducing resistance to the misinformation effect by means of reinforced self-affirmation: The importance of positive feedback. PLoS ONE, 14(1), 16.
   
-Szpitalak, M., & Polczyk, R. (2021). Mediators and Moderators of Reinforced Self-Affirmation as a Method for Reducing the Memory Misinformation Effect. Frontiers in Psychology, 12. https://www.scopus.com/inward/record.uri?eid=2-s2.0-85120917613&doi=10.3389%2ffpsyg.2021.666707&partnerID=40&md5=e13b59553991198094c70fc2853f4a31
+Szpitalak, M., & Polczyk, R. (2021). Mediators and Moderators of Reinforced Self-Affirmation as a Method for Reducing the Memory Misinformation Effect. Frontiers in Psychology, 12. https://doi.org/10.3389/fpsyg.2021.666707
   
 Szpitalak, M., Polak, M., Polczyk, R., & Dukała, K. (2016). The influence of social, para-social, and nonsocial misleading post-event sources on memory performance. European Journal of Social Psychology, 46(2), 185–197.
   
@@ -346,4 +347,4 @@ Weingardt, K. R., Loftus, E. F., & Lindsay, D. S. (1995).Misinformation revisite
   
 XIONG K, ZHANG X, LIAO X, et al. Behavioral characteristics of false memory in individuals with depressed mood based on misinformation paradigm. Journal of Army Medical University, 2022, 44(19): 1961-1967. https://doi.org/10.16016/j.2097-0927.202202106
   
-钱慧昌. (2022). 不同时间点警告对目击者记忆保护作用的差异. 中华行为医学与脑科学杂志, 31(07), 647. https://doi.org/10.3760/cma.j.cn371468-20220516-00263
+QIAN, H., & LIU, J. (2022). Effect of warning on eyewitness memory protection at different time points. Chinese Journal of Behavioral Medicine and Brain Science, 647-651.
