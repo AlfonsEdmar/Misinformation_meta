@@ -1,8 +1,9 @@
 ---
-title: "Supplemental Material"
+title: "What Fifty Years of Research on the Misinformation Effect Can Tell Us: A Meta-Analytic Review"
+subtitle: "Supplemental Material"
 format: pdf
 toc: true 
-toc-depth: 3
+toc-depth: 4
 execute:
   echo: false
 ---
