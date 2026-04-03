@@ -632,7 +632,7 @@ pred_reg  <- predict(meta_primary,
 
 pred_reg$preregistered <- c(0, 1)
 
-# Post-exposure warning visualization
+# Pre-registration visualization
 
 scatter_prereg <-
   ggplot(data_es,
@@ -710,6 +710,104 @@ save_plot("figures/mema_prereg-plot.png",
           scatter_prereg,
           base_height = 6, base_width = 6)
 
+# Post-Event Testing Visualization ---------------------------------------------
+
+pred_res  <- predict(meta_primary, 
+                     newmods = cbind(
+                       rep(0, 7), # Post event retention
+                       rep(0, 7), # Post exposure retention
+                       rep(0, 7), # Pre event warning
+                       rep(0, 7), # Post event warning
+                       rep(0, 7), # Post exposure warning
+                       rep(0, 7), # Control accuracy
+                       0:6,       # Post event testing
+                       rep(0, 7), # Post exposure testing
+                       rep(0, 7), # Publication year
+                       rep(0, 7)  # Prereg
+                     ))
+
+pred_res$postevent_recall <- 0:6
+
+# Pre-registration visualization
+
+scatter_res <-
+  ggplot(data_es,
+         aes(
+           x = postevent_recall,
+           y = yi
+         )) +
+  geom_hline(
+    yintercept = meta_primary$beta[[1]],
+    linetype   = "dashed",
+    linewidth  = 1
+  ) +
+  geom_hline(
+    yintercept = 0,
+    linetype   = "dotted"
+  ) +
+  geom_point(
+    aes(
+      size = 1/vi
+    ),
+    shape = 1,
+    alpha = .25
+  ) +
+  geom_line(
+    data = as.data.frame(pred_res),
+    inherit.aes = FALSE,
+    aes(
+      x = postevent_recall,
+      y = pred,
+      group = 1
+    ),
+    linewidth = 0.80,
+    color     = "darkred"
+  ) +
+  geom_line(
+    data = as.data.frame(pred_res),
+    inherit.aes = FALSE,
+    aes(
+      x = postevent_recall,
+      y = ci.lb,
+      group = 1
+    ),
+    linewidth = 0.80,
+    color     = "darkred",
+    linetype  = "dashed"
+  ) +
+  geom_line(
+    data = as.data.frame(pred_res),
+    inherit.aes = FALSE,
+    aes(
+      x = postevent_recall,
+      y = ci.ub,
+      group = 1
+    ),
+    linewidth = 0.80,
+    color     = "darkred",
+    linetype  = "dashed"
+  ) +
+  scale_y_continuous(
+    breaks = seq(-4, 8, 1),
+    limits = c(-4, 8)
+  ) +
+  scale_x_continuous(
+    breaks = 0:6
+  ) +
+  labs(
+    x = "Post-Event Tests",
+    y = "Effect size"
+  ) +
+  guides(
+    size = "none"
+  ) +
+  theme_classic()
+
+save_plot("figures/mema_res-plot.png", 
+          scatter_prereg,
+          base_height = 6, base_width = 6)
+
+
 # Unstandardized effect size back-transformation -------------------------------
 
 source("R/mema_predicted-proportion.R")
@@ -738,8 +836,8 @@ save_plot("figures/mema_performance-grid-full.png",
 
 mod_grid_upper <- plot_grid(scatter_retention_60, scatter_retention_full,
                             scatter_control_acc, prediction_prop_plot,
-                            scatter_warning,
-                            labels = c("a", "b", "c", "d", "e"),
+                            scatter_warning, scatter_res,
+                            labels = c("a", "b", "c", "d", "e", "f"),
                             nrow = 3)
 
 # mod_grid_plot  <- plot_grid(mod_grid_upper,
