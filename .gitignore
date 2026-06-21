@@ -2,12 +2,15 @@
 .Rhistory
 .RData
 .Ruserdata
-.sumplemental_material.html
+.supplemental_material.html
 .supplimental_material.pdf
-.sumplemental_material.rmarkdown
+.supplemental_material.rmarkdown
 .supplemental_material_files/*
 
 
 *.docx
 
 data-extra/*
+
+*.pdf
+*.html

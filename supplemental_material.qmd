@@ -12,6 +12,7 @@ execute:
 source("R/mema_misinformation-primary-analysis.R")
 source("R/mema_subgroup-analyses.R")
 source("R/mema_pet-peese-supplement.R")
+source("R/mema_test-type-analysis.R")
 source("R/mema_model-tables.R")
 ```
 
@@ -55,7 +56,7 @@ report_table_leverage    <- extract_table_data(meta_leverage) %>%
 report_table_leverage
 ```
 
-### Evaluating the the primary model, excluding cases with an residual greater than 1.96
+### Evaluating the the primary model, excluding cases with a residual greater than 1.96
 
 ```{r}
 report_table_resid       <- extract_table_data(meta_resid) %>% 
@@ -70,6 +71,49 @@ report_table_between     <- extract_table_data(meta_between) %>%
 report_table_between
 ```
 
+### Examination of possible differential effects of control accuracy across test types
+
+#### Random slopes for control accuracy for each test type
+
+```{r}
+report_table_test
+```
+
+##### Visualization of average slopes for control accuracy by test type
+
+![Control accuracy by test type](figures/mema_control-accuracy-plot_random-slopes.png)
+
+#### Separate models for each test
+
+##### Recognition
+
+```{r}
+report_table_recog
+```
+
+##### Free recall
+
+```{r}
+report_table_free
+```
+
+##### Source monitoring
+
+```{r}
+report_table_source
+```
+
+##### Cued recall
+
+```{r}
+report_table_cued
+```
+
+##### Modified test
+
+```{r}
+report_table_mod
+```
 
 ## Subgroup analyses
 
@@ -194,6 +238,7 @@ report_peese_re
 ```
 
 ##### PET-PEESE on simplified model with no moderators
+
 ```{r}
 report_pet_rem           <- extract_table_data(meta_pet_rem) %>% 
   standard_table()
@@ -215,6 +260,7 @@ report_peese_rs
 ```
 
 ##### PET-PEESE on a random-effects meta-analysis
+
 ```{r}
 report_pet_rma           <- extract_table_data(meta_pet_rma) %>% 
   standard_table()

@@ -26,7 +26,7 @@ report_table_peese       <- extract_table_data(meta_peese) %>%
 report_table_simple      <- extract_table_data(meta_simple) %>% 
   standard_table()
 
-report_table_quad      <- extract_table_data(meta_quad) %>% 
+report_table_quad        <- extract_table_data(meta_quad) %>% 
   standard_table()
 
 report_table_imp         <- extract_table_data(meta_primary_imp) %>% 
@@ -117,6 +117,26 @@ report_peese_rs          <- extract_table_data(meta_peese_rs) %>%
 report_peese_rma         <- extract_table_data(meta_peese_rma) %>% 
   standard_table()
 
+# Post hoc test type analysis
+
+report_table_test        <- extract_table_data(meta_acc_test) %>% 
+  standard_table()
+
+report_table_recog       <- extract_table_data(meta_recog) %>% 
+  standard_table()
+
+report_table_free        <- extract_table_data(meta_freerecall) %>% 
+  standard_table()
+
+report_table_source      <- extract_table_data(meta_source) %>% 
+  standard_table()
+
+report_table_cued        <- extract_table_data(meta_cuedrecall) %>% 
+  standard_table()
+
+report_table_mod         <- extract_table_data(meta_modified) %>% 
+  standard_table()
+
 # Export tables ----------------------------------------------------------------
 
 # Create folder for tables
@@ -199,3 +219,13 @@ save_as_docx("RES"              = report_table_res,
 
 save_as_docx("Type as Random"   = report_table_type,
              path        = "output/tables/mema_table_type.docx")
+
+### Test types
+
+save_as_docx("Random Slopes for Test Types" = report_table_test,
+             "Recognition Test"             = report_table_recog,
+             "Free Recall"                  = report_table_free,
+             "Source Monitoring"            = report_table_source,
+             "Cued Recall"                  = report_table_cued,
+             "Modified Test"                = report_table_mod,
+             path        = "output/tables/mema_table_test-types.docx")

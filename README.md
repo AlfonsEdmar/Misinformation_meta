@@ -18,6 +18,7 @@ the `R` folder) in the following order:
 - `mema_misinformation-primary-analysis.R`
 - `mema_subgroup-analyses.R`
 - `mema_pet-peese-supplement.R`
+- `mema_test-type-analysis.R`
 - `mema_model-tables.R`
 
 By default, these scripts will load the saved model objects from the `output`
