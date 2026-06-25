@@ -79,6 +79,20 @@ report_table_between
 report_table_test
 ```
 
+##### Random slopes variance
+
+Intercept variance and control accuracy slope variance.
+
+```{r}
+meta_acc_test$tau2
+```
+
+Square root of variance estimates.
+
+```{r}
+sqrt(meta_acc_test$tau2)
+```
+
 ##### Visualization of average slopes for control accuracy by test type
 
 ![Control accuracy by test type](figures/mema_control-accuracy-plot_random-slopes.png)

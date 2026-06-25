@@ -56,6 +56,48 @@ data_es$exposure_medium[is.na(data_es$exposure_medium)]         <- "missing"
 data_es$misinformation_type[data_es$misinformation_type == "unclear"] <- NA
 data_es$misinformation_type[is.na(data_es$misinformation_type)] <- "missing"
 
+# Heterogeneity function
+
+# Heterogeneity
+
+## I-squared
+
+# This code is adapted from
+# https://www.metafor-project.org/doku.php/tips:i2_multilevel_multivariate
+
+I2_calc <- function(meta_model) {
+  
+  W <- diag(1/meta_model$vi)
+  
+  X <- model.matrix(meta_model)
+  
+  P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
+  
+  I2 <- 100 * sum(meta_model$sigma2) / (sum(meta_model$sigma2) + (meta_model$k - meta_model$p)/sum(diag(P)))
+  
+  I2_components <- round(100 * meta_model$sigma2 / (sum(meta_model$sigma2) + (meta_model$k-meta_model$p)/sum(diag(P))), 2)
+  
+  sigma2 <- sum(meta_model$sigma2)
+  
+  return(list(sigma2 = sigma2, I2 = I2, I2_comp = I2_components))
+  
+}
+
+## Intercept prediction interval
+
+pi_intercept <- function(meta_model, pib = .975) {
+  
+  b0    <- meta_model$beta[[1]]
+  
+  sd_pi <- sqrt(sum(meta_model$sigma2) + meta_model$se[[1]]^2)
+  
+  pi_lb <- b0 - qnorm(.975)*sd_pi
+  pi_ub <- b0 + qnorm(.975)*sd_pi
+  
+  return(c(pi_lb, pi_ub))
+  
+}
+
 # Random effects analysis ------------------------------------------------------
 
 # Random slopes for control accuracy by test type
