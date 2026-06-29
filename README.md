@@ -28,10 +28,7 @@ recommend simply removing the contents of the output folder prior to running the
 scripts. Note that the model fitting process can take several hours, depending
 on the available computational resources.
 
-To fully reproduce the results the following packages are needed:
-```
-install.packages(c("tidyverse", "metafor", "cowplot", "ggbeeswarm", "missForest", "readxl"))
-```
+This repository using the `renv` package to support reproducibility.
 
 ## Open Science Framework Repository
 

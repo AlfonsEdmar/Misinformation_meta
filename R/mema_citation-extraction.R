@@ -9,7 +9,7 @@ library(rcrossref)
 library(bib2df)
 
 # loading data -----------------------------------------------------------------
-read.csv(INSERT CORRECT PATH)
+# read.csv(INSERT CORRECT PATH)
 
 # Retrieving reference information from DOIs -----------------------------------
 
