@@ -28,7 +28,7 @@ recommend simply removing the contents of the output folder prior to running the
 scripts. Note that the model fitting process can take several hours, depending
 on the available computational resources.
 
-This repository using the `renv` package to support reproducibility.
+This repository uses the `renv` package to support reproducibility.
 
 ## Open Science Framework Repository
 
